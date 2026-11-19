@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="light"/>
 <link rel="icon" href="data:,"/>
-<title>Sypher Dashboard Preview</title>
+<title>Jindan Dashboard Preview</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -35,8 +35,46 @@ a{color:inherit;text-decoration:none}
 .logo{ width:28px;height:28px;background:#111;color:#fff;border-radius:7px;display:grid;place-items:center;font-weight:900;font-size:15px; line-height:1 }
 .brand span{font-weight:400;color:#9ca3af;margin-left:2px}
 .mainnav{ display:flex; gap:28px; align-items:center; flex-wrap:wrap; justify-content:center; }
-.mainnav a{ font-size:13.5px; font-weight:500; color:#6b7280; padding:8px 2px; position:relative; }
+.mainnav a{ font-size:13.5px; font-weight:500; color:#6b7280; padding:8px 2px; position:relative; cursor:pointer }
+.mainnav a:hover{ color:#111 }
 .mainnav a.active{ color:#111; font-weight:600 }
+/* Sub-pages (one view per top-nav menu) */
+.viewpage{ padding:22px 26px 26px }
+.viewpage[hidden]{ display:none !important }
+#view-dashboard[hidden]{ display:none !important }
+.view-head{ margin-bottom:16px }
+.view-head h2{ font-size:20px; margin:0 0 4px; letter-spacing:-.02em }
+.view-head p{ margin:0; color:#6b7280; font-size:13px }
+.statgrid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:20px }
+.statcard{ border:1px solid #f3f4f6; background:#fafafa; border-radius:12px; padding:14px }
+.statcard label{ display:block; font-size:10px; letter-spacing:.07em; text-transform:uppercase; color:#9ca3af; font-weight:600; margin-bottom:6px }
+.statcard .big{ font-size:19px; font-weight:800; letter-spacing:-.01em }
+.statcard .sub{ font-size:12px; color:#6b7280; margin-top:3px }
+.ptable{ border-top:1px solid #f3f4f6 }
+.prow{ display:grid; gap:8px; align-items:center; padding:10px 4px; border-bottom:1px solid #f9fafb; font-size:13px }
+.prow.head{ font-size:12px; font-weight:600; color:#111; border-bottom:1px solid #f3f4f6 }
+.prow .r{ text-align:right; font-weight:600 }
+.prow .muted{ color:#4b5563; font-size:12.5px; overflow:hidden; text-overflow:ellipsis }
+.cols-customer{ grid-template-columns:1.5fr 1.4fr .55fr .7fr .8fr }
+.cols-fleet{ grid-template-columns:.6fr 1.4fr .7fr 1fr .8fr }
+.cols-report{ grid-template-columns:1.6fr 1.3fr .8fr auto }
+.cols-employee{ grid-template-columns:1.4fr 1fr .8fr .8fr }
+.insight-list{ display:flex; flex-direction:column; gap:12px }
+.insight-item{ display:flex; gap:12px; align-items:flex-start; border:1px solid #f3f4f6; background:#fafafa; border-radius:12px; padding:14px }
+.insight-item .n{ width:26px; height:26px; border-radius:50%; background:#111; color:#fff; display:grid; place-items:center; font-size:12px; font-weight:800; flex-shrink:0 }
+.insight-item h3{ margin:0 0 3px; font-size:14px }
+.insight-item p{ margin:0; color:#4b5563; font-size:13px; line-height:1.5 }
+.btn-dark{ background:#111; color:#fff; border:0; border-radius:999px; padding:9px 14px; font-size:12.5px; font-weight:600; white-space:nowrap }
+.two-col{ display:grid; grid-template-columns:1fr 1fr; gap:28px }
+@media (max-width:640px){
+  .viewpage{ padding:18px 14px 20px }
+  .statgrid{ grid-template-columns:1fr 1fr }
+  .two-col{ grid-template-columns:1fr }
+  .prow.head{ display:none }
+  .cols-customer,.cols-fleet,.cols-report,.cols-employee{ grid-template-columns:1fr auto }
+  .prow .muted{ grid-column:1 }
+  .prow .r{ grid-column:2; grid-row:1 }
+}
 .mainnav a.active::after{ content:""; position:absolute; left:0; right:0; bottom:-11px; height:2px; background:#111; border-radius:2px }
 .top-actions{ display:flex; align-items:center; gap:12px }
 .btn-report{ background:#fff; border:1px solid #e5e7eb; padding:8px 14px; border-radius:999px; font-size:13px; font-weight:600; box-shadow:0 1px 2px rgba(0,0,0,.05) }
@@ -166,15 +204,15 @@ a{color:inherit;text-decoration:none}
   <div class="shell" id="reportArea">
     <!-- TOP NAV -->
     <header class="topbar">
-      <div class="brand"><div class="logo">▦</div> Sypher <span>:</span></div>
+      <div class="brand"><div class="logo">J</div> Jindan <span>:</span></div>
       <nav class="mainnav" aria-label="Main">
-        <a href="#" class="active">Dashboard</a>
-        <a href="#">Financials</a>
-        <a href="#">Customers</a>
-        <a href="#">Fleet</a>
-        <a href="#">Reports</a>
-        <a href="#">Insights</a>
-        <a href="#">Employees</a>
+        <a href="#" class="active" data-nav="dashboard">Dashboard</a>
+        <a href="#" data-nav="financials">Financials</a>
+        <a href="#" data-nav="customers">Customers</a>
+        <a href="#" data-nav="fleet">Fleet</a>
+        <a href="#" data-nav="reports">Reports</a>
+        <a href="#" data-nav="insights">Insights</a>
+        <a href="#" data-nav="employees">Employees</a>
       </nav>
       <div class="top-actions">
         <button class="btn-report" id="generateTop">Generate Report</button>
@@ -188,12 +226,11 @@ a{color:inherit;text-decoration:none}
       </div>
       <div class="manage">◎ Manage layout</div>
     </div>
-
-    <div class="grid">
+    <div class="grid" id="view-dashboard">
       <!-- LEFT -->
       <div class="leftcol">
         <!-- Deliveries -->
-        <section>
+        <section id="section-deliveries">
           <div class="section-head"><h2>Deliveries</h2><button class="dots" aria-label="More">⋮</button></div>
           <div class="deliv-grid">
             <div class="metric">
@@ -216,7 +253,7 @@ a{color:inherit;text-decoration:none}
         </section>
 
         <!-- Revenue and costs -->
-        <section>
+        <section id="section-revenue">
           <div class="section-head"><h2>Revenue and costs</h2><div style="display:flex;gap:8px;align-items:center;color:#6b7280"><span style="font-size:13px">∿ &nbsp; 📊</span><button class="dots">⋮</button></div></div>
           <div style="display:flex;justify-content:space-between;font-size:11px;color:#9ca3af"><span>Revenue, net profit, $</span><span>Costs, $</span></div>
           <svg viewBox="0 0 520 190" style="width:100%;height:auto;display:block;margin-top:6px" role="img" aria-label="Revenue and costs chart">
@@ -242,7 +279,7 @@ a{color:inherit;text-decoration:none}
 
         <!-- Bottom -->
         <div class="bottom-row">
-          <section>
+          <section id="section-balance">
             <div class="section-head"><h2 style="font-size:15px">Balance and costs</h2><button class="dots">⋮</button></div>
             <div style="display:flex;justify-content:space-between;align-items:flex-start">
               <div><div style="font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:#9ca3af;font-weight:600">Cash balance</div><div style="font-size:16px;font-weight:800;margin-top:4px">$126K</div></div>
@@ -269,7 +306,7 @@ a{color:inherit;text-decoration:none}
 
       <!-- RIGHT / INVOICES -->
       <div class="rightcol">
-        <section>
+        <section id="section-invoices">
           <div class="section-head"><h2>Invoices</h2><button class="dots">⋮</button></div>
           <div class="inv-summary">
             <div class="inv-box"><label>Paid</label><div class="amt">$169K</div></div>
@@ -303,8 +340,133 @@ a{color:inherit;text-decoration:none}
         </section>
       </div>
     </div>
+    <!-- FINANCIALS VIEW -->
+    <div class="viewpage" id="view-financials" hidden>
+      <div class="view-head"><h2>Financials</h2><p>Revenue, costs and invoices for Jul 20 – Aug 20 — the same figures as the Dashboard.</p></div>
+      <div class="statgrid">
+        <div class="statcard"><label>Cash balance</label><div class="big">$126K</div><div class="sub">Target: &gt;$100K</div></div>
+        <div class="statcard"><label>Invoices paid</label><div class="big">$169K</div><div class="sub">51.5% of invoiced total</div></div>
+        <div class="statcard"><label>Resent request</label><div class="big">$95K</div><div class="sub">29% awaiting payment</div></div>
+        <div class="statcard"><label>Unpaid</label><div class="big">$64K</div><div class="sub">19.5% outstanding</div></div>
+      </div>
+      <div class="two-col">
+        <section>
+          <div class="section-head"><h2 style="font-size:15px">Revenue and costs</h2></div>
+          <svg viewBox="0 0 520 190" style="width:100%;height:auto;display:block" role="img" aria-label="Revenue and costs chart">
+            <g font-size="10" fill="#9ca3af"><text x="0" y="22">11K</text><text x="0" y="62">10K</text><text x="0" y="102">9K</text><text x="0" y="142">8K</text><text x="0" y="178">7K</text><text x="28" y="188">20</text><text x="245" y="188">Aug</text><text x="365" y="188">10</text><text x="485" y="188">20</text></g>
+            <g stroke="#f3f4f6"><line x1="28" y1="20" x2="495" y2="20"/><line x1="28" y1="60" x2="495" y2="60"/><line x1="28" y1="100" x2="495" y2="100"/><line x1="28" y1="140" x2="495" y2="140"/></g>
+            <defs><linearGradient id="rg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22c55e" stop-opacity=".18"/><stop offset="100%" stop-color="#22c55e" stop-opacity="0"/></linearGradient></defs>
+            <path d="M28,78 L70,52 L110,28 L150,62 L190,48 L230,38 L270,46 L310,30 L350,42 L390,28 L430,36 L470,26 L495,30 L495,170 L28,170 Z" fill="url(#rg2)"/>
+            <path d="M28,78 L70,52 L110,28 L150,62 L190,48 L230,38 L270,46 L310,30 L350,42 L390,28 L430,36 L470,26 L495,30" fill="none" stroke="#22c55e" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M28,135 L70,128 L110,92 L150,138 L190,118 L230,132 L270,108 L310,124 L350,96 L390,70 L430,118 L470,132 L495,108" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M28,148 L70,132 L110,108 L150,142 L190,126 L230,138 L270,112 L310,140 L350,96 L390,138 L430,102 L470,128 L495,142" fill="none" stroke="#db2777" stroke-width="1.8" stroke-linejoin="round"/>
+          </svg>
+          <div class="legend"><span><i style="background:#22c55e"></i> Revenue</span><span><i style="background:#ec4899"></i> Costs</span><span><i style="background:#111"></i> Net profit</span></div>
+        </section>
+        <section>
+          <div class="section-head"><h2 style="font-size:15px">Costs by category</h2></div>
+          <div class="cost-seg"><i style="width:35%;background:#22c55e"></i><i style="width:25%;background:#4ade80"></i><i style="width:15%;background:#a3e635"></i><i style="width:10%;background:#facc15"></i><i style="width:7%;background:#e7e5a0"></i><i style="width:5%;background:#e5e7eb"></i></div>
+          <ul class="cost-list">
+            <li><span class="dot" style="background:#22c55e"></span><span>Fuel</span><b>$89.2K</b><em>35%</em></li>
+            <li><span class="dot" style="background:#4ade80"></span><span>Driver salaries</span><b>$63.7K</b><em>25%</em></li>
+            <li><span class="dot" style="background:#a3e635"></span><span>Vehicle maintenance</span><b>$38.2K</b><em>15%</em></li>
+            <li><span class="dot" style="background:#facc15"></span><span>Warehousing</span><b>$25.5K</b><em>10%</em></li>
+            <li><span class="dot" style="background:#d6d68a"></span><span>Insurance</span><b>$17.8K</b><em>7%</em></li>
+            <li><span class="dot" style="background:#d1d5db"></span><span>Tech &amp; software</span><b>$12.7K</b><em>5%</em></li>
+          </ul>
+          <p style="font-size:12.5px;color:#6b7280;line-height:1.6;margin:14px 0 0">Total tracked costs: <b style="color:#111">$247.1K</b>. Largest category is Fuel at $89.2K (35%), followed by Driver salaries at $63.7K (25%).</p>
+        </section>
+      </div>
+    </div>
+
+    <!-- CUSTOMERS VIEW -->
+    <div class="viewpage" id="view-customers" hidden>
+      <div class="view-head"><h2>Customers</h2><p>Every company from the invoice table, with contact, invoice count and total value. Adding an invoice on the Dashboard updates this list.</p></div>
+      <div class="statgrid">
+        <div class="statcard"><label>Customers</label><div class="big" id="custCount">10</div><div class="sub">Companies invoiced this period</div></div>
+        <div class="statcard"><label>Total invoiced (sample)</label><div class="big" id="custTotal">$16,540</div><div class="sub">Sum of the 10 sample invoices</div></div>
+        <div class="statcard"><label>Paid invoices</label><div class="big" id="custPaid">4</div><div class="sub">Status: Paid</div></div>
+        <div class="statcard"><label>Still outstanding</label><div class="big" id="custOpen">6</div><div class="sub">Unpaid + resent request</div></div>
+      </div>
+      <div class="ptable">
+        <div class="prow head cols-customer"><span>Company</span><span>Contact</span><span>Invoices</span><span>Status</span><span class="r">Total value</span></div>
+        <div id="customerList"></div>
+      </div>
+    </div>
+
+    <!-- FLEET VIEW -->
+    <div class="viewpage" id="view-fleet" hidden>
+      <div class="view-head"><h2>Fleet</h2><p>Deliveries for Jul 20 – Aug 20, matched to the customer invoices on the Dashboard.</p></div>
+      <div class="statgrid">
+        <div class="statcard"><label>Fleet utilization</label><div class="big">95.1%</div><div class="sub">Of available vehicle capacity</div></div>
+        <div class="statcard"><label>On-time delivery rate</label><div class="big">97.9%</div><div class="sub">Delivered within the promised window</div></div>
+        <div class="statcard"><label>Total deliveries</label><div class="big">1,352</div><div class="sub">↑ 3.5% vs. previous period</div></div>
+        <div class="statcard"><label>Fuel cost</label><div class="big">$89.2K</div><div class="sub">35% of total costs — largest category</div></div>
+      </div>
+      <div class="section-head"><h2 style="font-size:15px">Recent deliveries</h2></div>
+      <div class="ptable">
+        <div class="prow head cols-fleet"><span>Vehicle</span><span>Company</span><span>Date</span><span>Contact</span><span class="r">Delivery status</span></div>
+        <div id="fleetList"></div>
+      </div>
+      <p style="font-size:12px;color:#9ca3af;margin:10px 2px 0">Delivery status follows the invoice status: Paid → Delivered · Unpaid → In transit · Resent request → Scheduled.</p>
+    </div>
+
+    <!-- REPORTS VIEW -->
+    <div class="viewpage" id="view-reports" hidden>
+      <div class="view-head"><h2>Reports</h2><p>Every report below exports the same complete PDF: Dashboard, Financials, Customers, Fleet, Insights and Employees — all data included.</p></div>
+      <div class="ptable">
+        <div class="prow head cols-report"><span>Report</span><span>Covers</span><span>Period</span><span></span></div>
+        <div class="prow cols-report"><span><b>Complete report</b></span><span class="muted">Deliveries, Revenue &amp; costs, Balance, Costs by category, all 10 invoices, plus Financials, Customers, Fleet, Insights, Employees</span><span class="muted">Jul 20 – Aug 20</span><span><button class="btn-dark js-report">⬇ Generate Report</button></span></div>
+        <div class="prow cols-report"><span><b>Financial report</b></span><span class="muted">Revenue and costs, cash balance $126K, costs by category, invoice summary</span><span class="muted">Jul 20 – Aug 20</span><span><button class="btn-dark js-report">⬇ Generate Report</button></span></div>
+        <div class="prow cols-report"><span><b>Invoices report</b></span><span class="muted">All invoices with company, issue date, contact, value and status</span><span class="muted">Jul 20 – Aug 20</span><span><button class="btn-dark js-report">⬇ Generate Report</button></span></div>
+        <div class="prow cols-report"><span><b>Fleet &amp; deliveries report</b></span><span class="muted">Fleet utilization 95.1%, on-time rate 97.9%, 1,352 deliveries and the delivery list</span><span class="muted">Jul 20 – Aug 20</span><span><button class="btn-dark js-report">⬇ Generate Report</button></span></div>
+        <div class="prow cols-report"><span><b>Team &amp; costs report</b></span><span class="muted">Driver roster and salaries totalling $63.7K, plus costs by category</span><span class="muted">Jul 20 – Aug 20</span><span><button class="btn-dark js-report">⬇ Generate Report</button></span></div>
+      </div>
+      <button class="btn-dark js-report" style="width:100%;margin-top:16px;padding:12px">⬇ Generate Report — Export complete PDF</button>
+    </div>
+
+    <!-- INSIGHTS VIEW -->
+    <div class="viewpage" id="view-insights" hidden>
+      <div class="view-head"><h2>Insights</h2><p>Read-outs calculated from the same demo data — invoice figures update when you add an invoice on the Dashboard.</p></div>
+      <div class="insight-list">
+        <div class="insight-item"><span class="n">1</span><div><h3>Top customer: <span id="insTopCustomer">Arvox Solutions</span></h3><p id="insTopCustomerText">Highest single invoice in the sample at $2,800 (Paid, 08/16/25). BlueHorizon Ltd. is next at $2,100.</p></div></div>
+        <div class="insight-item"><span class="n">2</span><div><h3>Fuel is the biggest cost</h3><p>Fuel takes $89.2K — 35% of the $247.1K tracked costs, ahead of Driver salaries ($63.7K, 25%). A 5% fuel saving would be worth about $4.5K this period.</p></div></div>
+        <div class="insight-item"><span class="n">3</span><div><h3>Half the invoiced value is already paid</h3><p>Paid invoices total $169K (51.5%). $64K (19.5%) is still unpaid and $95K (29%) has had a payment request resent — follow-up on the resent group is the fastest way to lift the paid share.</p></div></div>
+        <div class="insight-item"><span class="n">4</span><div><h3>Open sample invoices: <span id="insOpenCount">6</span></h3><p id="insOpenText">6 of the 10 sample invoices are not paid yet (3 unpaid, 3 resent), worth $8,270 combined.</p></div></div>
+        <div class="insight-item"><span class="n">5</span><div><h3>Deliveries are trending up</h3><p>Total deliveries reached 1,352, up 3.5% on the previous period, while the on-time rate held at 97.9% and fleet utilization at 95.1% — growth without a service-level drop.</p></div></div>
+        <div class="insight-item"><span class="n">6</span><div><h3>Cash balance is above target</h3><p>Cash balance is $126K against a target of &gt;$100K, leaving about $26K of headroom above target for the period.</p></div></div>
+      </div>
+    </div>
+
+    <!-- EMPLOYEES VIEW -->
+    <div class="viewpage" id="view-employees" hidden>
+      <div class="view-head"><h2>Employees</h2><p>Driver roster for this period. Salaries add up to the Driver salaries line in Costs by category: $63.7K (25% of costs).</p></div>
+      <div class="statgrid">
+        <div class="statcard"><label>Drivers on roster</label><div class="big">8</div><div class="sub">Active this period</div></div>
+        <div class="statcard"><label>Total driver salaries</label><div class="big">$63.7K</div><div class="sub">25% of total costs</div></div>
+        <div class="statcard"><label>Average salary</label><div class="big">$7,963</div><div class="sub">Per driver, this period</div></div>
+        <div class="statcard"><label>Deliveries per driver</label><div class="big">169</div><div class="sub">1,352 deliveries ÷ 8 drivers</div></div>
+      </div>
+      <div class="ptable">
+        <div class="prow head cols-employee"><span>Driver</span><span>Role</span><span>Vehicle</span><span class="r">Salary (period)</span></div>
+        <div id="employeeList"></div>
+        <div class="prow cols-employee" style="font-weight:700"><span>Total</span><span></span><span></span><span class="r">$63,700</span></div>
+      </div>
+      <div style="margin-top:22px">
+        <div class="section-head"><h2 style="font-size:15px">Costs by category</h2></div>
+        <div class="cost-seg"><i style="width:35%;background:#22c55e"></i><i style="width:25%;background:#4ade80"></i><i style="width:15%;background:#a3e635"></i><i style="width:10%;background:#facc15"></i><i style="width:7%;background:#e7e5a0"></i><i style="width:5%;background:#e5e7eb"></i></div>
+        <ul class="cost-list">
+          <li><span class="dot" style="background:#22c55e"></span><span>Fuel</span><b>$89.2K</b><em>35%</em></li>
+          <li><span class="dot" style="background:#4ade80"></span><span>Driver salaries</span><b>$63.7K</b><em>25%</em></li>
+          <li><span class="dot" style="background:#a3e635"></span><span>Vehicle maintenance</span><b>$38.2K</b><em>15%</em></li>
+          <li><span class="dot" style="background:#facc15"></span><span>Warehousing</span><b>$25.5K</b><em>10%</em></li>
+          <li><span class="dot" style="background:#d6d68a"></span><span>Insurance</span><b>$17.8K</b><em>7%</em></li>
+          <li><span class="dot" style="background:#d1d5db"></span><span>Tech &amp; software</span><b>$12.7K</b><em>5%</em></li>
+        </ul>
+      </div>
+    </div>
   </div>
-  <p style="text-align:center;color:#6b7280;font-size:12px;margin:14px 0 0">Sypher Dashboard Preview · Static share version · No login required</p>
+  <p style="text-align:center;color:#6b7280;font-size:12px;margin:14px 0 0">Jindan Dashboard Preview · Static share version · No login required</p>
 </div>
 
 <!-- Add Invoice Modal -->
@@ -343,6 +505,27 @@ var invoices = [
 var currentFilter = "unpaid";
 var currentSearch = "";
 
+// Demo roster — salaries sum to the Driver salaries cost line: $63.7K
+var employees = [
+  {name:"Andi Pratama", role:"Senior driver", vehicle:"TRK-01", salary:9500},
+  {name:"Budi Santoso", role:"Senior driver", vehicle:"TRK-02", salary:9200},
+  {name:"Citra Lestari", role:"Driver", vehicle:"TRK-03", salary:8800},
+  {name:"Dedi Kurniawan", role:"Driver", vehicle:"TRK-04", salary:8400},
+  {name:"Eka Wulandari", role:"Driver", vehicle:"TRK-05", salary:7900},
+  {name:"Fajar Ramadhan", role:"Driver", vehicle:"TRK-06", salary:7300},
+  {name:"Gita Maharani", role:"Junior driver", vehicle:"TRK-07", salary:6600},
+  {name:"Hendra Wijaya", role:"Junior driver", vehicle:"TRK-08", salary:6000}
+];
+var costCategories = [
+  {name:"Fuel", amount:89200, pct:35},
+  {name:"Driver salaries", amount:63700, pct:25},
+  {name:"Vehicle maintenance", amount:38200, pct:15},
+  {name:"Warehousing", amount:25500, pct:10},
+  {name:"Insurance", amount:17800, pct:7},
+  {name:"Tech & software", amount:12700, pct:5}
+];
+function deliveryStatus(status){ return status==="paid" ? "Delivered" : status==="resent" ? "Scheduled" : "In transit"; }
+
 function money(n){ return "$" + n.toLocaleString("en-US"); }
 function statusLabel(s){ return s==="paid" ? "Paid" : s==="resent" ? "Resent request" : "Unpaid"; }
 
@@ -374,6 +557,71 @@ function renderInvoices(){
 }
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
 
+// --- Sub-page renderers (Customers / Fleet / Employees / Insights) ---
+function customerTotals(){
+  var map = {}, order = [];
+  invoices.forEach(function(inv){
+    if(!map[inv.company]){ map[inv.company] = {company:inv.company, contact:inv.contact, count:0, total:0, statuses:{}}; order.push(inv.company); }
+    map[inv.company].count++; map[inv.company].total += inv.value; map[inv.company].statuses[inv.status] = true;
+  });
+  return order.map(function(name){ return map[name]; });
+}
+function renderCustomers(){
+  var list = document.getElementById("customerList");
+  if(!list) return;
+  list.innerHTML = "";
+  customerTotals().forEach(function(c){
+    var sts = Object.keys(c.statuses).map(function(s){ return s==="resent" ? "Resent" : statusLabel(s); }).join(" · ");
+    var row = document.createElement("div");
+    row.className = "prow cols-customer";
+    row.innerHTML = "<span><b>"+escapeHtml(c.company)+"</b></span><span class='muted'>"+escapeHtml(c.contact)+"</span><span>"+c.count+"</span><span class='muted'>"+escapeHtml(sts)+"</span><span class='r'>"+money(c.total)+"</span>";
+    list.appendChild(row);
+  });
+  var total = invoices.reduce(function(a,i){ return a+i.value; }, 0);
+  var paid = invoices.filter(function(i){ return i.status==="paid"; }).length;
+  document.getElementById("custCount").textContent = customerTotals().length;
+  document.getElementById("custTotal").textContent = money(total);
+  document.getElementById("custPaid").textContent = paid;
+  document.getElementById("custOpen").textContent = invoices.length - paid;
+}
+function renderFleet(){
+  var list = document.getElementById("fleetList");
+  if(!list) return;
+  list.innerHTML = "";
+  invoices.forEach(function(inv, i){
+    var row = document.createElement("div");
+    row.className = "prow cols-fleet";
+    row.innerHTML = "<span><b>TRK-0"+((i%8)+1)+"</b></span><span>"+escapeHtml(inv.company)+"</span><span class='muted'>"+escapeHtml(inv.date)+"</span><span class='muted'>"+escapeHtml(inv.contact)+"</span><span class='r'>"+deliveryStatus(inv.status)+"</span>";
+    list.appendChild(row);
+  });
+}
+function renderEmployees(){
+  var list = document.getElementById("employeeList");
+  if(!list) return;
+  list.innerHTML = "";
+  employees.forEach(function(emp){
+    var row = document.createElement("div");
+    row.className = "prow cols-employee";
+    row.innerHTML = "<span><b>"+escapeHtml(emp.name)+"</b></span><span class='muted'>"+escapeHtml(emp.role)+"</span><span class='muted'>"+escapeHtml(emp.vehicle)+"</span><span class='r'>"+money(emp.salary)+"</span>";
+    list.appendChild(row);
+  });
+}
+function renderInsights(){
+  var top = invoices.slice().sort(function(a,b){ return b.value-a.value; })[0];
+  var second = invoices.slice().sort(function(a,b){ return b.value-a.value; })[1];
+  var open = invoices.filter(function(i){ return i.status!=="paid"; });
+  var openTotal = open.reduce(function(a,i){ return a+i.value; }, 0);
+  var unpaid = invoices.filter(function(i){ return i.status==="unpaid"; }).length;
+  var resent = invoices.filter(function(i){ return i.status==="resent"; }).length;
+  if(top){
+    document.getElementById("insTopCustomer").textContent = top.company;
+    document.getElementById("insTopCustomerText").textContent = "Highest single invoice in the sample at " + money(top.value) + " (" + statusLabel(top.status) + ", " + top.date + ")" + (second ? ". " + second.company + " is next at " + money(second.value) + "." : ".");
+  }
+  document.getElementById("insOpenCount").textContent = open.length;
+  document.getElementById("insOpenText").textContent = open.length + " of the " + invoices.length + " sample invoices are not paid yet (" + unpaid + " unpaid, " + resent + " resent), worth " + money(openTotal) + " combined.";
+}
+function renderSubpages(){ renderCustomers(); renderFleet(); renderEmployees(); renderInsights(); }
+
 // Filters
 document.querySelectorAll(".filter-btn").forEach(function(btn){
   btn.addEventListener("click", function(){
@@ -391,6 +639,7 @@ document.getElementById("searchInput").addEventListener("input", function(e){ cu
   currentFilter = "all";
   document.querySelectorAll(".filter-btn").forEach(function(b){ b.classList.toggle("active", b.getAttribute("data-filter")==="all"); });
   renderInvoices();
+  renderSubpages();
 })();
 
 // Mini bars
@@ -422,6 +671,7 @@ document.getElementById("addForm").addEventListener("submit", function(e){
   document.querySelectorAll(".filter-btn").forEach(function(b){ b.classList.toggle("active", b.getAttribute("data-filter")==="all"); });
   document.getElementById("searchInput").value=""; currentSearch="";
   renderInvoices();
+  renderSubpages();
   modal.classList.remove("open");
   showToast("Invoice added: " + company + " · " + money(value));
   e.target.reset(); document.getElementById("fDate").value="08/17/25";
@@ -434,78 +684,164 @@ function showToast(msg){
 
 // --- PDF generation (pure JS, no external dependency, creates a valid PDF blob) ---
 function generatePDF(){
+  // COMPLETE report: Dashboard sections + every menu page, all data included.
   var lines = [];
-  lines.push("Sypher — Financial Report");
+  lines.push("Jindan — Complete Report");
   lines.push("Period: Last month  Jul 20 - Aug 20");
   lines.push("Generated: " + new Date().toLocaleDateString("en-US"));
+  lines.push("Contents: Dashboard, Financials, Customers, Fleet, Reports, Insights, Employees.");
   lines.push("");
-  lines.push("DELIVERIES");
+  lines.push("DASHBOARD — DELIVERIES");
   lines.push("Fleet utilization: 95.1%");
   lines.push("On-time delivery rate: 97.9%");
-  lines.push("Total deliveries: 1,352  (+3.5%)");
+  lines.push("Total deliveries: 1,352  (+3.5% vs. previous period)");
   lines.push("");
-  lines.push("INVOICES SUMMARY");
+  lines.push("DASHBOARD — REVENUE AND COSTS");
+  lines.push("Revenue, Costs and Net profit tracked daily for Jul 20 - Aug 20 (see chart in app).");
+  lines.push("Cash balance: $126K   Target: >$100K");
+  lines.push("");
+  lines.push("DASHBOARD — INVOICES SUMMARY");
   lines.push("Paid: $169K  (51.5%)");
   lines.push("Resent request: $95K  (29%)");
   lines.push("Unpaid: $64K  (19.5%)");
   lines.push("");
-  lines.push("BALANCE AND COSTS");
-  lines.push("Cash balance: $126K   Target: >$100K");
+  lines.push("DASHBOARD — COSTS BY CATEGORY");
+  costCategories.forEach(function(c){
+    lines.push(c.name + " — " + money(c.amount) + "  " + c.pct + "%");
+  });
+  lines.push("Total tracked costs: $247,100");
   lines.push("");
-  lines.push("COSTS BY CATEGORY");
-  lines.push("Fuel — $89.2K  35%");
-  lines.push("Driver salaries — $63.7K  25%");
-  lines.push("Vehicle maintenance — $38.2K  15%");
-  lines.push("Warehousing — $25.5K  10%");
-  lines.push("Insurance — $17.8K  7%");
-  lines.push("Tech & software — $12.7K  5%");
-  lines.push("");
-  lines.push("INVOICES");
+  lines.push("INVOICES — ALL " + invoices.length + " INVOICES");
   lines.push("Company | Issue date | Contact | Value | Status");
   invoices.forEach(function(inv){
     lines.push(inv.company + " | " + inv.date + " | " + inv.contact + " | " + money(inv.value) + " | " + statusLabel(inv.status));
   });
+  var invTotal = invoices.reduce(function(a,i){ return a+i.value; }, 0);
+  lines.push("Sample invoices total: " + money(invTotal));
   lines.push("");
-  lines.push("Revenue and costs: Revenue, Costs and Net profit tracked for Jul 20 - Aug 20.");
-  lines.push("Sypher Dashboard Preview — static share version.");
-
-  // Build PDF content stream
-  function esc(s){ return s.replace(/\\/g,"\\\\").replace(/\(/g,"\\(").replace(/\)/g,"\\)"); }
-  var stream = "BT /F1 18 Tf 50 790 Td ";
-  lines.forEach(function(line, idx){
-    if(idx===0){ stream += "/F1 18 Tf (" + esc(line) + ") Tj "; }
-    else if(line==="DELIVERIES"||line==="INVOICES SUMMARY"||line==="BALANCE AND COSTS"||line==="COSTS BY CATEGORY"||line==="INVOICES"){
-      stream += "0 -22 Td /F1 12 Tf (" + esc(line) + ") Tj ";
-    } else if(line===""){
-      stream += "0 -10 Td ";
-    } else {
-      stream += "0 -14 Td /F1 10 Tf (" + esc(line) + ") Tj ";
-    }
+  lines.push("FINANCIALS");
+  lines.push("Cash balance: $126K (target >$100K)");
+  lines.push("Invoices paid: $169K (51.5%) · Resent request: $95K (29%) · Unpaid: $64K (19.5%)");
+  lines.push("Revenue, costs and net profit charted for Jul 20 - Aug 20.");
+  lines.push("Costs by category:");
+  costCategories.forEach(function(c){
+    lines.push("  " + c.name + " — " + money(c.amount) + "  " + c.pct + "%");
   });
-  stream += "ET";
+  lines.push("");
+  lines.push("CUSTOMERS");
+  lines.push("Company | Contact | Invoices | Total value | Status");
+  customerTotals().forEach(function(c){
+    var sts = Object.keys(c.statuses).map(function(s){ return statusLabel(s); }).join(", ");
+    lines.push(c.company + " | " + c.contact + " | " + c.count + " | " + money(c.total) + " | " + sts);
+  });
+  lines.push("");
+  lines.push("FLEET");
+  lines.push("Fleet utilization: 95.1% · On-time delivery rate: 97.9% · Total deliveries: 1,352 (+3.5%)");
+  lines.push("Fuel cost: $89.2K (35% of total costs)");
+  lines.push("Recent deliveries (status follows invoice status):");
+  lines.push("Vehicle | Company | Date | Contact | Delivery status");
+  invoices.forEach(function(inv, i){
+    lines.push("TRK-0" + ((i%8)+1) + " | " + inv.company + " | " + inv.date + " | " + inv.contact + " | " + deliveryStatus(inv.status));
+  });
+  lines.push("");
+  lines.push("REPORTS");
+  lines.push("Complete report — all sections and pages — Jul 20 - Aug 20 (this PDF)");
+  lines.push("Financial report — revenue/costs, balance, costs by category, invoice summary");
+  lines.push("Invoices report — all invoices with company, date, contact, value, status");
+  lines.push("Fleet & deliveries report — utilization, on-time rate, delivery list");
+  lines.push("Team & costs report — driver roster, salaries, costs by category");
+  lines.push("");
+  lines.push("INSIGHTS");
+  var top = invoices.slice().sort(function(a,b){ return b.value-a.value; })[0];
+  var second = invoices.slice().sort(function(a,b){ return b.value-a.value; })[1];
+  var open = invoices.filter(function(i){ return i.status!=="paid"; });
+  var openTotal = open.reduce(function(a,i){ return a+i.value; }, 0);
+  if(top){ lines.push("Top customer: " + top.company + " — highest single invoice " + money(top.value) + " (" + statusLabel(top.status) + ", " + top.date + ")" + (second ? "; next: " + second.company + " " + money(second.value) : "")); }
+  lines.push("Biggest cost: Fuel — $89.2K, 35% of $247.1K tracked costs; a 5% fuel saving is worth about $4.5K.");
+  lines.push("Paid share: $169K (51.5%) already paid; $64K unpaid (19.5%) and $95K resent (29%) still open.");
+  lines.push("Open sample invoices: " + open.length + " of " + invoices.length + " not paid yet, worth " + money(openTotal) + " combined.");
+  lines.push("Trend: deliveries 1,352, up 3.5%, with on-time rate holding at 97.9% and utilization at 95.1%.");
+  lines.push("Cash: $126K balance vs. >$100K target — about $26K of headroom.");
+  lines.push("");
+  lines.push("EMPLOYEES");
+  lines.push("Driver roster — salaries total $63,700 (Driver salaries, 25% of costs). Average: $7,963 per driver. Deliveries per driver: 169.");
+  lines.push("Driver | Role | Vehicle | Salary (period)");
+  employees.forEach(function(emp){
+    lines.push(emp.name + " | " + emp.role + " | " + emp.vehicle + " | " + money(emp.salary));
+  });
+  lines.push("Total driver salaries: $63,700");
+  lines.push("");
+  lines.push("Jindan Dashboard Preview — static share version. Demo data for Jul 20 - Aug 20.");
+
+  // Build a multi-page PDF: ~46 lines per page so nothing is cut off.
+  function esc(s){ return s.replace(/\\/g,"\\\\").replace(/\(/g,"\\(").replace(/\)/g,"\\)"); }
+  function isHead(s){ return /^[A-Z][A-Z &—-]+$/.test(s) && s.length>3 && !/^\d/.test(s); }
+  var perPage = 46, pages = [];
+  for(var p=0; p<lines.length; p+=perPage){ pages.push(lines.slice(p, p+perPage)); }
+  function pageStream(pageLines, isFirst){
+    var s = "BT 50 790 Td ";
+    pageLines.forEach(function(line, idx){
+      if(isFirst && idx===0){ s += "/F1 17 Tf (" + esc(line) + ") Tj "; }
+      else if(isHead(line)){ s += "0 -20 Td /F1 12 Tf (" + esc(line) + ") Tj "; }
+      else if(line===""){ s += "0 -9 Td "; }
+      else { s += "0 -13.5 Td /F1 9.5 Tf (" + esc(line) + ") Tj "; }
+    });
+    return s + "ET";
+  }
+  // Objects: 1=Catalog, 2=Pages, 3=Font, then per page: Page obj + Contents obj
+  var kids = [];
+  for(var k=0;k<pages.length;k++){ kids.push((4 + k*2) + " 0 R"); }
   var objects = [];
   objects[1] = "<< /Type /Catalog /Pages 2 0 R >>";
-  objects[2] = "<< /Type /Pages /Kids [3 0 R] /Count 1 >>";
-  objects[3] = "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>";
-  objects[4] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>";
-  objects[5] = "<< /Length " + stream.length + " >>\nstream\n" + stream + "\nendstream";
+  objects[2] = "<< /Type /Pages /Kids [" + kids.join(" ") + "] /Count " + pages.length + " >>";
+  objects[3] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>";
+  pages.forEach(function(pageLines, idx){
+    var stream = pageStream(pageLines, idx===0);
+    objects[4 + idx*2] = "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents " + (5 + idx*2) + " 0 R >>";
+    objects[5 + idx*2] = "<< /Length " + stream.length + " >>\nstream\n" + stream + "\nendstream";
+  });
+  var total = 3 + pages.length*2;
   var pdf = "%PDF-1.4\n";
   var offsets = [0];
-  for(var i=1;i<=5;i++){ offsets[i]=pdf.length; pdf += i + " 0 obj\n" + objects[i] + "\nendobj\n"; }
+  for(var i=1;i<=total;i++){ offsets[i]=pdf.length; pdf += i + " 0 obj\n" + objects[i] + "\nendobj\n"; }
   var xrefPos = pdf.length;
-  pdf += "xref\n0 6\n0000000000 65535 f \n";
-  for(var j=1;j<=5;j++){ pdf += String(offsets[j]).padStart(10,"0") + " 00000 n \n"; }
-  pdf += "trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n" + xrefPos + "\n%%EOF";
+  pdf += "xref\n0 " + (total+1) + "\n0000000000 65535 f \n";
+  for(var j=1;j<=total;j++){ pdf += String(offsets[j]).padStart(10,"0") + " 00000 n \n"; }
+  pdf += "trailer\n<< /Size " + (total+1) + " /Root 1 0 R >>\nstartxref\n" + xrefPos + "\n%%EOF";
   var blob = new Blob([pdf], {type:"application/pdf"});
   var url = URL.createObjectURL(blob);
   var a = document.createElement("a");
-  a.href = url; a.download = "Sypher-Report-Jul20-Aug20.pdf";
+  a.href = url; a.download = "Jindan-Complete-Report-Jul20-Aug20.pdf";
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
-  showToast("Report downloaded — Sypher-Report-Jul20-Aug20.pdf");
+  showToast("Complete report downloaded — all pages included (Dashboard, Financials, Customers, Fleet, Insights, Employees)");
 }
 document.getElementById("generateTop").addEventListener("click", generatePDF);
 document.getElementById("generateBottom").addEventListener("click", generatePDF);
+document.querySelectorAll(".js-report").forEach(function(btn){ btn.addEventListener("click", generatePDF); });
+
+// --- Top nav: SEPARATE pages, not one long scrolling page ---
+// Each menu shows ONLY its own view; every other view is hidden.
+// Clicking Dashboard shows only the Dashboard, Financials only Financials, etc.
+var pageKeys = ["dashboard","financials","customers","fleet","reports","insights","employees"];
+function showPage(key){
+  if(pageKeys.indexOf(key)===-1) key = "dashboard";
+  pageKeys.forEach(function(k){
+    var el = document.getElementById("view-" + k);
+    if(el){ el.hidden = (k !== key); }
+  });
+  document.querySelectorAll(".mainnav a").forEach(function(a){
+    a.classList.toggle("active", a.getAttribute("data-nav")===key);
+  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+document.querySelectorAll(".mainnav a").forEach(function(a){
+  a.addEventListener("click", function(e){
+    e.preventDefault();
+    showPage(a.getAttribute("data-nav"));
+  });
+});
+showPage("dashboard");
 </script>
 </body>
 </html>
