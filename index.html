@@ -1,870 +1,890 @@
 <!doctype html>
-<html lang="en">
+<html lang="id">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-<meta name="color-scheme" content="light dark"/>
+<meta name="color-scheme" content="light"/>
 <link rel="icon" href="data:,"/>
-<title>Jindan — Dashboard</title>
+<title>DapurERP — Warung Senja</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <style>
-:root{
-  --bg:#f4f1eb; --card:#ffffff; --card2:#faf8f3; --ink:#1b2420; --muted:#68736c; --faint:#9aa39c;
-  --line:#e7e0d2; --line-soft:#efe9db;
-  --side:#131f1a; --side2:#1a2b23; --side-ink:#ece7da; --side-muted:#9db0a4;
-  --brass:#b9975c; --brass-bright:#d3b578; --brass-soft:#f1e7d2;
-  --emerald:#2e7d5b; --emerald-soft:#e3efe7;
-  --clay:#b85c48; --clay-soft:#f7e8e2;
-  --goldbar:#cbb26a;
-  --shadow:0 1px 2px rgba(27,36,32,.04),0 12px 32px -18px rgba(27,36,32,.18);
-  color-scheme:light;
-}
-@media (prefers-color-scheme:dark){
-  :root{
-    --bg:#0f1512; --card:#18211c; --card2:#1c2721; --ink:#ece9df; --muted:#a7b0a6; --faint:#7d887e;
-    --line:#2b3a32; --line-soft:#243129;
-    --side:#0b120e; --side2:#121d16;
-    --brass-soft:#2c2718; --emerald-soft:#1d2f26; --clay-soft:#33221d;
-    --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px -18px rgba(0,0,0,.6);
-    color-scheme:dark;
-  }
-}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{font-family:'Manrope',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
-button,input,select{font:inherit}
-button{cursor:pointer}
-.serif{font-family:'DM Serif Display',Georgia,serif;font-weight:400}
-
-/* ---------- App frame: sidebar + main (deliberately unlike the old top-nav card) ---------- */
-.app{display:flex;min-height:100vh;align-items:stretch}
-
-/* Sidebar */
-.sidebar{width:264px;flex-shrink:0;background:linear-gradient(180deg,var(--side) 0%,var(--side2) 100%);color:var(--side-ink);display:flex;flex-direction:column;padding:28px 22px 22px;position:sticky;top:0;height:100vh}
-.brand{display:flex;align-items:center;gap:12px;padding-bottom:22px;border-bottom:1px solid rgba(236,231,218,.14)}
-.mark{width:42px;height:42px;border-radius:50%;border:1px solid var(--brass);display:grid;place-items:center;font-family:'DM Serif Display',serif;font-size:21px;color:var(--brass-bright);flex-shrink:0}
-.brand-name{font-family:'DM Serif Display',serif;font-size:24px;letter-spacing:.01em;line-height:1;color:#fff}
-.brand-sub{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--side-muted);margin-top:3px}
-.side-label{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--side-muted);margin:24px 4px 10px}
-.mainnav{display:flex;flex-direction:column;gap:2px}
-.mainnav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:#cfd8cd;font-size:14px;font-weight:600;cursor:pointer;border:1px solid transparent}
-.mainnav a .num{font-family:'DM Serif Display',serif;font-style:italic;font-size:12px;color:var(--side-muted);width:20px}
-.mainnav a:hover{background:rgba(255,255,255,.05);color:#fff}
-.mainnav a.active{background:rgba(185,151,92,.14);border-color:rgba(185,151,92,.35);color:#fff}
-.mainnav a.active .num{color:var(--brass-bright)}
-.mainnav a .dotnav{margin-left:auto;width:6px;height:6px;border-radius:50%;background:var(--brass-bright);opacity:0}
-.mainnav a.active .dotnav{opacity:1}
-.side-foot{margin-top:auto;padding-top:20px}
-.period-card{border:1px solid rgba(236,231,218,.16);border-radius:14px;padding:14px;background:rgba(255,255,255,.03)}
-.period-card label{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--side-muted);margin-bottom:6px}
-.period-card .per{font-family:'DM Serif Display',serif;font-size:16.5px;color:#fff;line-height:1.25}
-.period-card .upd{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--side-muted);margin-top:9px}
-.period-card .upd i{width:7px;height:7px;border-radius:50%;background:#5ec98a;display:inline-block}
-.side-note{font-size:11.5px;color:var(--side-muted);line-height:1.5;margin:14px 4px 0}
-
-/* Main */
-.main{flex:1;min-width:0;padding:30px 34px 40px;max-width:1180px;margin:0 auto;width:100%}
-.main-head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:24px}
-.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--brass);font-weight:800;margin:0 0 6px}
-.main-head h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:38px;line-height:1.05;margin:0;letter-spacing:.005em}
-.main-head .lede{color:var(--muted);font-size:13.5px;margin:7px 0 0;max-width:52ch;line-height:1.55}
-.head-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.pill-period{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:9px 14px;font-size:12.5px;font-weight:700;color:var(--ink)}
-.pill-period i{width:7px;height:7px;border-radius:50%;background:var(--emerald)}
-.btn-report{background:var(--side);color:#f3ecd9;border:1px solid var(--side);padding:11px 18px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.01em}
-.btn-report:hover{background:var(--brass);border-color:var(--brass);color:#fff}
-.avatar{width:38px;height:38px;border-radius:50%;background:var(--brass-soft);border:1px solid var(--brass);display:grid;place-items:center;font-family:'DM Serif Display',serif;font-size:15px;color:var(--brass)}
-
-/* Views */
-.viewpage[hidden],#view-dashboard[hidden]{display:none!important}
-.view-head{margin-bottom:18px}
-.view-head p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.6;max-width:62ch}
-
-/* Cards */
-.card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:22px 24px}
-.card-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:6px}
-.card-head h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:21px;margin:0}
-.card-head .hint{font-size:12px;color:var(--faint);white-space:nowrap}
-.rule{height:1px;background:var(--line-soft);margin:12px 0 16px}
-
-/* Dashboard KPI row — three editorial stat cards */
-.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
-.kpi{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:20px 22px 18px;position:relative;overflow:hidden}
-.kpi::before{content:"";position:absolute;top:0;left:22px;right:22px;height:2px;background:linear-gradient(90deg,var(--brass),transparent)}
-.kpi label{display:block;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:8px}
-.kpi .big{font-family:'DM Serif Display',serif;font-size:40px;line-height:1;display:flex;align-items:baseline;gap:9px}
-.kpi .big small{font-family:'Manrope',sans-serif;font-size:12px;font-weight:800;color:var(--emerald)}
-.kpi .cap{font-size:12.5px;color:var(--muted);margin-top:7px;line-height:1.5}
-.bars-mini{display:flex;align-items:flex-end;gap:3px;height:30px;margin-top:14px}
-.bars-mini i{display:block;border-radius:2px 2px 0 0;background:var(--emerald);flex:1;opacity:.85}
-.bars-mini i.y{background:var(--brass)} .bars-mini i.l{background:#8fbc9f}
-.gradient-bar{height:8px;border-radius:999px;background:linear-gradient(90deg,#d98a68,var(--goldbar),#8fbc9f,var(--emerald));margin-top:24px;position:relative}
-.gradient-bar::after{content:"";position:absolute;right:16%;top:-4px;width:2px;height:16px;background:var(--ink)}
-.spark{margin-top:12px;width:100%;height:38px}
-
-/* Revenue */
-.legend{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:12px}
-.legend span{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600}
-.legend i{width:16px;height:3px;border-radius:2px;display:inline-block}
-.legend .vs{margin-left:auto;color:var(--faint);font-size:12px;display:flex;align-items:center;gap:7px;font-weight:600}
-.switch{width:30px;height:17px;background:var(--line);border-radius:999px;position:relative;display:inline-block;flex-shrink:0}
-.switch::after{content:"";position:absolute;width:13px;height:13px;background:var(--card);border-radius:50%;top:2px;left:2px;box-shadow:0 1px 3px rgba(0,0,0,.25)}
-
-/* Balance + costs row */
-.two-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
-.balance-bars{display:flex;align-items:flex-end;gap:3px;height:86px;margin-top:14px;border-bottom:1px dashed var(--line);padding-bottom:2px}
-.balance-bars i{flex:1;border-radius:3px 3px 0 0;background:var(--emerald);min-height:8px}
-.balance-bars i.p{background:var(--clay)}
-.target{font-size:11.5px;color:var(--faint)} .target b{color:var(--muted)}
-.cost-seg{display:flex;height:9px;border-radius:999px;overflow:hidden;gap:2px;margin:8px 0 16px}
-.cost-seg i{display:block;height:100%}
-.cost-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
-.cost-list li{display:grid;grid-template-columns:9px 1fr auto 38px;align-items:center;gap:10px;font-size:13px;padding:7px 0;border-bottom:1px solid var(--line-soft)}
-.cost-list li:last-child{border-bottom:0}
-.cost-list li b{font-weight:700} .cost-list li em{font-style:normal;text-align:right;color:var(--muted);font-weight:700}
-.dot{width:8px;height:8px;border-radius:50%}
-
-/* Invoices */
-.inv-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.inv-box{padding:14px 16px;background:var(--card2);border:1px solid var(--line-soft);border-radius:14px}
-.inv-box label{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:800}
-.inv-box .amt{font-family:'DM Serif Display',serif;font-size:27px;margin-top:5px}
-.inv-box .pct{font-size:12px;color:var(--muted);margin-top:2px}
-.inv-progress{display:flex;height:7px;border-radius:999px;overflow:hidden;margin-top:14px;background:var(--line-soft)}
-.inv-progress i{display:block}
-.filters{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:18px 0 8px}
-.filter-btn{border:1px solid transparent;background:transparent;padding:8px 13px;border-radius:999px;font-size:13px;font-weight:600;color:var(--muted);min-height:38px}
-.filter-btn:hover{color:var(--ink)}
-.filter-btn.active{background:var(--side);color:#f3ecd9;font-weight:700}
-.searchbox{margin-left:auto;display:flex;align-items:center;gap:7px;background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:0 13px;min-height:38px;flex:1;max-width:230px}
-.searchbox input{border:0;outline:0;background:transparent;width:100%;font-size:13px;min-height:36px;color:var(--ink)}
-.searchbox span{color:var(--faint);font-size:12px;white-space:nowrap}
-.btn-add{background:var(--brass);color:#fff;border:0;border-radius:999px;padding:9px 15px;font-size:12.5px;font-weight:800;white-space:nowrap;min-height:38px}
-.btn-add:hover{background:var(--side)}
-.table-head,.tr{display:grid;grid-template-columns:22px 1.62fr .68fr 1.32fr .52fr 12px;align-items:center;gap:8px;padding:10px 4px}
-.table-head{font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:800;color:var(--muted);border-bottom:1px solid var(--line)}
-.tr{border-bottom:1px solid var(--line-soft);font-size:13.5px}
-.tr:hover{background:var(--card2)}
-.tr .company{display:flex;align-items:center;gap:10px;font-weight:600;min-width:0}
-.comp-icon{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
-.comp-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.status-pill{font-size:9.5px;font-weight:800;letter-spacing:.03em;padding:3px 7px;border-radius:999px;margin-left:2px;white-space:nowrap;flex-shrink:0;text-transform:uppercase}
-.status-paid{background:var(--emerald-soft);color:var(--emerald)} .status-unpaid{background:var(--clay-soft);color:var(--clay)} .status-resent{background:var(--brass-soft);color:#8a6d35}
-@media (prefers-color-scheme:dark){.status-resent{color:var(--brass-bright)}}
-.tr .date{color:var(--muted);font-size:12.5px} .tr .contact{color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .tr .value{text-align:right;font-weight:800}
-.check{width:15px;height:15px;border:1.5px solid var(--line);border-radius:4px;display:inline-block}
-.rowdots{color:var(--faint);text-align:center}
-.table-foot{display:flex;justify-content:space-between;align-items:center;padding:12px 4px 2px;font-size:12px;color:var(--muted);flex-wrap:wrap;gap:10px}
-.empty{padding:28px 10px;text-align:center;color:var(--muted);font-size:13px;display:none}
-.btn-report.wide{width:100%;margin-top:16px;padding:13px}
-.fineprint{font-size:11.5px;color:var(--faint);line-height:1.55;margin:10px 2px 0}
-
-/* Sub pages */
-.statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
-.statcard{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:16px 18px}
-.statcard label{display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:7px}
-.statcard .big{font-family:'DM Serif Display',serif;font-size:26px}
-.statcard .sub{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.5}
-.ptable{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:6px 18px}
-.prow{display:grid;gap:10px;align-items:center;padding:12px 2px;border-bottom:1px solid var(--line-soft);font-size:13.5px}
-.prow:last-child{border-bottom:0}
-.prow.head{font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:800;color:var(--muted)}
-.prow .r{text-align:right;font-weight:800}
-.prow .muted{color:var(--muted);font-size:12.5px;overflow:hidden;text-overflow:ellipsis;line-height:1.5}
-.cols-customer{grid-template-columns:1.5fr 1.4fr .55fr .7fr .8fr}
-.cols-fleet{grid-template-columns:.6fr 1.4fr .7fr 1fr .8fr}
-.cols-report{grid-template-columns:1.5fr 1.4fr .8fr auto}
-.cols-employee{grid-template-columns:1.4fr 1fr .8fr .8fr}
-.insight-list{display:flex;flex-direction:column;gap:12px}
-.insight-item{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px 20px}
-.insight-item .n{font-family:'DM Serif Display',serif;font-style:italic;width:30px;height:30px;border-radius:50%;border:1px solid var(--brass);color:var(--brass);display:grid;place-items:center;font-size:14px;flex-shrink:0}
-.insight-item h3{margin:1px 0 4px;font-size:14.5px}
-.insight-item p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
-.btn-dark{background:var(--side);color:#f3ecd9;border:0;border-radius:999px;padding:10px 16px;font-size:12.5px;font-weight:700;white-space:nowrap}
-.btn-dark:hover{background:var(--brass);color:#fff}
+:root{--bg:#F7F7F5;--card:#fff;--line:#ECECE8;--line2:#E3E3DD;--text:#1A1D21;--muted:#6B7280;--muted2:#9AA0A6;--orange:#EA580C;--orange2:#F97316;--orange-soft:#FFF1E6;--orange-mid:#FED7AA;--green:#15803D;--green-soft:#DCFCE7;--red:#DC2626;--red-soft:#FEE2E2;--amber:#B45309;--amber-soft:#FEF3C7;--radius:18px;--shadow:0 1px 3px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.03)}
+*{box-sizing:border-box}html,body{margin:0;padding:0}body{font-family:"Plus Jakarta Sans",system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+/* SIDEBAR */
+.sidebar{width:264px;flex:0 0 264px;background:#fff;border-right:1px solid var(--line);display:flex;flex-direction:column;padding:20px 14px 16px;position:sticky;top:0;height:100vh;overflow:auto}
+.logo{display:flex;align-items:center;gap:11px;padding:2px 8px 18px}
+.logo-mark{width:42px;height:42px;border-radius:12px;background:var(--orange-soft);display:grid;place-items:center;font-size:22px}
+.logo b{font-size:21px;letter-spacing:-.02em}.logo span{display:block;font-size:11px;color:var(--muted);font-weight:600;margin-top:1px}
+.warung{display:flex;align-items:center;gap:10px;background:#FFFBF5;border:1px solid #FDEBD7;border-radius:14px;padding:11px 12px;margin-bottom:16px;text-align:left;width:100%}
+.warung .dot{width:9px;height:9px;border-radius:50%;background:#22C55E;flex:none}
+.warung b{font-size:13.5px;display:block}.warung span{font-size:12px;color:var(--muted)}
+.warung i{margin-left:auto;color:var(--muted2);font-style:normal}
+.nav{display:flex;flex-direction:column;gap:3px}
+.nav button{display:flex;align-items:center;gap:11px;border:0;background:transparent;color:#4B5563;font-weight:600;font-size:14px;padding:11px 12px;border-radius:11px;text-align:left;min-height:44px;width:100%}
+.nav button .ic{width:20px;text-align:center;font-size:16px;flex:none}
+.nav button:hover{background:#F9FAFB}
+.nav button.active{background:var(--orange-soft);color:var(--orange)}
+.nav-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);font-weight:700;padding:14px 12px 6px}
+.side-foot{margin-top:auto;padding-top:16px}
+.admin{display:flex;align-items:center;gap:11px;padding:10px 8px;border-top:1px solid var(--line)}
+.avatar{width:38px;height:38px;border-radius:50%;background:#FFEDD5;color:#9A3412;display:grid;place-items:center;font-weight:800;font-size:13px;flex:none}
+.admin b{font-size:13.5px;display:block}.admin span{font-size:12px;color:var(--muted)}
+/* MAIN */
+.main{flex:1;min-width:0;padding:22px 28px 40px;max-width:1240px;margin:0 auto;width:100%}
+.topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:6px}
+.date{font-size:13px;color:var(--muted);font-weight:600}
+.page-title{font-size:27px;font-weight:800;letter-spacing:-.03em;margin:2px 0 0}
+.top-actions{display:flex;gap:10px;align-items:center}
+.icon-btn{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;font-size:17px;position:relative}
+.icon-btn::after{content:"";position:absolute;top:9px;right:10px;width:7px;height:7px;background:var(--orange2);border-radius:50%;border:2px solid #fff}
+.page{display:none}.page.active{display:block;animation:fade .18s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.page.active{animation:none}}
+.hero-row{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:14px 0 20px}
+.hero-row h2{font-size:30px;letter-spacing:-.03em;margin:0 0 6px}
+.hero-row p{margin:0;color:var(--muted);font-size:14.5px}
+.btn{border:0;border-radius:12px;padding:12px 18px;font-weight:700;font-size:14px;min-height:44px;display:inline-flex;align-items:center;gap:8px;justify-content:center}
+.btn-orange{background:var(--orange);color:#fff;box-shadow:0 8px 18px rgba(234,88,12,.22)}
+.btn-orange:hover{background:#C2410C}
+.btn-ghost{background:#fff;border:1px solid var(--line2);color:var(--text)}
+.btn-soft{background:var(--orange-soft);color:var(--orange);padding:8px 14px;min-height:36px;font-size:13px;border-radius:999px}
+.btn-sm{padding:8px 13px;min-height:38px;font-size:13px;border-radius:10px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.kpi-top{display:flex;justify-content:space-between;align-items:flex-start}
+.kpi label{font-size:13px;color:var(--muted);font-weight:600}
+.kpi .k-ic{width:38px;height:38px;border-radius:11px;background:#FFF7ED;display:grid;place-items:center;font-size:17px}
+.kpi .val{font-size:25px;font-weight:800;letter-spacing:-.03em;margin:8px 0 5px}
+.kpi .sub{font-size:13px;font-weight:600}.up{color:var(--green)}.warn-t{color:var(--red)}.neutral{color:var(--muted)}
+.grid2{display:grid;grid-template-columns:1.65fr 1fr;gap:16px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+.card-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+.card-head h3{margin:0;font-size:16.5px;letter-spacing:-.01em}
+.card-head a,.link{color:var(--orange);font-weight:700;font-size:13.5px;text-decoration:none;cursor:pointer;background:none;border:0}
+.chart{display:flex;align-items:flex-end;gap:14px;height:210px;padding-top:10px}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:9px;height:100%;justify-content:flex-end}
+.bar{width:100%;max-width:64px;border-radius:9px 9px 4px 4px;background:#FED7AA}
+.bar.hot{background:var(--orange2)}
+.bar-wrap span{font-size:12.5px;color:var(--muted);font-weight:600}
+.bar-wrap b{font-size:11.5px;color:var(--muted)}
+.list-item{display:flex;align-items:center;gap:13px;padding:12px 0;border-bottom:1px solid #F3F4F1}
+.list-item:last-child{border-bottom:0}
+.thumb{width:42px;height:42px;border-radius:12px;background:#FFF7ED;display:grid;place-items:center;font-size:18px;flex:none}
+.list-item b{font-size:14px;display:block}.list-item span{font-size:12.5px;color:var(--muted)}
+.list-item .right{margin-left:auto;text-align:right}
+.pill{display:inline-flex;padding:4px 10px;border-radius:999px;font-size:11.5px;font-weight:700}
+.pill-green{background:var(--green-soft);color:var(--green)}.pill-amber{background:var(--amber-soft);color:var(--amber)}.pill-red{background:#FFF1F2;color:#E11D48}.pill-grey{background:#F3F4F6;color:#4B5563}
+.fin-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #F3F4F1;font-size:14px}
+.fin-row:last-child{border:0}.fin-row b.neg{color:var(--red)}.fin-row.total{font-weight:800;font-size:15px}.fin-row.total b{color:var(--green)}
+/* Tables & forms */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.toolbar input[type=search],.toolbar select{flex:1;min-width:170px}
+input,select,textarea{border:1px solid var(--line2);border-radius:11px;padding:11px 13px;background:#fff;font-size:14px;min-height:44px;width:100%;color:var(--text)}
+input:focus,select:focus,textarea:focus{outline:2px solid #FDBA74;outline-offset:1px;border-color:var(--orange2)}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:#fff}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+th{text-align:left;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:12px 14px;background:#FAFAF8;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:13px 14px;border-bottom:1px solid #F3F4F1;vertical-align:middle}
+tr:last-child td{border-bottom:0}
+.form-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.form-card h3{margin:0 0 4px;font-size:16.5px}.form-card p{margin:0 0 16px;color:var(--muted);font-size:13.5px}
+.form-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.field label{display:block;font-size:12.5px;font-weight:700;color:#374151;margin-bottom:6px}
+.form-actions{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
+.section-gap{display:grid;gap:16px}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.stack{display:flex;flex-direction:column;gap:16px}
-
-/* Modal */
-.modal-backdrop{position:fixed;inset:0;background:rgba(15,20,17,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
-.modal-backdrop.open{display:flex}
-.modal{background:var(--card);color:var(--ink);width:100%;max-width:440px;border-radius:20px;padding:24px;box-shadow:0 24px 60px rgba(0,0,0,.3);border:1px solid var(--line)}
-.modal h3{font-family:'DM Serif Display',serif;font-weight:400;margin:0 0 4px;font-size:22px} .modal p{margin:0 0 14px;color:var(--muted);font-size:13px;line-height:1.55}
-.field{margin-bottom:10px} .field label{display:block;font-size:12px;font-weight:700;margin-bottom:5px}
-.field input,.field select{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-height:42px;background:var(--card);color:var(--ink)}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
-.btn-cancel{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:9px 15px;font-weight:700}
-.btn-save{background:var(--side);color:#f3ecd9;border:0;border-radius:999px;padding:9px 17px;font-weight:700}
-.toast{position:fixed;left:50%;transform:translateX(-50%) translateY(20px);bottom:18px;background:var(--side);color:#f3ecd9;padding:11px 16px;border-radius:999px;font-size:13px;font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:60;max-width:92vw;text-align:center;border:1px solid var(--brass)}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-@media print{body{background:#fff}.sidebar,.btn-report,.btn-add,.modal-backdrop{display:none!important}.main{padding:0}}
-@media (max-width:1020px){
-  .app{flex-direction:column}
-  .sidebar{width:100%;height:auto;position:static;padding:18px 18px 14px}
-  .brand{padding-bottom:14px}
-  .side-label{display:none}
-  .mainnav{flex-direction:row;flex-wrap:wrap;overflow:visible;padding:12px 0 4px;gap:6px}
-  .mainnav a{white-space:normal;flex:1 1 22%;justify-content:center;text-align:center;padding:10px 8px;min-height:44px}
-  .mainnav a .num{display:none}
-  .mainnav a .dotnav{display:none}
-  .side-foot{display:none}
-  .main{padding:22px 18px 32px}
-  .kpi-row{grid-template-columns:1fr}
-  .statgrid{grid-template-columns:1fr 1fr}
-  .two-row,.two-col{grid-template-columns:1fr}
+.stat-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
+.empty{padding:26px;text-align:center;color:var(--muted);font-size:14px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,80px);background:#111827;color:#fff;padding:13px 18px;border-radius:12px;font-size:14px;font-weight:600;box-shadow:0 16px 32px rgba(0,0,0,.22);transition:.25s;z-index:50;max-width:92vw;text-align:center}
+.toast.show{transform:translate(-50%,0)}
+.recipe-head{display:flex;gap:13px;align-items:center;margin-bottom:10px}
+.progress{height:9px;background:#F3F4F6;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:var(--orange2);border-radius:99px}
+.note{background:#FFFBEB;border:1px solid #FDE68A;color:#92400E;border-radius:12px;padding:12px 14px;font-size:13.5px;line-height:1.55}
+.alert-err{background:#FEF2F2;border:1px solid #FECACA;color:#991B1B;border-radius:12px;padding:12px 14px;font-size:13.5px;line-height:1.6;margin-top:14px}
+.form-card{scroll-margin:20px;transition:outline-color .3s ease}
+.form-card.flash{outline:3px solid var(--orange2);outline-offset:3px}
+.modal-overlay{position:fixed;inset:0;background:rgba(17,24,39,.48);display:grid;place-items:center;z-index:70;padding:16px}
+.modal-card{background:#fff;border-radius:16px;padding:22px;max-width:420px;width:100%;box-shadow:0 24px 48px rgba(0,0,0,.25)}
+.modal-card h3{margin:0 0 8px;font-size:17px}.modal-card p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
+.btn-danger{background:var(--red);color:#fff}.btn-danger:hover{background:#B91C1C}
+.btn-del{background:#FFF1F2;color:#E11D48}
+.rr-row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;background:#FAFAF8;border:1px solid var(--line);border-radius:12px;padding:10px}
+.rr-row .field{flex:1 1 105px}.rr-row .field.grow{flex:2 1 150px}
+.footer-note{color:var(--muted2);font-size:12.5px;text-align:center;margin-top:22px}
+/* RESPONSIVE */
+.mobile-brand{display:none}
+@media(max-width:980px){.kpis{grid-template-columns:repeat(2,1fr)}.grid2,.two-col{grid-template-columns:1fr}.form-grid{grid-template-columns:repeat(2,1fr)}.stat-mini{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:820px){
+ .app{flex-direction:column}
+ .sidebar{width:100%;flex:none;height:auto;position:sticky;top:0;z-index:20;padding:12px 12px 10px;border-right:0;border-bottom:1px solid var(--line)}
+ .logo{padding:0 4px 10px}.logo span{display:none}
+ .warung{margin-bottom:10px;padding:9px 11px}
+ .nav{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+ .nav-label{display:none}
+ .nav button{flex-direction:column;gap:5px;justify-content:center;text-align:center;font-size:12px;padding:9px 4px;min-height:52px;border:1px solid var(--line);background:#FAFAF8}
+ .nav button.active{border-color:#FDBA74}
+ .side-foot{display:none}
+ .main{padding:16px 14px 34px}
+ .hero-row h2{font-size:24px}.page-title{font-size:22px}
+ .stat-mini{grid-template-columns:1fr}
 }
-@media (max-width:640px){
-  .mainnav a{flex:1 1 30%;font-size:13.5px;padding:10px 6px}
-  .main-head h1{font-size:31px}
-  .inv-summary{grid-template-columns:1fr}
-  .searchbox{max-width:none;flex-basis:100%;order:3;margin-left:0}
-  .table-head{display:none}
-  .tr{grid-template-columns:24px 1fr auto;grid-template-rows:auto auto;padding:12px 4px}
-  .tr .date{grid-column:2} .tr .contact{grid-column:2} .tr .value{grid-column:3;grid-row:1} .rowdots{display:none}
-  .prow.head{display:none}
-  .cols-customer,.cols-fleet,.cols-report,.cols-employee{grid-template-columns:1fr auto}
-  .prow .muted{grid-column:1}
-  .prow .r{grid-column:2;grid-row:1}
-  .head-actions{width:100%}
-}
+@media(max-width:520px){.kpis{grid-template-columns:1fr 1fr;gap:10px}.kpi .val{font-size:20px}.kpi{padding:14px}.form-grid{grid-template-columns:1fr}.chart{gap:8px;height:170px}}
 </style>
 </head>
 <body>
 <div class="app">
-  <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="brand">
-      <div class="mark">J</div>
-      <div><div class="brand-name">Jindan</div><div class="brand-sub">Logistics · Finance</div></div>
-    </div>
-    <div class="side-label">Menu</div>
-    <nav class="mainnav" aria-label="Main">
-      <a href="#" class="active" data-nav="dashboard"><span class="num">01</span>Dashboard<span class="dotnav"></span></a>
-      <a href="#" data-nav="financials"><span class="num">02</span>Financials<span class="dotnav"></span></a>
-      <a href="#" data-nav="customers"><span class="num">03</span>Customers<span class="dotnav"></span></a>
-      <a href="#" data-nav="fleet"><span class="num">04</span>Fleet<span class="dotnav"></span></a>
-      <a href="#" data-nav="reports"><span class="num">05</span>Reports<span class="dotnav"></span></a>
-      <a href="#" data-nav="insights"><span class="num">06</span>Insights<span class="dotnav"></span></a>
-      <a href="#" data-nav="employees"><span class="num">07</span>Employees<span class="dotnav"></span></a>
+    <div class="logo"><div class="logo-mark">🍜</div><div><b>DapurERP</b><span>Sistem Warung Senja</span></div></div>
+    <button class="warung" onclick="goPage('pengaturan')"><span class="dot"></span><span style="flex:1;text-align:left"><b>Warung Senja</b><span>Cabang utama</span></span><i>⌄</i></button>
+    <div class="nav-label">Menu Utama</div>
+    <nav class="nav" id="mainNav">
+      <button data-page="ringkasan" class="active"><span class="ic">⌂</span>Ringkasan</button>
+      <button data-page="kasir"><span class="ic">▦</span>Kasir</button>
+      <button data-page="menu"><span class="ic">◆</span>Menu &amp; bahan</button>
+      <button data-page="resep"><span class="ic">♨</span>Resep &amp; produksi</button>
+      <button data-page="pembelian"><span class="ic">↓</span>Pembelian</button>
+      <button data-page="supplier"><span class="ic">⌂</span>Supplier</button>
+      <button data-page="pelanggan"><span class="ic">△</span>Pelanggan</button>
+      <button data-page="karyawan"><span class="ic">△</span>Karyawan</button>
+      <button data-page="kas"><span class="ic">◉</span>Kas &amp; biaya</button>
+      <button data-page="laporan"><span class="ic">▤</span>Laporan</button>
+      <button data-page="pengaturan"><span class="ic">⚙</span>Pengaturan</button>
     </nav>
-    <div class="side-foot">
-      <div class="period-card">
-        <label>Reporting period</label>
-        <div class="per">Last month<br>Jul 20 – Aug 20</div>
-        <div class="upd"><i></i>Last update: 3 min ago</div>
-      </div>
-      <p class="side-note">Jindan Dashboard Preview · Static share version · No login required</p>
-    </div>
+    <div class="side-foot"><div class="admin"><div class="avatar">AS</div><div><b>Admin Senja</b><span>Pengelola warung</span></div><span style="margin-left:auto;color:#9AA0A6">⋮</span></div></div>
   </aside>
 
-  <!-- MAIN -->
-  <main class="main" id="reportArea">
-    <header class="main-head">
-      <div>
-        <p class="eyebrow" id="pageEyebrow">Overview</p>
-        <h1 id="pageTitle">Dashboard</h1>
-        <p class="lede" id="pageLede">Deliveries, revenue and invoices for Jul 20 – Aug 20, gathered in one calm view.</p>
-      </div>
-      <div class="head-actions">
-        <span class="pill-period"><i></i>Jul 20 – Aug 20</span>
-        <button class="btn-report" id="generateTop">Generate Report</button>
-        <div class="avatar" aria-label="Profile">J</div>
-      </div>
-    </header>
-
-    <!-- DASHBOARD VIEW -->
-    <div id="view-dashboard">
-      <!-- KPI row -->
-      <div class="kpi-row">
-        <div class="kpi">
-          <label>Fleet utilization</label>
-          <div class="big">95.1%</div>
-          <p class="cap">Of available vehicle capacity in use across the fleet.</p>
-          <div class="bars-mini" id="fleetBars"></div>
-        </div>
-        <div class="kpi">
-          <label>On-time delivery rate</label>
-          <div class="big">97.9%</div>
-          <p class="cap">Delivered within the promised window this period.</p>
-          <div class="gradient-bar"></div>
-        </div>
-        <div class="kpi">
-          <label>Total deliveries</label>
-          <div class="big">1,352 <small>↑ 3.5%</small></div>
-          <p class="cap">Versus the previous period, with service levels holding.</p>
-          <svg class="spark" viewBox="0 0 180 36" preserveAspectRatio="none" aria-hidden="true">
-            <defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2e7d5b" stop-opacity=".22"/><stop offset="100%" stop-color="#2e7d5b" stop-opacity="0"/></linearGradient></defs>
-            <path d="M0,26 L15,22 L30,24 L45,18 L60,20 L75,14 L90,16 L105,10 L120,12 L135,8 L150,10 L165,6 L180,7 L180,36 L0,36 Z" fill="url(#sg)"/>
-            <path d="M0,26 L15,22 L30,24 L45,18 L60,20 L75,14 L90,16 L105,10 L120,12 L135,8 L150,10 L165,6 L180,7" fill="none" stroke="#2e7d5b" stroke-width="1.8" stroke-linejoin="round"/>
-          </svg>
-        </div>
-      </div>
-
-      <!-- Revenue -->
-      <section class="card" id="section-revenue">
-        <div class="card-head"><h2>Revenue and costs</h2><span class="hint">Daily · Jul 20 – Aug 20</span></div>
-        <div class="rule"></div>
-        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--faint)"><span>Revenue, net profit, $</span><span>Costs, $</span></div>
-        <svg viewBox="0 0 520 190" style="width:100%;height:auto;display:block;margin-top:6px" role="img" aria-label="Revenue and costs chart">
-          <g font-size="10" fill="#9aa39c">
-            <text x="0" y="22">11K</text><text x="0" y="62">10K</text><text x="0" y="102">9K</text><text x="0" y="142">8K</text><text x="0" y="178">7K</text>
-            <text x="500" y="22">4K</text><text x="500" y="72">3K</text><text x="500" y="122">2K</text><text x="500" y="168">1K</text><text x="505" y="185">0</text>
-            <text x="28" y="188">20</text><text x="245" y="188">Aug</text><text x="365" y="188">10</text><text x="485" y="188">20</text>
-          </g>
-          <g stroke="#efe9db"><line x1="28" y1="20" x2="495" y2="20"/><line x1="28" y1="60" x2="495" y2="60"/><line x1="28" y1="100" x2="495" y2="100"/><line x1="28" y1="140" x2="495" y2="140"/></g>
-          <defs><linearGradient id="rg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2e7d5b" stop-opacity=".16"/><stop offset="100%" stop-color="#2e7d5b" stop-opacity="0"/></linearGradient></defs>
-          <path d="M28,78 L70,52 L110,28 L150,62 L190,48 L230,38 L270,46 L310,30 L350,42 L390,28 L430,36 L470,26 L495,30 L495,170 L28,170 Z" fill="url(#rg)"/>
-          <path d="M28,78 L70,52 L110,28 L150,62 L190,48 L230,38 L270,46 L310,30 L350,42 L390,28 L430,36 L470,26 L495,30" fill="none" stroke="#2e7d5b" stroke-width="2" stroke-linejoin="round"/>
-          <path d="M28,135 L70,128 L110,92 L150,138 L190,118 L230,132 L270,108 L310,124 L350,96 L390,70 L430,118 L470,132 L495,108" fill="none" stroke="#1b2420" stroke-width="1.8" stroke-linejoin="round"/>
-          <path d="M28,148 L70,132 L110,108 L150,142 L190,126 L230,138 L270,112 L310,140 L350,96 L390,138 L430,102 L470,128 L495,142" fill="none" stroke="#b85c48" stroke-width="1.8" stroke-linejoin="round"/>
-        </svg>
-        <div class="legend">
-          <span><i style="background:#2e7d5b"></i> Revenue</span>
-          <span><i style="background:#b85c48"></i> Costs</span>
-          <span><i style="background:#1b2420"></i> Net profit</span>
-          <span class="vs"><span class="switch"></span> Vs. previous period</span>
-        </div>
-      </section>
-
-      <!-- Balance + Costs -->
-      <div class="two-row">
-        <section class="card" id="section-balance">
-          <div class="card-head"><h2>Balance and costs</h2><span class="target">Target: <b>&gt;$100K</b></span></div>
-          <div class="rule"></div>
-          <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:800">Cash balance</div>
-          <div class="serif" style="font-size:34px;margin-top:4px">$126K</div>
-          <div class="balance-bars" id="balanceBars"></div>
-        </section>
-        <section class="card">
-          <div class="card-head"><h2>Costs by category</h2><span class="hint">Total $247.1K</span></div>
-          <div class="rule"></div>
-          <div class="cost-seg">
-            <i style="width:35%;background:#2e7d5b"></i><i style="width:25%;background:#5a9a7d"></i><i style="width:15%;background:#b9975c"></i><i style="width:10%;background:#d3b578"></i><i style="width:7%;background:#cbbfa4"></i><i style="width:5%;background:#d8d2c2"></i>
-          </div>
-          <ul class="cost-list">
-            <li><span class="dot" style="background:#2e7d5b"></span><span>Fuel</span><b>$89.2K</b><em>35%</em></li>
-            <li><span class="dot" style="background:#5a9a7d"></span><span>Driver salaries</span><b>$63.7K</b><em>25%</em></li>
-            <li><span class="dot" style="background:#b9975c"></span><span>Vehicle maintenance</span><b>$38.2K</b><em>15%</em></li>
-            <li><span class="dot" style="background:#d3b578"></span><span>Warehousing</span><b>$25.5K</b><em>10%</em></li>
-            <li><span class="dot" style="background:#cbbfa4"></span><span>Insurance</span><b>$17.8K</b><em>7%</em></li>
-            <li><span class="dot" style="background:#d8d2c2"></span><span>Tech &amp; software</span><b>$12.7K</b><em>5%</em></li>
-          </ul>
-        </section>
-      </div>
-
-      <!-- Invoices -->
-      <section class="card" id="section-invoices">
-        <div class="card-head"><h2>Invoices</h2><span class="hint">10 invoices · Jul 20 – Aug 20</span></div>
-        <div class="rule"></div>
-        <div class="inv-summary">
-          <div class="inv-box"><label>Paid</label><div class="amt">$169K</div><div class="pct">51.5% of invoiced total</div></div>
-          <div class="inv-box"><label>Resent request</label><div class="amt">$95K</div><div class="pct">29% awaiting payment</div></div>
-          <div class="inv-box"><label>Unpaid</label><div class="amt">$64K</div><div class="pct">19.5% outstanding</div></div>
-        </div>
-        <div class="inv-progress"><i style="width:51.5%;background:#2e7d5b"></i><i style="width:29%;background:#cbb26a"></i><i style="width:19.5%;background:#e7e0d2"></i></div>
-
-        <div class="filters" role="tablist" aria-label="Invoice filters">
-          <button class="filter-btn" data-filter="all">All</button>
-          <button class="filter-btn active" data-filter="unpaid">Unpaid</button>
-          <button class="filter-btn" data-filter="resent">Resent request</button>
-          <button class="filter-btn" data-filter="paid">Paid</button>
-          <div class="searchbox"><span>⌕</span><input id="searchInput" type="search" placeholder="Search company or contact" aria-label="Search invoices"/><span>⌘ F</span></div>
-          <button class="btn-add" id="openAdd">+ Add Invoice</button>
-        </div>
-        <div style="font-size:12px;color:var(--muted);margin-bottom:4px" id="resultCount"></div>
-
-        <div class="table-head"><span></span><span>Company</span><span>Issue date</span><span>Contact</span><span style="text-align:right">Value</span><span></span></div>
-        <div id="invoiceList"></div>
-        <div class="empty" id="emptyState">No invoices match your search. Try another company name or clear the filter.</div>
-
-        <div class="table-foot">
-          <span>Show by &nbsp;<b style="color:var(--ink)">10</b></span>
-          <span style="display:flex;gap:14px;align-items:center"><b style="color:var(--ink)">1</b> / 4 <span style="font-size:16px">›</span></span>
-        </div>
-
-        <button class="btn-report wide" id="generateBottom">Generate Report — Export PDF</button>
-        <p class="fineprint">Period: Last month · Jul 20 – Aug 20. Preview version — invoices you add here are only kept until you refresh the page.</p>
-      </section>
+  <main class="main">
+    <div class="topbar">
+      <div><div class="date">Rabu, 4 November 2026</div><h1 class="page-title" id="pageTitle">Ringkasan bisnis</h1></div>
+      <div class="top-actions"><button class="icon-btn" onclick="goPage('laporan')" aria-label="Notifikasi">♢</button><div class="avatar">AS</div></div>
     </div>
 
-    <!-- FINANCIALS VIEW -->
-    <div class="viewpage" id="view-financials" hidden>
-      <div class="view-head"><p>Revenue, costs and invoices for Jul 20 – Aug 20 — the same figures as the Dashboard.</p></div>
-      <div class="statgrid">
-        <div class="statcard"><label>Cash balance</label><div class="big">$126K</div><div class="sub">Target: &gt;$100K</div></div>
-        <div class="statcard"><label>Invoices paid</label><div class="big">$169K</div><div class="sub">51.5% of invoiced total</div></div>
-        <div class="statcard"><label>Resent request</label><div class="big">$95K</div><div class="sub">29% awaiting payment</div></div>
-        <div class="statcard"><label>Unpaid</label><div class="big">$64K</div><div class="sub">19.5% outstanding</div></div>
+    <!-- RINGKASAN -->
+    <section class="page active" id="page-ringkasan">
+      <div class="hero-row"><div><h2>Selamat pagi, Admin 👋</h2><p>Pantau penjualan, operasional, dan kesehatan bisnis Warung Senja.</p></div><button class="btn btn-orange" id="btnTxBaruRingkasan" onclick="baruTransaksi()">+ Transaksi baru</button></div>
+      <div class="note" style="margin-bottom:16px"><b>Mode mulai dari nol:</b> semua angka masih kosong (Rp 0) dan belum ada data tersimpan. Tambah bahan dulu lewat <b>Menu &amp; bahan</b> atau <b>Pembelian</b>, lalu buat transaksi di <b>Kasir</b> — penjualan, laba, nilai persediaan, dan stok akan berubah otomatis mengikuti input.</div>
+      <div class="kpis">
+        <div class="kpi"><div class="kpi-top"><label>Penjualan hari ini</label><span class="k-ic">♧</span></div><div class="val" id="kpiPenjualan">Rp 0</div><div class="sub neutral" id="kpiPenjualanSub">Belum ada transaksi</div></div>
+        <div class="kpi"><div class="kpi-top"><label>Laba kotor</label><span class="k-ic">◐</span></div><div class="val" id="kpiLabaKotor">Rp 0</div><div class="sub neutral" id="kpiLabaSub">Belum ada penjualan</div></div>
+        <div class="kpi"><div class="kpi-top"><label>Nilai persediaan</label><span class="k-ic">◆</span></div><div class="val" id="kpiPersediaan">Rp 0</div><div class="sub neutral" id="kpiBahanAktif">0 bahan aktif</div></div>
+        <div class="kpi"><div class="kpi-top"><label>Stok perlu dibeli</label><span class="k-ic">!</span></div><div class="val" id="kpiStokKurang">0 item</div><div class="sub neutral" id="kpiStokSub">Semua stok aman</div></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="card-head"><h3>Penjualan minggu ini</h3><span style="color:var(--muted);font-size:13px;font-weight:600">4–10 Nov 2026 ⌄</span></div>
+          <div class="chart">
+            <div class="bar-wrap"><div class="bar" style="height:4%"></div><span>Sen</span></div>
+            <div class="bar-wrap"><div class="bar" style="height:4%"></div><span>Sel</span></div>
+            <div class="bar-wrap"><div class="bar" style="height:4%"></div><span>Rab</span></div>
+            <div class="bar-wrap"><div class="bar" style="height:4%"></div><span>Kam</span></div>
+            <div class="bar-wrap"><div class="bar" style="height:4%"></div><span>Jum</span></div>
+            <div class="bar-wrap"><div class="bar" style="height:4%"></div><span>Sab</span></div>
+            <div class="bar-wrap"><div class="bar" style="height:4%"></div><span>Min</span></div>
+          </div><p style="margin:12px 0 0;color:var(--muted);font-size:13px">Belum ada penjualan tercatat minggu ini. Total penjualan yang diinput lewat Kasir tampil di kartu Penjualan hari ini di atas.</p>
+        </div>
+        <div class="card"><div class="card-head"><h3>Bahan perlu dibeli</h3><button class="link" onclick="goPage('menu')">Kelola stok</button></div><div id="lowStockList"></div></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><div class="card-head"><h3>Transaksi terbaru</h3><button class="link" onclick="goPage('kasir')">Lihat semua</button></div><div id="recentTx"></div></div>
+        <div class="card"><div class="card-head"><h3>Kesehatan keuangan</h3><button class="link" onclick="goPage('laporan')">Buka laporan</button></div>
+          <div class="fin-row"><span>Pendapatan bulan ini</span><b data-fin="pendapatan">Rp 0</b></div>
+          <div class="fin-row"><span>HPP bahan baku</span><b class="neg" data-fin="hpp">− Rp 0</b></div>
+          <div class="fin-row"><span>Biaya operasional</span><b class="neg" data-fin="ops">− Rp 0</b></div>
+          <div class="fin-row total"><span>Laba bersih</span><b data-fin="laba">Rp 0</b></div>
+          <p style="color:var(--muted);font-size:13px;margin:12px 0 0">Angka di atas dihitung otomatis dari transaksi, pembelian, dan catatan kas yang diinput. Rinciannya ada di halaman Kas &amp; biaya dan Laporan.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- KASIR -->
+    <section class="page" id="page-kasir">
+      <div class="hero-row"><div><h2>Kasir</h2><p>Buat transaksi baru dan pantau semua penjualan hari ini.</p></div><button class="btn btn-orange" id="btnTxBaruKasir" onclick="baruTransaksi()">+ Transaksi baru</button></div>
+      <div class="stat-mini">
+        <div class="kpi"><label>Penjualan hari ini</label><div class="val" data-stat="penjualan">Rp 0</div><div class="sub neutral" data-stat="penjualanSub">Belum ada transaksi</div></div>
+        <div class="kpi"><label>Transaksi tercatat</label><div class="val" id="statTxCount">0 transaksi</div><div class="sub neutral">Dari formulir di bawah</div></div>
+        <div class="kpi"><label>Menu paling laku</label><div class="val" style="font-size:21px" id="statMenuLaku">—</div><div class="sub neutral" id="statMenuLakuSub">Belum ada penjualan</div></div>
+      </div>
+      <div class="form-card" id="formTxCard"><h3>Buat transaksi baru</h3><p>Isi data di bawah, lalu simpan. Stok bahan otomatis berkurang sesuai resep menu yang dipilih, dan angka di Ringkasan ikut berubah.</p>
+        <form id="formTx"><div class="form-grid">
+          <div class="field"><label for="txPelanggan">Nama pelanggan / meja</label><input id="txPelanggan" required placeholder="Contoh: Budi Santoso"></div>
+          <div class="field"><label for="txMenu">Menu</label><select id="txMenu"></select></div>
+          <div class="field"><label for="txQty">Jumlah</label><input id="txQty" type="number" min="1" value="1" required></div>
+          <div class="field"><label for="txStatus">Status</label><select id="txStatus"><option>Selesai</option><option>Diproses</option></select></div>
+        </div><div class="form-actions"><button class="btn btn-orange" type="submit">Simpan transaksi</button><span style="align-self:center;color:var(--muted);font-size:13px" id="txPreview"></span></div></form>
+        <div class="alert-err" id="txAlert" style="display:none"></div>
+      </div>
+      <div class="card"><div class="card-head"><h3>Daftar transaksi</h3></div>
+        <div class="toolbar"><input type="search" id="searchTx" placeholder="Cari pelanggan, nomor, atau menu…"><select id="filterTx" style="flex:0 1 190px"><option value="">Semua status</option><option>Selesai</option><option>Diproses</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>Nomor</th><th>Pelanggan</th><th>Menu</th><th>Jam</th><th>Total</th><th>Status</th></tr></thead><tbody id="tbodyTx"></tbody></table></div>
+      </div>
+    </section>
+
+    <!-- MENU & BAHAN -->
+    <section class="page" id="page-menu">
+      <div class="hero-row"><div><h2>Menu &amp; bahan</h2><p>Daftar menu yang dijual beserta harga, dan stok bahan di dapur.</p></div></div>
+      <div class="form-card" id="formMenuCard"><h3 id="formMenuTitle">Tambah menu baru</h3><p>Menu yang disimpan langsung muncul di daftar menu di bawah dan bisa dipilih di Kasir.</p>
+        <form id="formMenu"><div class="form-grid">
+          <div class="field"><label>Nama menu</label><input id="mNama" required placeholder="Contoh: Ayam Geprek"></div>
+          <div class="field"><label>Kategori</label><select id="mKategori"><option>Makanan</option><option>Minuman</option></select></div>
+          <div class="field"><label>Harga jual (Rp)</label><input id="mHarga" type="number" min="0" step="any" value="15000" required></div>
+        </div><div class="form-actions"><button class="btn btn-orange" type="submit" id="btnSimpanMenu">Simpan menu</button><button class="btn btn-ghost" type="button" id="btnBatalMenu" style="display:none">Batal edit</button></div></form>
+      </div>
+      <div class="card" style="margin-bottom:16px"><div class="card-head"><h3>Daftar menu</h3></div>
+        <div class="toolbar"><input type="search" id="searchMenu" placeholder="Cari menu…"><select id="filterMenu" style="flex:0 1 190px"><option value="">Semua kategori</option><option>Makanan</option><option>Minuman</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>Menu</th><th>Kategori</th><th>Harga jual</th><th>Terjual bulan ini</th><th>Ket.</th><th>Aksi</th></tr></thead><tbody id="tbodyMenu"></tbody></table></div>
+      </div>
+      <div class="form-card"><h3>Tambah bahan baru</h3><p>Bahan yang ditambah langsung muncul di daftar stok di bawah dan ikut dihitung di Ringkasan. Pakai nama yang sama persis dengan bahan di halaman Resep &amp; produksi (misal “Kopi bubuk”, “Susu segar”, “Telur ayam”) supaya stoknya berkurang otomatis saat ada penjualan.</p>
+        <form id="formBahan"><div class="form-grid">
+          <div class="field"><label>Nama bahan</label><input id="bNama" required placeholder="Contoh: Kopi bubuk" list="bahanSaran"><datalist id="bahanSaran"><option value="Beras"></option><option value="Telur ayam"></option><option value="Ayam fillet"></option><option value="Mie telur"></option><option value="Kopi bubuk"></option><option value="Susu segar"></option><option value="Gula aren"></option><option value="Gula pasir"></option><option value="Teh celup"></option></datalist></div>
+          <div class="field"><label>Stok saat ini</label><input id="bSisa" type="number" min="0" step="any" value="10" required></div>
+          <div class="field"><label>Satuan</label><select id="bSatuan"><option>kg</option><option>butir</option><option>liter</option><option>bungkus</option><option>ikat</option></select></div>
+          <div class="field"><label>Stok minimum</label><input id="bMin" type="number" min="0" step="any" value="5" required></div>
+        </div><div class="form-actions"><button class="btn btn-orange" type="submit">Simpan bahan</button></div></form>
+      </div>
+      <div class="card"><div class="card-head"><h3>Stok bahan</h3><span style="color:var(--muted);font-size:13px">Yang di bawah minimum ditandai merah</span></div>
+        <div class="toolbar"><input type="search" id="searchBahan" placeholder="Cari bahan atau supplier…"><select id="filterBahan" style="flex:0 1 200px"><option value="">Semua stok</option><option value="kurang">Perlu dibeli</option><option value="aman">Stok aman</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>Bahan</th><th>Sisa</th><th>Minimum</th><th>Harga satuan</th><th>Supplier</th><th>Status</th></tr></thead><tbody id="tbodyBahan"></tbody></table></div>
+      </div>
+    </section>
+
+    <!-- RESEP -->
+    <section class="page" id="page-resep">
+      <div class="hero-row"><div><h2>Resep &amp; produksi</h2><p>Takaran bahan untuk tiap menu, biar rasa konsisten dan stok gampang dihitung.</p></div></div>
+      <div class="form-card" id="formResepCard"><h3 id="formResepTitle">Tambah resep baru</h3><p>Pilih menu, isi waktu buat, lalu tambahkan bahan-bahannya satu per satu. Bahan berjenis “Potong stok” mengurangi stok otomatis setiap menu itu terjual di Kasir — isi jumlahnya dalam satuan stok bahan itu, atau pakai gram/ml dan sistem mengonversinya ke kg/liter.</p>
+        <form id="formResep">
+          <div class="form-grid">
+            <div class="field"><label>Menu</label><select id="rMenu"></select></div>
+            <div class="field"><label>Waktu buat</label><input id="rWaktu" placeholder="Contoh: 10 menit" value="10 menit"></div>
+          </div>
+          <div id="resepBahanRows" style="margin-top:14px;display:grid;gap:10px"></div>
+          <div class="form-actions"><button class="btn btn-ghost btn-sm" type="button" id="btnTambahBarisResep">+ Tambah bahan</button></div>
+          <div class="form-actions"><button class="btn btn-orange" type="submit" id="btnSimpanResep">Simpan resep</button><button class="btn btn-ghost" type="button" id="btnBatalResep" style="display:none">Batal edit</button></div>
+        </form>
+      </div>
+      <div class="section-gap" id="recipeList"></div>
+      <div class="note" style="margin-top:16px"><b>Cara pakai:</b> setiap transaksi yang disimpan di Kasir otomatis memotong stok bahan sesuai takaran resep ini — contohnya 1 porsi Kopi Susu memotong Kopi bubuk 15 gram, Susu segar 120 ml, dan Gula aren 20 gram. Bahan bertanda “Pelengkap” tidak dihitung stok. Kalau stok bahan resep tidak cukup, transaksi <b>tidak disimpan</b> dan muncul peringatan — tambah stok dulu lewat Pembelian atau Menu &amp; bahan. Bahan di bawah minimum otomatis muncul di “Bahan perlu dibeli” di Ringkasan.</div>
+    </section>
+
+    <!-- PEMBELIAN -->
+    <section class="page" id="page-pembelian">
+      <div class="hero-row"><div><h2>Pembelian</h2><p>Catat pembelian bahan ke supplier. Stok bahan ikut bertambah otomatis.</p></div></div>
+      <div class="stat-mini">
+        <div class="kpi"><label>Total pembelian bulan ini</label><div class="val" id="statBeliTotal">Rp 0</div><div class="sub neutral">November 2026</div></div>
+        <div class="kpi"><label>Jumlah pembelian</label><div class="val" id="statBeliCount">0 kali</div><div class="sub neutral">Dari semua supplier</div></div>
+        <div class="kpi"><label>Perlu dibeli segera</label><div class="val" id="statBeliUrgent">0 item</div><div class="sub neutral">Di bawah stok minimum</div></div>
+      </div>
+      <div class="form-card"><h3>Tambah pembelian</h3><p>Pilih bahan dan supplier, isi jumlah dan harga satuan. Total dihitung otomatis.</p>
+        <form id="formBeli"><div class="form-grid">
+          <div class="field"><label>Bahan</label><select id="beliBahan"></select></div>
+          <div class="field"><label>Supplier</label><select id="beliSupplier"></select></div>
+          <div class="field"><label>Jumlah</label><input id="beliQty" type="number" min="0" step="any" value="10" required></div>
+          <div class="field"><label>Harga satuan (Rp)</label><input id="beliHarga" type="number" min="0" value="2500" required></div>
+        </div><div class="form-actions"><button class="btn btn-orange" type="submit">Simpan pembelian</button><span style="align-self:center;color:var(--muted);font-size:13px" id="beliPreview"></span></div></form>
+      </div>
+      <div class="card"><div class="card-head"><h3>Daftar pembelian</h3></div>
+        <div class="toolbar"><input type="search" id="searchBeli" placeholder="Cari bahan, supplier, atau nomor…"><select id="filterBeli" style="flex:0 1 200px"><option value="">Semua status</option><option>Diterima</option><option>Dalam pengiriman</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>Nomor</th><th>Tanggal</th><th>Bahan</th><th>Supplier</th><th>Jumlah</th><th>Total</th><th>Status</th></tr></thead><tbody id="tbodyBeli"></tbody></table></div>
+      </div>
+    </section>
+
+    <!-- SUPPLIER -->
+    <section class="page" id="page-supplier">
+      <div class="hero-row"><div><h2>Supplier</h2><p>Daftar pemasok bahan Warung Senja beserta kontak dan total belanjanya.</p></div></div>
+      <div class="card"><div class="toolbar"><input type="search" id="searchSupplier" placeholder="Cari supplier atau kota…"></div>
+        <div class="table-wrap"><table><thead><tr><th>Supplier</th><th>Kontak</th><th>Kota</th><th>Bahan utama</th><th>Total belanja bulan ini</th></tr></thead><tbody id="tbodySupplier"></tbody></table></div>
+      </div>
+    </section>
+
+    <!-- PELANGGAN -->
+    <section class="page" id="page-pelanggan">
+      <div class="hero-row"><div><h2>Pelanggan</h2><p>Pelanggan dan meja yang paling sering belanja di Warung Senja.</p></div></div>
+      <div class="card"><div class="toolbar"><input type="search" id="searchPelanggan" placeholder="Cari pelanggan…"><select id="filterPelanggan" style="flex:0 1 200px"><option value="">Semua jenis</option><option>Pelanggan tetap</option><option>Meja</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>Nama</th><th>Jenis</th><th>Kunjungan</th><th>Menu favorit</th><th>Total belanja</th><th>Terakhir datang</th></tr></thead><tbody id="tbodyPelanggan"></tbody></table></div>
+      </div>
+    </section>
+
+    <!-- KARYAWAN -->
+    <section class="page" id="page-karyawan">
+      <div class="hero-row"><div><h2>Karyawan</h2><p>Daftar karyawan Warung Senja, jadwal sif, dan gaji bulanannya.</p></div></div>
+      <div class="stat-mini">
+        <div class="kpi"><label>Total karyawan</label><div class="val">4 orang</div><div class="sub neutral">Semua aktif</div></div>
+        <div class="kpi"><label>Total gaji per bulan</label><div class="val">Rp 7.400.000</div><div class="sub neutral">Masuk biaya operasional</div></div>
+        <div class="kpi"><label>Sif hari ini</label><div class="val" style="font-size:21px">Pagi &amp; Malam</div><div class="sub neutral">2 sif berjalan</div></div>
+      </div>
+      <div class="card"><div class="toolbar"><input type="search" id="searchKaryawan" placeholder="Cari nama atau jabatan…"><select id="filterKaryawan" style="flex:0 1 190px"><option value="">Semua sif</option><option>Pagi</option><option>Malam</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>Nama</th><th>Jabatan</th><th>Sif</th><th>Jam kerja</th><th>Gaji per bulan</th><th>Status</th></tr></thead><tbody id="tbodyKaryawan"></tbody></table></div>
+      </div>
+    </section>
+
+    <!-- KAS & BIAYA -->
+    <section class="page" id="page-kas">
+      <div class="hero-row"><div><h2>Kas &amp; biaya</h2><p>Arus uang masuk dan keluar Warung Senja bulan November 2026.</p></div></div>
+      <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
+        <div class="kpi"><label>Total pemasukan</label><div class="val" style="color:var(--green)" data-kas="masuk">Rp 0</div><div class="sub neutral">Penjualan bulan ini</div></div>
+        <div class="kpi"><label>Total pengeluaran</label><div class="val" style="color:var(--red)" data-kas="keluar">Rp 0</div><div class="sub neutral">HPP + operasional</div></div>
+        <div class="kpi"><label>Laba bersih</label><div class="val" data-kas="laba">Rp 0</div><div class="sub neutral" id="kasMarginSub">Belum ada pemasukan</div></div>
+      </div>
+      <div class="card" style="margin-bottom:16px"><div class="card-head"><h3>Rincian kesehatan keuangan</h3></div>
+        <div class="fin-row"><span>Pendapatan bulan ini</span><b data-fin="pendapatan">Rp 0</b></div>
+        <div class="fin-row"><span>HPP bahan baku</span><b class="neg" data-fin="hpp">− Rp 0</b></div>
+        <div class="fin-row"><span>Biaya operasional</span><b class="neg" data-fin="ops">− Rp 0</b></div>
+        <div class="fin-row total"><span>Laba bersih</span><b data-fin="laba">Rp 0</b></div>
+      </div>
+      <div class="card"><div class="card-head"><h3>Catatan kas</h3></div>
+        <div class="toolbar"><input type="search" id="searchKas" placeholder="Cari keterangan…"><select id="filterKas" style="flex:0 1 190px"><option value="">Semua jenis</option><option>Masuk</option><option>Keluar</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Keterangan</th><th>Kategori</th><th>Jenis</th><th>Jumlah</th></tr></thead><tbody id="tbodyKas"></tbody></table></div>
+      </div>
+    </section>
+
+    <!-- LAPORAN -->
+    <section class="page" id="page-laporan">
+      <div class="hero-row"><div><h2>Laporan</h2><p>Unduh laporan bulanan lengkap — semua bagian masuk dalam satu berkas PDF.</p></div><button class="btn btn-orange" onclick="generatePDF()">⬇ Buat Laporan PDF Bulanan</button></div>
+      <div class="note" style="margin-bottom:16px"><b>Isi laporan PDF:</b> Ringkasan bisnis, semua transaksi Kasir, Menu &amp; bahan + stok, Resep &amp; produksi, Pembelian, Supplier, Pelanggan, Karyawan, dan Kas &amp; biaya — periode November 2026, Warung Senja Cabang utama. Data yang baru ditambah lewat formulir ikut masuk.</div>
+      <div class="section-gap" id="reportList"></div>
+    </section>
+
+    <!-- PENGATURAN -->
+    <section class="page" id="page-pengaturan">
+      <div class="hero-row"><div><h2>Pengaturan</h2><p>Profil warung dan pilihan tampilan DapurERP.</p></div></div>
+      <div class="form-card"><h3>Profil warung</h3><p>Perubahan di sini langsung dipakai di seluruh halaman selama sesi ini.</p>
+        <form id="formSet"><div class="form-grid" style="grid-template-columns:repeat(2,1fr)">
+          <div class="field"><label>Nama warung</label><input id="setWarung" value="Warung Senja"></div>
+          <div class="field"><label>Cabang</label><input id="setCabang" value="Cabang utama"></div>
+          <div class="field"><label>Nama pengelola</label><input id="setAdmin" value="Admin Senja"></div>
+          <div class="field"><label>Nomor telepon</label><input id="setTelp" value="0812-3456-7890"></div>
+          <div class="field" style="grid-column:1/-1"><label>Alamat</label><input id="setAlamat" value="Jl. Senja Raya No. 12, Jakarta"></div>
+        </div><div class="form-actions"><button class="btn btn-orange" type="submit">Simpan pengaturan</button></div></form>
       </div>
       <div class="two-col">
-        <section class="card">
-          <div class="card-head"><h2>Revenue and costs</h2></div>
-          <div class="rule"></div>
-          <svg viewBox="0 0 520 190" style="width:100%;height:auto;display:block" role="img" aria-label="Revenue and costs chart">
-            <g font-size="10" fill="#9aa39c"><text x="0" y="22">11K</text><text x="0" y="62">10K</text><text x="0" y="102">9K</text><text x="0" y="142">8K</text><text x="0" y="178">7K</text><text x="28" y="188">20</text><text x="245" y="188">Aug</text><text x="365" y="188">10</text><text x="485" y="188">20</text></g>
-            <g stroke="#efe9db"><line x1="28" y1="20" x2="495" y2="20"/><line x1="28" y1="60" x2="495" y2="60"/><line x1="28" y1="100" x2="495" y2="100"/><line x1="28" y1="140" x2="495" y2="140"/></g>
-            <defs><linearGradient id="rg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2e7d5b" stop-opacity=".16"/><stop offset="100%" stop-color="#2e7d5b" stop-opacity="0"/></linearGradient></defs>
-            <path d="M28,78 L70,52 L110,28 L150,62 L190,48 L230,38 L270,46 L310,30 L350,42 L390,28 L430,36 L470,26 L495,30 L495,170 L28,170 Z" fill="url(#rg2)"/>
-            <path d="M28,78 L70,52 L110,28 L150,62 L190,48 L230,38 L270,46 L310,30 L350,42 L390,28 L430,36 L470,26 L495,30" fill="none" stroke="#2e7d5b" stroke-width="2" stroke-linejoin="round"/>
-            <path d="M28,135 L70,128 L110,92 L150,138 L190,118 L230,132 L270,108 L310,124 L350,96 L390,70 L430,118 L470,132 L495,108" fill="none" stroke="#1b2420" stroke-width="1.8" stroke-linejoin="round"/>
-            <path d="M28,148 L70,132 L110,108 L150,142 L190,126 L230,138 L270,112 L310,140 L350,96 L390,138 L430,102 L470,128 L495,142" fill="none" stroke="#b85c48" stroke-width="1.8" stroke-linejoin="round"/>
-          </svg>
-          <div class="legend"><span><i style="background:#2e7d5b"></i> Revenue</span><span><i style="background:#b85c48"></i> Costs</span><span><i style="background:#1b2420"></i> Net profit</span></div>
-        </section>
-        <section class="card">
-          <div class="card-head"><h2>Costs by category</h2></div>
-          <div class="rule"></div>
-          <div class="cost-seg"><i style="width:35%;background:#2e7d5b"></i><i style="width:25%;background:#5a9a7d"></i><i style="width:15%;background:#b9975c"></i><i style="width:10%;background:#d3b578"></i><i style="width:7%;background:#cbbfa4"></i><i style="width:5%;background:#d8d2c2"></i></div>
-          <ul class="cost-list">
-            <li><span class="dot" style="background:#2e7d5b"></span><span>Fuel</span><b>$89.2K</b><em>35%</em></li>
-            <li><span class="dot" style="background:#5a9a7d"></span><span>Driver salaries</span><b>$63.7K</b><em>25%</em></li>
-            <li><span class="dot" style="background:#b9975c"></span><span>Vehicle maintenance</span><b>$38.2K</b><em>15%</em></li>
-            <li><span class="dot" style="background:#d3b578"></span><span>Warehousing</span><b>$25.5K</b><em>10%</em></li>
-            <li><span class="dot" style="background:#cbbfa4"></span><span>Insurance</span><b>$17.8K</b><em>7%</em></li>
-            <li><span class="dot" style="background:#d8d2c2"></span><span>Tech &amp; software</span><b>$12.7K</b><em>5%</em></li>
-          </ul>
-          <p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin:14px 0 0">Total tracked costs: <b style="color:var(--ink)">$247.1K</b>. Largest category is Fuel at $89.2K (35%), followed by Driver salaries at $63.7K (25%).</p>
-        </section>
+        <div class="card"><div class="card-head"><h3>Tampilan &amp; bahasa</h3></div>
+          <div class="fin-row"><span>Bahasa tampilan</span><b>Bahasa Indonesia</b></div>
+          <div class="fin-row"><span>Mata uang</span><b>Rupiah (Rp)</b></div>
+          <div class="fin-row"><span>Format tanggal</span><b>Hari, Tanggal Bulan Tahun</b></div>
+          <div class="fin-row"><span>Periode laporan</span><b>Bulanan</b></div>
+        </div>
+        <div class="card"><div class="card-head"><h3>Tentang versi ini</h3></div>
+          <p style="color:var(--muted);font-size:14px;line-height:1.65;margin:0">Ini versi contoh (pratinjau) DapurERP untuk Warung Senja. Data yang ditambah lewat formulir tersimpan selama sesi ini dan ikut masuk ke laporan PDF. Untuk pemakaian harian, data perlu disambungkan ke penyimpanan tetap.</p>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <!-- CUSTOMERS VIEW -->
-    <div class="viewpage" id="view-customers" hidden>
-      <div class="view-head"><p>Every company from the invoice table, with contact, invoice count and total value. Adding an invoice on the Dashboard updates this list.</p></div>
-      <div class="statgrid">
-        <div class="statcard"><label>Customers</label><div class="big" id="custCount">10</div><div class="sub">Companies invoiced this period</div></div>
-        <div class="statcard"><label>Total invoiced (sample)</label><div class="big" id="custTotal">$16,540</div><div class="sub">Sum of the 10 sample invoices</div></div>
-        <div class="statcard"><label>Paid invoices</label><div class="big" id="custPaid">4</div><div class="sub">Status: Paid</div></div>
-        <div class="statcard"><label>Still outstanding</label><div class="big" id="custOpen">6</div><div class="sub">Unpaid + resent request</div></div>
-      </div>
-      <div class="ptable">
-        <div class="prow head cols-customer"><span>Company</span><span>Contact</span><span>Invoices</span><span>Status</span><span class="r">Total value</span></div>
-        <div id="customerList"></div>
-      </div>
-    </div>
-
-    <!-- FLEET VIEW -->
-    <div class="viewpage" id="view-fleet" hidden>
-      <div class="view-head"><p>Deliveries for Jul 20 – Aug 20, matched to the customer invoices on the Dashboard.</p></div>
-      <div class="statgrid">
-        <div class="statcard"><label>Fleet utilization</label><div class="big">95.1%</div><div class="sub">Of available vehicle capacity</div></div>
-        <div class="statcard"><label>On-time delivery rate</label><div class="big">97.9%</div><div class="sub">Delivered within the promised window</div></div>
-        <div class="statcard"><label>Total deliveries</label><div class="big">1,352</div><div class="sub">↑ 3.5% vs. previous period</div></div>
-        <div class="statcard"><label>Fuel cost</label><div class="big">$89.2K</div><div class="sub">35% of total costs — largest category</div></div>
-      </div>
-      <div class="card" style="padding:6px 18px">
-        <div class="prow head cols-fleet"><span>Vehicle</span><span>Company</span><span>Date</span><span>Contact</span><span class="r">Delivery status</span></div>
-        <div id="fleetList"></div>
-      </div>
-      <p style="font-size:12px;color:var(--faint);margin:10px 2px 0">Delivery status follows the invoice status: Paid → Delivered · Unpaid → In transit · Resent request → Scheduled.</p>
-    </div>
-
-    <!-- REPORTS VIEW -->
-    <div class="viewpage" id="view-reports" hidden>
-      <div class="view-head"><p>Every report below exports the same complete PDF: Dashboard, Financials, Customers, Fleet, Insights and Employees — all data included.</p></div>
-      <div class="ptable">
-        <div class="prow head cols-report"><span>Report</span><span>Covers</span><span>Period</span><span></span></div>
-        <div class="prow cols-report"><span><b>Complete report</b></span><span class="muted">Deliveries, Revenue &amp; costs, Balance, Costs by category, all 10 invoices, plus Financials, Customers, Fleet, Insights, Employees</span><span class="muted">Jul 20 – Aug 20</span><span><button class="btn-dark js-report">Generate Report</button></span></div>
-        <div class="prow cols-report"><span><b>Financial report</b></span><span class="muted">Revenue and costs, cash balance $126K, costs by category, invoice summary</span><span class="muted">Jul 20 – Aug 20</span><span><button class="btn-dark js-report">Generate Report</button></span></div>
-        <div class="prow cols-report"><span><b>Invoices report</b></span><span class="muted">All invoices with company, issue date, contact, value and status</span><span class="muted">Jul 20 – Aug 20</span><span><button class="btn-dark js-report">Generate Report</button></span></div>
-        <div class="prow cols-report"><span><b>Fleet &amp; deliveries report</b></span><span class="muted">Fleet utilization 95.1%, on-time rate 97.9%, 1,352 deliveries and the delivery list</span><span class="muted">Jul 20 – Aug 20</span><span><button class="btn-dark js-report">Generate Report</button></span></div>
-        <div class="prow cols-report"><span><b>Team &amp; costs report</b></span><span class="muted">Driver roster and salaries totalling $63.7K, plus costs by category</span><span class="muted">Jul 20 – Aug 20</span><span><button class="btn-dark js-report">Generate Report</button></span></div>
-      </div>
-      <button class="btn-dark js-report" style="width:100%;margin-top:16px;padding:13px">Generate Report — Export complete PDF</button>
-    </div>
-
-    <!-- INSIGHTS VIEW -->
-    <div class="viewpage" id="view-insights" hidden>
-      <div class="view-head"><p>Read-outs calculated from the same demo data — invoice figures update when you add an invoice on the Dashboard.</p></div>
-      <div class="insight-list">
-        <div class="insight-item"><span class="n">1</span><div><h3>Top customer: <span id="insTopCustomer">Arvox Solutions</span></h3><p id="insTopCustomerText">Highest single invoice in the sample at $2,800 (Paid, 08/16/25). BlueHorizon Ltd. is next at $2,100.</p></div></div>
-        <div class="insight-item"><span class="n">2</span><div><h3>Fuel is the biggest cost</h3><p>Fuel takes $89.2K — 35% of the $247.1K tracked costs, ahead of Driver salaries ($63.7K, 25%). A 5% fuel saving would be worth about $4.5K this period.</p></div></div>
-        <div class="insight-item"><span class="n">3</span><div><h3>Half the invoiced value is already paid</h3><p>Paid invoices total $169K (51.5%). $64K (19.5%) is still unpaid and $95K (29%) has had a payment request resent — follow-up on the resent group is the fastest way to lift the paid share.</p></div></div>
-        <div class="insight-item"><span class="n">4</span><div><h3>Open sample invoices: <span id="insOpenCount">6</span></h3><p id="insOpenText">6 of the 10 sample invoices are not paid yet (3 unpaid, 3 resent), worth $8,270 combined.</p></div></div>
-        <div class="insight-item"><span class="n">5</span><div><h3>Deliveries are trending up</h3><p>Total deliveries reached 1,352, up 3.5% on the previous period, while the on-time rate held at 97.9% and fleet utilization at 95.1% — growth without a service-level drop.</p></div></div>
-        <div class="insight-item"><span class="n">6</span><div><h3>Cash balance is above target</h3><p>Cash balance is $126K against a target of &gt;$100K, leaving about $26K of headroom above target for the period.</p></div></div>
-      </div>
-    </div>
-
-    <!-- EMPLOYEES VIEW -->
-    <div class="viewpage" id="view-employees" hidden>
-      <div class="view-head"><p>Driver roster for this period. Salaries add up to the Driver salaries line in Costs by category: $63.7K (25% of costs).</p></div>
-      <div class="statgrid">
-        <div class="statcard"><label>Drivers on roster</label><div class="big">8</div><div class="sub">Active this period</div></div>
-        <div class="statcard"><label>Total driver salaries</label><div class="big">$63.7K</div><div class="sub">25% of total costs</div></div>
-        <div class="statcard"><label>Average salary</label><div class="big">$7,963</div><div class="sub">Per driver, this period</div></div>
-        <div class="statcard"><label>Deliveries per driver</label><div class="big">169</div><div class="sub">1,352 deliveries ÷ 8 drivers</div></div>
-      </div>
-      <div class="ptable">
-        <div class="prow head cols-employee"><span>Driver</span><span>Role</span><span>Vehicle</span><span class="r">Salary (period)</span></div>
-        <div id="employeeList"></div>
-        <div class="prow cols-employee" style="font-weight:800"><span>Total</span><span></span><span></span><span class="r">$63,700</span></div>
-      </div>
-      <section class="card" style="margin-top:16px">
-        <div class="card-head"><h2>Costs by category</h2></div>
-        <div class="rule"></div>
-        <div class="cost-seg"><i style="width:35%;background:#2e7d5b"></i><i style="width:25%;background:#5a9a7d"></i><i style="width:15%;background:#b9975c"></i><i style="width:10%;background:#d3b578"></i><i style="width:7%;background:#cbbfa4"></i><i style="width:5%;background:#d8d2c2"></i></div>
-        <ul class="cost-list">
-          <li><span class="dot" style="background:#2e7d5b"></span><span>Fuel</span><b>$89.2K</b><em>35%</em></li>
-          <li><span class="dot" style="background:#5a9a7d"></span><span>Driver salaries</span><b>$63.7K</b><em>25%</em></li>
-          <li><span class="dot" style="background:#b9975c"></span><span>Vehicle maintenance</span><b>$38.2K</b><em>15%</em></li>
-          <li><span class="dot" style="background:#d3b578"></span><span>Warehousing</span><b>$25.5K</b><em>10%</em></li>
-          <li><span class="dot" style="background:#cbbfa4"></span><span>Insurance</span><b>$17.8K</b><em>7%</em></li>
-          <li><span class="dot" style="background:#d8d2c2"></span><span>Tech &amp; software</span><b>$12.7K</b><em>5%</em></li>
-        </ul>
-      </section>
-    </div>
+    <p class="footer-note">DapurERP • Warung Senja — Cabang utama • Rabu, 4 November 2026</p>
   </main>
 </div>
-
-<!-- Add Invoice Modal -->
-<div class="modal-backdrop" id="modal">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <h3 id="modalTitle">Add invoice</h3>
-    <p>Add a new invoice to try the table. It will appear instantly — and disappear after refresh in this preview.</p>
-    <form id="addForm">
-      <div class="field"><label for="fCompany">Company</label><input id="fCompany" required placeholder="e.g. BlueHorizon Ltd."/></div>
-      <div class="field"><label for="fDate">Issue date</label><input id="fDate" required value="08/17/25" placeholder="08/17/25"/></div>
-      <div class="field"><label for="fContact">Contact (email)</label><input id="fContact" type="email" required placeholder="accounts@company.com"/></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <div class="field"><label for="fValue">Value ($)</label><input id="fValue" type="number" min="1" step="1" required placeholder="2100"/></div>
-        <div class="field"><label for="fStatus">Status</label><select id="fStatus"><option value="unpaid">Unpaid</option><option value="paid">Paid</option><option value="resent">Resent request</option></select></div>
-      </div>
-      <div class="modal-actions"><button type="button" class="btn-cancel" id="closeModal">Cancel</button><button type="submit" class="btn-save">Add Invoice</button></div>
-    </form>
+<div class="modal-overlay" id="confirmModal" style="display:none">
+  <div class="modal-card">
+    <h3 id="confirmTitle">Hapus data ini?</h3>
+    <p id="confirmText"></p>
+    <div class="form-actions" style="justify-content:flex-end">
+      <button class="btn btn-ghost" type="button" id="confirmCancel">Batal</button>
+      <button class="btn btn-danger" type="button" id="confirmYes">Ya, hapus</button>
+    </div>
   </div>
 </div>
-<div class="toast" id="toast">Done</div>
+<div class="toast" id="toast"></div>
 
 <script>
-var invoices = [
-  {company:"BlueHorizon Ltd.", date:"08/17/25", contact:"accounts@bluehorizonltd.com", value:2100, status:"paid", color:"#1b2420", icon:"B"},
-  {company:"NexaCorp", date:"08/17/25", contact:"payments@nexacorp.com", value:1100, status:"unpaid", color:"#b85c48", icon:"N"},
-  {company:"StarFreight Co.", date:"08/16/25", contact:"info@starfreight.com", value:1500, status:"resent", color:"#b9975c", icon:"S"},
-  {company:"Movers", date:"08/16/25", contact:"invoices@movers.com", value:1030, status:"unpaid", color:"#68736c", icon:"M"},
-  {company:"Arvox Solutions", date:"08/16/25", contact:"payments@arvox.com", value:2800, status:"paid", color:"#2e7d5b", icon:"A"},
-  {company:"Keystone Transport", date:"08/16/25", contact:"invoices@keystonetr.com", value:1200, status:"resent", color:"#8a6d35", icon:"K"},
-  {company:"Kestrel Freight", date:"08/16/25", contact:"info@kestrelt.com", value:1400, status:"unpaid", color:"#1b2420", icon:"K"},
-  {company:"SwiftLogix", date:"08/15/25", contact:"accounts@swiftlogix.com", value:1600, status:"paid", color:"#2e7d5b", icon:"S"},
-  {company:"GlobalTrade Inc.", date:"08/15/25", contact:"accounts@globaltrade.com", value:2300, status:"paid", color:"#5a9a7d", icon:"G"},
-  {company:"PathBlaze Inc.", date:"08/15/25", contact:"invoices@pathblaze.com", value:1510, status:"resent", color:"#68736c", icon:"P"}
-];
-var currentFilter = "unpaid";
-var currentSearch = "";
-var employees = [
-  {name:"Andi Pratama", role:"Senior driver", vehicle:"TRK-01", salary:9500},
-  {name:"Budi Santoso", role:"Senior driver", vehicle:"TRK-02", salary:9200},
-  {name:"Citra Lestari", role:"Driver", vehicle:"TRK-03", salary:8800},
-  {name:"Dedi Kurniawan", role:"Driver", vehicle:"TRK-04", salary:8400},
-  {name:"Eka Wulandari", role:"Driver", vehicle:"TRK-05", salary:7900},
-  {name:"Fajar Ramadhan", role:"Driver", vehicle:"TRK-06", salary:7300},
-  {name:"Gita Maharani", role:"Junior driver", vehicle:"TRK-07", salary:6600},
-  {name:"Hendra Wijaya", role:"Junior driver", vehicle:"TRK-08", salary:6000}
-];
-var costCategories = [
-  {name:"Fuel", amount:89200, pct:35},
-  {name:"Driver salaries", amount:63700, pct:25},
-  {name:"Vehicle maintenance", amount:38200, pct:15},
-  {name:"Warehousing", amount:25500, pct:10},
-  {name:"Insurance", amount:17800, pct:7},
-  {name:"Tech & software", amount:12700, pct:5}
-];
-function deliveryStatus(status){ return status==="paid" ? "Delivered" : status==="resent" ? "Scheduled" : "In transit"; }
-function money(n){ return "$" + n.toLocaleString("en-US"); }
-function statusLabel(s){ return s==="paid" ? "Paid" : s==="resent" ? "Resent request" : "Unpaid"; }
-function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
-function renderInvoices(){
-  var list = document.getElementById("invoiceList");
-  var filtered = invoices.filter(function(inv){
-    var okFilter = currentFilter==="all" || inv.status===currentFilter;
-    var q = currentSearch.trim().toLowerCase();
-    var okSearch = !q || inv.company.toLowerCase().indexOf(q)>-1 || inv.contact.toLowerCase().indexOf(q)>-1;
-    return okFilter && okSearch;
-  });
-  list.innerHTML = "";
-  filtered.forEach(function(inv){
-    var row = document.createElement("div");
-    row.className = "tr";
-    var pillClass = inv.status==="paid" ? "status-paid" : inv.status==="resent" ? "status-resent" : "status-unpaid";
-    var pillText = inv.status==="resent" ? "Resent" : statusLabel(inv.status);
-    row.innerHTML =
-      '<span class="check" aria-hidden="true"></span>' +
-      '<span class="company"><span class="comp-icon" style="background:'+inv.color+'">'+inv.icon+'</span><span class="comp-name">'+escapeHtml(inv.company)+'</span><span class="status-pill '+pillClass+'">'+pillText+'</span></span>' +
-      '<span class="date">'+escapeHtml(inv.date)+'</span>' +
-      '<span class="contact">'+escapeHtml(inv.contact)+'</span>' +
-      '<span class="value">'+money(inv.value)+'</span>' +
-      '<span class="rowdots">⋮</span>';
-    list.appendChild(row);
-  });
-  document.getElementById("emptyState").style.display = filtered.length ? "none" : "block";
-  document.getElementById("resultCount").textContent = "Showing " + filtered.length + " of " + invoices.length + " invoices" + (currentFilter!=="all" ? " · Filter: " + statusLabel(currentFilter) : "") + (currentSearch ? " · Search: \u201C"+currentSearch+"\u201D" : "");
+var TITLES={ringkasan:'Ringkasan bisnis',kasir:'Kasir',menu:'Menu & bahan',resep:'Resep & produksi',pembelian:'Pembelian',supplier:'Supplier',pelanggan:'Pelanggan',karyawan:'Karyawan',kas:'Kas & biaya',laporan:'Laporan',pengaturan:'Pengaturan'};
+function rp(n){return 'Rp '+Number(n).toLocaleString('id-ID');}
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2600);}
+function goPage(id){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('#mainNav button').forEach(function(b){b.classList.toggle('active',b.dataset.page===id);});
+  document.getElementById('pageTitle').textContent=TITLES[id];
+  window.scrollTo({top:0,behavior:'smooth'});
 }
-function customerTotals(){
-  var map = {}, order = [];
-  invoices.forEach(function(inv){
-    if(!map[inv.company]){ map[inv.company] = {company:inv.company, contact:inv.contact, count:0, total:0, statuses:{}}; order.push(inv.company); }
-    map[inv.company].count++; map[inv.company].total += inv.value; map[inv.company].statuses[inv.status] = true;
-  });
-  return order.map(function(name){ return map[name]; });
+document.querySelectorAll('#mainNav button').forEach(function(b){b.addEventListener('click',function(){goPage(b.dataset.page);});});
+function baruTransaksi(){
+  goPage('kasir');
+  var card=document.getElementById('formTxCard');var inp=document.getElementById('txPelanggan');
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  setTimeout(function(){
+    if(card){card.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});card.classList.add('flash');setTimeout(function(){card.classList.remove('flash');},2400);}
+    if(inp){try{inp.focus({preventScroll:true});}catch(e){inp.focus();}}
+  },90);
 }
-function renderCustomers(){
-  var list = document.getElementById("customerList");
-  if(!list) return;
-  list.innerHTML = "";
-  customerTotals().forEach(function(c){
-    var sts = Object.keys(c.statuses).map(function(s){ return s==="resent" ? "Resent" : statusLabel(s); }).join(" · ");
-    var row = document.createElement("div");
-    row.className = "prow cols-customer";
-    row.innerHTML = "<span><b>"+escapeHtml(c.company)+"</b></span><span class='muted'>"+escapeHtml(c.contact)+"</span><span>"+c.count+"</span><span class='muted'>"+escapeHtml(sts)+"</span><span class='r'>"+money(c.total)+"</span>";
-    list.appendChild(row);
-  });
-  var total = invoices.reduce(function(a,i){ return a+i.value; }, 0);
-  var paid = invoices.filter(function(i){ return i.status==="paid"; }).length;
-  document.getElementById("custCount").textContent = customerTotals().length;
-  document.getElementById("custTotal").textContent = money(total);
-  document.getElementById("custPaid").textContent = paid;
-  document.getElementById("custOpen").textContent = invoices.length - paid;
+['btnTxBaruRingkasan','btnTxBaruKasir'].forEach(function(id){var b=document.getElementById(id);if(b)b.addEventListener('click',baruTransaksi);});
+var confirmCb=null;
+function askConfirm(text,cb){
+  document.getElementById('confirmText').textContent=text;confirmCb=cb;
+  document.getElementById('confirmModal').style.display='grid';
 }
-function renderFleet(){
-  var list = document.getElementById("fleetList");
-  if(!list) return;
-  list.innerHTML = "";
-  invoices.forEach(function(inv, i){
-    var row = document.createElement("div");
-    row.className = "prow cols-fleet";
-    row.innerHTML = "<span><b>TRK-0"+((i%8)+1)+"</b></span><span>"+escapeHtml(inv.company)+"</span><span class='muted'>"+escapeHtml(inv.date)+"</span><span class='muted'>"+escapeHtml(inv.contact)+"</span><span class='r'>"+deliveryStatus(inv.status)+"</span>";
-    list.appendChild(row);
-  });
+function tutupConfirm(){document.getElementById('confirmModal').style.display='none';confirmCb=null;}
+document.getElementById('confirmYes').addEventListener('click',function(){var cb=confirmCb;tutupConfirm();if(cb)cb();});
+document.getElementById('confirmCancel').addEventListener('click',tutupConfirm);
+document.getElementById('confirmModal').addEventListener('click',function(e){if(e.target===this)tutupConfirm();});
+function flashCard(cardId,focusId){
+  var card=document.getElementById(cardId);if(!card)return;
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  card.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});
+  card.classList.add('flash');setTimeout(function(){card.classList.remove('flash');},2400);
+  if(focusId){var inp=document.getElementById(focusId);if(inp)setTimeout(function(){try{inp.focus({preventScroll:true});}catch(e){inp.focus();}},350);}
 }
-function renderEmployees(){
-  var list = document.getElementById("employeeList");
-  if(!list) return;
-  list.innerHTML = "";
-  employees.forEach(function(emp){
-    var row = document.createElement("div");
-    row.className = "prow cols-employee";
-    row.innerHTML = "<span><b>"+escapeHtml(emp.name)+"</b></span><span class='muted'>"+escapeHtml(emp.role)+"</span><span class='muted'>"+escapeHtml(emp.vehicle)+"</span><span class='r'>"+money(emp.salary)+"</span>";
-    list.appendChild(row);
-  });
+function fmtN(n){return (Math.round(Number(n)*1000)/1000).toLocaleString('id-ID');}
+function findBahan(nama){var key=String(nama||'').trim().toLowerCase();return state.bahan.find(function(b){return b.nama.trim().toLowerCase()===key;});}
+function penjualanTotal(){return state.transaksi.reduce(function(a,t){return a+t.total;},0);}
+function nilaiPersediaan(){return state.bahan.reduce(function(a,b){return a+(Number(b.sisa)||0)*(Number(b.harga)||0);},0);}
+function keuangan(){var masuk=0,hpp=0,ops=0;state.kas.forEach(function(k){if(k.jenis==='Masuk')masuk+=k.jumlah;else if(k.kategori==='Bahan baku')hpp+=k.jumlah;else ops+=k.jumlah;});return {masuk:masuk,hpp:hpp,ops:ops,keluar:hpp+ops,laba:masuk-hpp-ops};}
+function kebutuhanStok(menu,qty){var r=state.resep.find(function(x){return x.menu===menu;});if(!r)return [];return r.bahan.filter(function(i){return i.nama;}).map(function(i){var b=findBahan(i.nama);var j=i.jumlah;if(b){if(i.satuan==='gram'&&b.satuan==='kg')j=j/1000;else if(i.satuan==='ml'&&b.satuan==='liter')j=j/1000;}return {ing:i,perlu:Math.round(j*qty*1000)/1000,bahan:b,satuan:b?b.satuan:i.satuan};});}
+function renderStats(){
+  var jual=penjualanTotal();var fin=keuangan();var labaKotor=fin.masuk-fin.hpp;
+  function set(sel,txt){document.querySelectorAll(sel).forEach(function(el){el.textContent=txt;});}
+  function pct(a,b){return (a/b*100).toLocaleString('id-ID',{maximumFractionDigits:1})+'%';}
+  set('#kpiPenjualan',rp(jual));set('[data-stat="penjualan"]',rp(jual));
+  var subTx=state.transaksi.length?(state.transaksi.length+' transaksi tercatat'):'Belum ada transaksi';
+  set('#kpiPenjualanSub',subTx);set('[data-stat="penjualanSub"]',subTx);
+  set('#kpiLabaKotor',rp(labaKotor));
+  set('#kpiLabaSub',fin.masuk>0?('Margin '+pct(labaKotor,fin.masuk)+' dari pendapatan'):'Belum ada penjualan');
+  set('#kpiPersediaan',rp(nilaiPersediaan()));
+  set('#kpiBahanAktif',state.bahan.length+' bahan aktif');
+  set('[data-fin="pendapatan"]',rp(fin.masuk));
+  set('[data-fin="hpp"]','− '+rp(fin.hpp));
+  set('[data-fin="ops"]','− '+rp(fin.ops));
+  set('[data-fin="laba"]',rp(fin.laba));
+  set('[data-kas="masuk"]',rp(fin.masuk));set('[data-kas="keluar"]',rp(fin.keluar));set('[data-kas="laba"]',rp(fin.laba));
+  set('#kasMarginSub',fin.masuk>0?('Margin bersih '+pct(fin.laba,fin.masuk)):'Belum ada pemasukan');
+  var best=null;state.menus.forEach(function(m){if(m.terjual>0&&(!best||m.terjual>best.terjual))best=m;});
+  set('#statMenuLaku',best?best.nama:'—');set('#statMenuLakuSub',best?(best.terjual+' porsi terjual dari transaksi yang diinput'):'Belum ada penjualan');
 }
-function renderInsights(){
-  var sorted = invoices.slice().sort(function(a,b){ return b.value-a.value; });
-  var top = sorted[0], second = sorted[1];
-  var open = invoices.filter(function(i){ return i.status!=="paid"; });
-  var openTotal = open.reduce(function(a,i){ return a+i.value; }, 0);
-  var unpaid = invoices.filter(function(i){ return i.status==="unpaid"; }).length;
-  var resent = invoices.filter(function(i){ return i.status==="resent"; }).length;
-  if(top){
-    document.getElementById("insTopCustomer").textContent = top.company;
-    document.getElementById("insTopCustomerText").textContent = "Highest single invoice in the sample at " + money(top.value) + " (" + statusLabel(top.status) + ", " + top.date + ")" + (second ? ". " + second.company + " is next at " + money(second.value) + "." : ".");
-  }
-  document.getElementById("insOpenCount").textContent = open.length;
-  document.getElementById("insOpenText").textContent = open.length + " of the " + invoices.length + " sample invoices are not paid yet (" + unpaid + " unpaid, " + resent + " resent), worth " + money(openTotal) + " combined.";
-}
-function renderSubpages(){ renderCustomers(); renderFleet(); renderEmployees(); renderInsights(); }
-document.querySelectorAll(".filter-btn").forEach(function(btn){
-  btn.addEventListener("click", function(){
-    document.querySelectorAll(".filter-btn").forEach(function(b){ b.classList.remove("active"); });
-    btn.classList.add("active");
-    currentFilter = btn.getAttribute("data-filter");
-    renderInvoices();
-  });
-});
-document.getElementById("searchInput").addEventListener("input", function(e){ currentSearch = e.target.value; renderInvoices(); });
-(function init(){
-  currentFilter = "all";
-  document.querySelectorAll(".filter-btn").forEach(function(b){ b.classList.toggle("active", b.getAttribute("data-filter")==="all"); });
-  renderInvoices();
-  renderSubpages();
-})();
-(function(){
-  var fleet = document.getElementById("fleetBars");
-  var heights = [18,22,20,24,19,23,26,14,22,25,20,24,26,22,25,21,24,26,23,25,22,26,24,25,22,26];
-  heights.forEach(function(h,i){ var el=document.createElement("i"); el.style.height=h+"px"; if(i===7) el.className="y"; if(i===3) el.className="l"; fleet.appendChild(el); });
-  var bal = document.getElementById("balanceBars");
-  var bh = [38,18,22,48,52,55,58,42,28,36,44,40,18,48,38,44,36,42,50,22,14,52,58,62];
-  bh.forEach(function(h,i){ var el=document.createElement("i"); el.style.height=h+"px"; if([0,1,2,12,20,21].indexOf(i)>-1) el.className="p"; bal.appendChild(el); });
-})();
-var modal = document.getElementById("modal");
-document.getElementById("openAdd").addEventListener("click", function(){ modal.classList.add("open"); });
-document.getElementById("closeModal").addEventListener("click", function(){ modal.classList.remove("open"); });
-modal.addEventListener("click", function(e){ if(e.target===modal) modal.classList.remove("open"); });
-document.getElementById("addForm").addEventListener("submit", function(e){
-  e.preventDefault();
-  var company = document.getElementById("fCompany").value.trim();
-  var date = document.getElementById("fDate").value.trim();
-  var contact = document.getElementById("fContact").value.trim();
-  var value = parseInt(document.getElementById("fValue").value,10) || 0;
-  var status = document.getElementById("fStatus").value;
-  if(!company || !contact || !value) return;
-  invoices.unshift({company:company, date:date||"08/17/25", contact:contact, value:value, status:status, color:"#1b2420", icon:company.charAt(0).toUpperCase()});
-  currentFilter = "all";
-  document.querySelectorAll(".filter-btn").forEach(function(b){ b.classList.toggle("active", b.getAttribute("data-filter")==="all"); });
-  document.getElementById("searchInput").value=""; currentSearch="";
-  renderInvoices();
-  renderSubpages();
-  modal.classList.remove("open");
-  showToast("Invoice added: " + company + " · " + money(value));
-  e.target.reset(); document.getElementById("fDate").value="08/17/25";
-});
-function showToast(msg){
-  var t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show");
-  setTimeout(function(){ t.classList.remove("show"); }, 2600);
-}
-function generatePDF(){
-  var lines = [];
-  lines.push("Jindan — Complete Report");
-  lines.push("Period: Last month  Jul 20 - Aug 20");
-  lines.push("Generated: " + new Date().toLocaleDateString("en-US"));
-  lines.push("Contents: Dashboard, Financials, Customers, Fleet, Reports, Insights, Employees.");
-  lines.push("");
-  lines.push("DASHBOARD — DELIVERIES");
-  lines.push("Fleet utilization: 95.1%");
-  lines.push("On-time delivery rate: 97.9%");
-  lines.push("Total deliveries: 1,352  (+3.5% vs. previous period)");
-  lines.push("");
-  lines.push("DASHBOARD — REVENUE AND COSTS");
-  lines.push("Revenue, Costs and Net profit tracked daily for Jul 20 - Aug 20 (see chart in app).");
-  lines.push("Cash balance: $126K   Target: >$100K");
-  lines.push("");
-  lines.push("DASHBOARD — INVOICES SUMMARY");
-  lines.push("Paid: $169K  (51.5%)");
-  lines.push("Resent request: $95K  (29%)");
-  lines.push("Unpaid: $64K  (19.5%)");
-  lines.push("");
-  lines.push("DASHBOARD — COSTS BY CATEGORY");
-  costCategories.forEach(function(c){ lines.push(c.name + " — " + money(c.amount) + "  " + c.pct + "%"); });
-  lines.push("Total tracked costs: $247,100");
-  lines.push("");
-  lines.push("INVOICES — ALL " + invoices.length + " INVOICES");
-  lines.push("Company | Issue date | Contact | Value | Status");
-  invoices.forEach(function(inv){ lines.push(inv.company + " | " + inv.date + " | " + inv.contact + " | " + money(inv.value) + " | " + statusLabel(inv.status)); });
-  var invTotal = invoices.reduce(function(a,i){ return a+i.value; }, 0);
-  lines.push("Sample invoices total: " + money(invTotal));
-  lines.push("");
-  lines.push("FINANCIALS");
-  lines.push("Cash balance: $126K (target >$100K)");
-  lines.push("Invoices paid: $169K (51.5%) · Resent request: $95K (29%) · Unpaid: $64K (19.5%)");
-  lines.push("Revenue, costs and net profit charted for Jul 20 - Aug 20.");
-  lines.push("Costs by category:");
-  costCategories.forEach(function(c){ lines.push("  " + c.name + " — " + money(c.amount) + "  " + c.pct + "%"); });
-  lines.push("");
-  lines.push("CUSTOMERS");
-  lines.push("Company | Contact | Invoices | Total value | Status");
-  customerTotals().forEach(function(c){
-    var sts = Object.keys(c.statuses).map(function(s){ return statusLabel(s); }).join(", ");
-    lines.push(c.company + " | " + c.contact + " | " + c.count + " | " + money(c.total) + " | " + sts);
-  });
-  lines.push("");
-  lines.push("FLEET");
-  lines.push("Fleet utilization: 95.1% · On-time delivery rate: 97.9% · Total deliveries: 1,352 (+3.5%)");
-  lines.push("Fuel cost: $89.2K (35% of total costs)");
-  lines.push("Recent deliveries (status follows invoice status):");
-  lines.push("Vehicle | Company | Date | Contact | Delivery status");
-  invoices.forEach(function(inv, i){ lines.push("TRK-0" + ((i%8)+1) + " | " + inv.company + " | " + inv.date + " | " + inv.contact + " | " + deliveryStatus(inv.status)); });
-  lines.push("");
-  lines.push("REPORTS");
-  lines.push("Complete report — all sections and pages — Jul 20 - Aug 20 (this PDF)");
-  lines.push("Financial report — revenue/costs, balance, costs by category, invoice summary");
-  lines.push("Invoices report — all invoices with company, date, contact, value, status");
-  lines.push("Fleet & deliveries report — utilization, on-time rate, delivery list");
-  lines.push("Team & costs report — driver roster, salaries, costs by category");
-  lines.push("");
-  lines.push("INSIGHTS");
-  var top = invoices.slice().sort(function(a,b){ return b.value-a.value; })[0];
-  var second = invoices.slice().sort(function(a,b){ return b.value-a.value; })[1];
-  var open = invoices.filter(function(i){ return i.status!=="paid"; });
-  var openTotal = open.reduce(function(a,i){ return a+i.value; }, 0);
-  if(top){ lines.push("Top customer: " + top.company + " — highest single invoice " + money(top.value) + " (" + statusLabel(top.status) + ", " + top.date + ")" + (second ? "; next: " + second.company + " " + money(second.value) : "")); }
-  lines.push("Biggest cost: Fuel — $89.2K, 35% of $247.1K tracked costs; a 5% fuel saving is worth about $4.5K.");
-  lines.push("Paid share: $169K (51.5%) already paid; $64K unpaid (19.5%) and $95K resent (29%) still open.");
-  lines.push("Open sample invoices: " + open.length + " of " + invoices.length + " not paid yet, worth " + money(openTotal) + " combined.");
-  lines.push("Trend: deliveries 1,352, up 3.5%, with on-time rate holding at 97.9% and utilization at 95.1%.");
-  lines.push("Cash: $126K balance vs. >$100K target — about $26K of headroom.");
-  lines.push("");
-  lines.push("EMPLOYEES");
-  lines.push("Driver roster — salaries total $63,700 (Driver salaries, 25% of costs). Average: $7,963 per driver. Deliveries per driver: 169.");
-  lines.push("Driver | Role | Vehicle | Salary (period)");
-  employees.forEach(function(emp){ lines.push(emp.name + " | " + emp.role + " | " + emp.vehicle + " | " + money(emp.salary)); });
-  lines.push("Total driver salaries: $63,700");
-  lines.push("");
-  lines.push("Jindan Dashboard Preview — static share version. Demo data for Jul 20 - Aug 20.");
-  function esc(s){ return s.replace(/\\/g,"\\\\").replace(/\(/g,"\\(").replace(/\)/g,"\\)"); }
-  function isHead(s){ return /^[A-Z][A-Z &—-]+$/.test(s) && s.length>3 && !/^\d/.test(s); }
-  var perPage = 46, pages = [];
-  for(var p=0; p<lines.length; p+=perPage){ pages.push(lines.slice(p, p+perPage)); }
-  function pageStream(pageLines, isFirst){
-    var s = "BT 50 790 Td ";
-    pageLines.forEach(function(line, idx){
-      if(isFirst && idx===0){ s += "/F1 17 Tf (" + esc(line) + ") Tj "; }
-      else if(isHead(line)){ s += "0 -20 Td /F1 12 Tf (" + esc(line) + ") Tj "; }
-      else if(line===""){ s += "0 -9 Td "; }
-      else { s += "0 -13.5 Td /F1 9.5 Tf (" + esc(line) + ") Tj "; }
-    });
-    return s + "ET";
-  }
-  var kids = [];
-  for(var k=0;k<pages.length;k++){ kids.push((4 + k*2) + " 0 R"); }
-  var objects = [];
-  objects[1] = "<< /Type /Catalog /Pages 2 0 R >>";
-  objects[2] = "<< /Type /Pages /Kids [" + kids.join(" ") + "] /Count " + pages.length + " >>";
-  objects[3] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>";
-  pages.forEach(function(pageLines, idx){
-    var stream = pageStream(pageLines, idx===0);
-    objects[4 + idx*2] = "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents " + (5 + idx*2) + " 0 R >>";
-    objects[5 + idx*2] = "<< /Length " + stream.length + " >>\nstream\n" + stream + "\nendstream";
-  });
-  var total = 3 + pages.length*2;
-  var pdf = "%PDF-1.4\n";
-  var offsets = [0];
-  for(var i=1;i<=total;i++){ offsets[i]=pdf.length; pdf += i + " 0 obj\n" + objects[i] + "\nendobj\n"; }
-  var xrefPos = pdf.length;
-  pdf += "xref\n0 " + (total+1) + "\n0000000000 65535 f \n";
-  for(var j=1;j<=total;j++){ pdf += String(offsets[j]).padStart(10,"0") + " 00000 n \n"; }
-  pdf += "trailer\n<< /Size " + (total+1) + " /Root 1 0 R >>\nstartxref\n" + xrefPos + "\n%%EOF";
-  var blob = new Blob([pdf], {type:"application/pdf"});
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement("a");
-  a.href = url; a.download = "Jindan-Complete-Report-Jul20-Aug20.pdf";
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
-  showToast("Complete report downloaded — all pages included (Dashboard, Financials, Customers, Fleet, Insights, Employees)");
-}
-document.getElementById("generateTop").addEventListener("click", generatePDF);
-document.getElementById("generateBottom").addEventListener("click", generatePDF);
-document.querySelectorAll(".js-report").forEach(function(btn){ btn.addEventListener("click", generatePDF); });
-var pageKeys = ["dashboard","financials","customers","fleet","reports","insights","employees"];
-var pageMeta = {
-  dashboard:{eyebrow:"Overview", title:"Dashboard", lede:"Deliveries, revenue and invoices for Jul 20 – Aug 20, gathered in one calm view."},
-  financials:{eyebrow:"Money", title:"Financials", lede:"Revenue, costs and invoices for Jul 20 – Aug 20 — the same figures as the Dashboard."},
-  customers:{eyebrow:"Clients", title:"Customers", lede:"Every company from the invoice table, with contact, invoice count and total value."},
-  fleet:{eyebrow:"Operations", title:"Fleet", lede:"Deliveries for Jul 20 – Aug 20, matched to the customer invoices on the Dashboard."},
-  reports:{eyebrow:"Exports", title:"Reports", lede:"Every report exports the same complete PDF — all pages and all data included."},
-  insights:{eyebrow:"Analysis", title:"Insights", lede:"Read-outs calculated from the same demo data for Jul 20 – Aug 20."},
-  employees:{eyebrow:"Team", title:"Employees", lede:"Driver roster for this period — salaries total $63.7K, 25% of tracked costs."}
+
+/* ===== DATA ===== */
+var state={
+ seqTx:1, seqBeli:1,
+ transaksi:[],
+ menus:[
+  {nama:'Nasi Goreng',kategori:'Makanan',harga:18000,terjual:0},
+  {nama:'Mie Goreng',kategori:'Makanan',harga:16000,terjual:0},
+  {nama:'Kopi Susu',kategori:'Minuman',harga:12000,terjual:0},
+  {nama:'Es Teh Manis',kategori:'Minuman',harga:6000,terjual:0}
+ ],
+ bahan:[],
+ resep:[
+  {menu:'Nasi Goreng',harga:18000,waktu:'12 menit',bahan:[
+   {nama:'Beras',jumlah:0.2,satuan:'kg',tampil:'200 gram'},
+   {nama:'Telur ayam',jumlah:1,satuan:'butir',tampil:'1 butir'},
+   {nama:'Ayam fillet',jumlah:0.05,satuan:'kg',tampil:'50 gram'},
+   {label:'Bumbu & kecap',tampil:'1 porsi'}
+  ]},
+  {menu:'Mie Goreng',harga:16000,waktu:'10 menit',bahan:[
+   {nama:'Mie telur',jumlah:0.12,satuan:'kg',tampil:'120 gram'},
+   {nama:'Telur ayam',jumlah:1,satuan:'butir',tampil:'1 butir'},
+   {label:'Sayur sawi',tampil:'30 gram'},
+   {label:'Bumbu & kecap',tampil:'1 porsi'}
+  ]},
+  {menu:'Kopi Susu',harga:12000,waktu:'5 menit',bahan:[
+   {nama:'Kopi bubuk',jumlah:0.015,satuan:'kg',tampil:'15 gram'},
+   {nama:'Susu segar',jumlah:0.12,satuan:'liter',tampil:'120 ml'},
+   {nama:'Gula aren',jumlah:0.02,satuan:'kg',tampil:'20 gram'}
+  ]},
+  {menu:'Es Teh Manis',harga:6000,waktu:'3 menit',bahan:[
+   {nama:'Teh celup',jumlah:1,satuan:'bungkus',tampil:'1 kantong'},
+   {nama:'Gula pasir',jumlah:0.025,satuan:'kg',tampil:'25 gram'},
+   {label:'Es batu',tampil:'1 gelas'}
+  ]}
+ ],
+ pembelian:[],
+ supplier:[
+  {nama:'Sumber Telur Jaya',kontak:'0813-2200-1145',kota:'Jakarta',utama:'Telur ayam',total:0},
+  {nama:'Daging Segar Abadi',kontak:'0821-7788-9032',kota:'Jakarta',utama:'Ayam fillet & daging',total:0},
+  {nama:'Beras Makmur',kontak:'0857-4412-6670',kota:'Bekasi',utama:'Beras & mie telur',total:0},
+  {nama:'Kopi Nusantara',kontak:'0819-3305-2218',kota:'Depok',utama:'Kopi bubuk',total:0},
+  {nama:'Susu Segar Lestari',kontak:'0878-9901-3345',kota:'Bogor',utama:'Susu segar',total:0}
+ ],
+ pelanggan:[],
+ karyawan:[
+  {nama:'Sari Wulandari',jabatan:'Koki utama',sif:'Pagi',jam:'07.00 – 15.00',gaji:2400000,status:'Aktif'},
+  {nama:'Andi Pratama',jabatan:'Kasir',sif:'Pagi',jam:'07.00 – 15.00',gaji:1900000,status:'Aktif'},
+  {nama:'Dewi Lestari',jabatan:'Pelayan',sif:'Malam',jam:'15.00 – 22.00',gaji:1600000,status:'Aktif'},
+  {nama:'Rudi Hartono',jabatan:'Koki & persiapan bahan',sif:'Malam',jam:'15.00 – 22.00',gaji:1500000,status:'Aktif'}
+ ],
+ kas:[]
 };
-function showPage(key){
-  if(pageKeys.indexOf(key)===-1) key = "dashboard";
-  pageKeys.forEach(function(k){
-    var el = document.getElementById("view-" + k);
-    if(el){ el.hidden = (k !== key); }
-  });
-  document.querySelectorAll(".mainnav a").forEach(function(a){ a.classList.toggle("active", a.getAttribute("data-nav")===key); });
-  var meta = pageMeta[key];
-  if(meta){
-    document.getElementById("pageEyebrow").textContent = meta.eyebrow;
-    document.getElementById("pageTitle").textContent = meta.title;
-    document.getElementById("pageLede").textContent = meta.lede;
-  }
-  window.scrollTo({ top: 0, behavior: "smooth" });
+
+/* ===== RENDER ===== */
+function pillStatus(s){if(s==='Selesai'||s==='Diterima'||s==='Aktif')return '<span class="pill pill-green">'+s+'</span>';if(s==='Diproses'||s==='Dalam pengiriman')return '<span class="pill pill-amber">'+s+'</span>';return '<span class="pill pill-grey">'+s+'</span>';}
+function lowStock(){return state.bahan.filter(function(b){return b.sisa<b.min;});}
+
+function renderLowStock(){
+  var el=document.getElementById('lowStockList');
+  var low=lowStock();
+  document.getElementById('kpiStokKurang').textContent=low.length+' item';
+  document.getElementById('statBeliUrgent').textContent=low.length+' item';
+  var sub=document.getElementById('kpiStokSub');if(sub){sub.textContent=low.length?'Perlu segera dibeli':'Semua stok aman';sub.className='sub '+(low.length?'warn-t':'neutral');}
+  if(!state.bahan.length){el.innerHTML='<div class="empty">Belum ada bahan tercatat. Tambah bahan lewat halaman Menu &amp; bahan.</div>';return;}
+  if(!low.length){el.innerHTML='<div class="empty">Semua stok aman, tidak ada yang perlu dibeli.</div>';return;}
+  el.innerHTML=low.map(function(b){return '<div class="list-item"><div class="thumb">📦</div><div><b>'+b.nama+'</b><span>Sisa '+fmtN(b.sisa)+' '+b.satuan+' · minimum '+fmtN(b.min)+'</span></div><div class="right"><button class="btn btn-soft" onclick="beliCepat(\''+b.nama+'\')">Beli</button></div></div>';}).join('');
 }
-document.querySelectorAll(".mainnav a").forEach(function(a){
-  a.addEventListener("click", function(e){ e.preventDefault(); showPage(a.getAttribute("data-nav")); });
+function beliCepat(nama){goPage('pembelian');var sel=document.getElementById('beliBahan');sel.value=nama;syncBeliHarga();toast('Formulir pembelian dibuka untuk '+nama);}
+function renderRecent(){
+  var el=document.getElementById('recentTx');
+  if(!state.transaksi.length){el.innerHTML='<div class="empty">Belum ada transaksi. Klik “+ Transaksi baru” di atas untuk membuat transaksi pertama.</div>';return;}
+  el.innerHTML=state.transaksi.slice(0,3).map(function(t){
+    return '<div class="list-item"><div class="thumb">🧾</div><div><b>#'+t.id+' · '+t.pelanggan+'</b><span>'+t.menu+' × '+t.qty+' · '+t.jam+'</span></div><div class="right"><b>'+rp(t.total)+'</b><br>'+pillStatus(t.status)+'</div></div>';
+  }).join('');
+}
+function renderTx(){
+  var q=(document.getElementById('searchTx').value||'').toLowerCase();var f=document.getElementById('filterTx').value;
+  var rows=state.transaksi.filter(function(t){return (!f||t.status===f)&&(!q||(t.id+t.pelanggan+t.menu).toLowerCase().indexOf(q)>-1);});
+  document.getElementById('tbodyTx').innerHTML=rows.length?rows.map(function(t){return '<tr><td><b>#'+t.id+'</b></td><td>'+t.pelanggan+'</td><td>'+t.menu+' × '+t.qty+'</td><td>'+t.jam+'</td><td><b>'+rp(t.total)+'</b></td><td>'+pillStatus(t.status)+'</td></tr>';}).join(''):'<tr><td colspan="6"><div class="empty">'+(state.transaksi.length?'Tidak ada transaksi yang cocok dengan pencarian.':'Belum ada transaksi. Buat lewat formulir “Buat transaksi baru” di atas.')+'</div></td></tr>';
+  document.getElementById('statTxCount').textContent=state.transaksi.length+' transaksi';
+  renderRecent();renderStats();
+}
+function renderResepMenuSelect(){
+  var sel=document.getElementById('rMenu');if(!sel)return;var cur=sel.value;
+  sel.innerHTML=state.menus.map(function(m){return '<option value="'+m.nama+'">'+m.nama+'</option>';}).join('');
+  if(cur&&state.menus.some(function(m){return m.nama===cur;}))sel.value=cur;
+}
+function renderMenu(){
+  var q=(document.getElementById('searchMenu').value||'').toLowerCase();var f=document.getElementById('filterMenu').value;
+  var rows=state.menus.filter(function(m){return (!f||m.kategori===f)&&(!q||m.nama.toLowerCase().indexOf(q)>-1);});
+  document.getElementById('tbodyMenu').innerHTML=rows.length?rows.map(function(m){var idx=state.menus.indexOf(m);return '<tr><td><b>'+m.nama+'</b></td><td>'+m.kategori+'</td><td><b>'+rp(m.harga)+'</b></td><td>'+m.terjual+' porsi</td><td><span class="pill pill-green">Tersedia</span></td><td><span style="display:inline-flex;gap:6px"><button class="btn btn-soft" onclick="editMenuIdx('+idx+')">Edit</button><button class="btn btn-soft btn-del" onclick="hapusMenuIdx('+idx+')">Hapus</button></span></td></tr>';}).join(''):'<tr><td colspan="6"><div class="empty">Menu tidak ditemukan.</div></td></tr>';
+  var sel=document.getElementById('txMenu');var cur=sel.value;
+  sel.innerHTML=state.menus.map(function(m){return '<option value="'+m.nama+'" data-harga="'+m.harga+'">'+m.nama+' — '+rp(m.harga)+'</option>';}).join('');
+  if(cur)sel.value=cur; syncTxPreview(); renderResepMenuSelect();
+}
+function renderBahan(){
+  var q=(document.getElementById('searchBahan').value||'').toLowerCase();var f=document.getElementById('filterBahan').value;
+  var rows=state.bahan.filter(function(b){var kurang=b.sisa<b.min;return (!f||(f==='kurang'?kurang:!kurang))&&(!q||(b.nama+b.supplier).toLowerCase().indexOf(q)>-1);});
+  document.getElementById('tbodyBahan').innerHTML=rows.length?rows.map(function(b){var kurang=b.sisa<b.min;return '<tr><td><b>'+b.nama+'</b></td><td>'+fmtN(b.sisa)+' '+b.satuan+'</td><td>'+fmtN(b.min)+' '+b.satuan+'</td><td>'+rp(b.harga)+'</td><td>'+b.supplier+'</td><td>'+(kurang?'<span class="pill pill-red">Perlu dibeli</span>':'<span class="pill pill-green">Aman</span>')+'</td></tr>';}).join(''):'<tr><td colspan="6"><div class="empty">'+(state.bahan.length?'Bahan tidak ditemukan.':'Belum ada bahan. Tambah lewat formulir “Tambah bahan baru” di atas.')+'</div></td></tr>';
+  var sel=document.getElementById('beliBahan');var cur=sel.value;
+  sel.innerHTML=state.bahan.map(function(b){return '<option value="'+b.nama+'">'+b.nama+'</option>';}).join('');
+  if(cur&&state.bahan.some(function(b){return b.nama===cur;}))sel.value=cur;
+  renderLowStock();renderStats();
+}
+function renderResep(){
+  document.getElementById('recipeList').innerHTML=state.resep.length?state.resep.map(function(r,idx){
+    var pct=Math.min(100,Math.round(r.harga/18000*100));
+    return '<div class="card"><div class="recipe-head"><div class="thumb">🍳</div><div><b style="font-size:16px">'+r.menu+'</b><div style="color:var(--muted);font-size:13px">Harga jual '+rp(r.harga)+' · Waktu buat ± '+r.waktu+' · 1 porsi</div></div><div style="margin-left:auto;display:flex;gap:8px;flex:none"><button class="btn btn-soft" onclick="editResepIdx('+idx+')">Edit</button><button class="btn btn-soft btn-del" onclick="hapusResepIdx('+idx+')">Hapus</button></div></div><div class="progress" style="margin-bottom:12px"><i style="width:'+pct+'%"></i></div>'+r.bahan.map(function(b){var nama=b.nama||b.label;var tag=b.nama?'<span class="pill pill-amber" style="margin-left:6px">Potong stok</span>':'<span class="pill pill-grey" style="margin-left:6px">Pelengkap</span>';return '<div class="fin-row"><span>'+nama+tag+'</span><b>'+b.tampil+'</b></div>';}).join('')+'</div>';
+  }).join(''):'<div class="empty">Belum ada resep. Tambah lewat formulir “Tambah resep baru” di atas.</div>';
+}
+function renderBeli(){
+  var q=(document.getElementById('searchBeli').value||'').toLowerCase();var f=document.getElementById('filterBeli').value;
+  var rows=state.pembelian.filter(function(p){return (!f||p.status===f)&&(!q||(p.id+p.bahan+p.supplier).toLowerCase().indexOf(q)>-1);});
+  document.getElementById('tbodyBeli').innerHTML=rows.length?rows.map(function(p){return '<tr><td><b>#'+p.id+'</b></td><td>'+p.tgl+'</td><td>'+p.bahan+'</td><td>'+p.supplier+'</td><td>'+fmtN(p.qty)+' '+p.satuan+'</td><td><b>'+rp(p.total)+'</b></td><td>'+pillStatus(p.status)+'</td></tr>';}).join(''):'<tr><td colspan="7"><div class="empty">'+(state.pembelian.length?'Pembelian tidak ditemukan.':'Belum ada pembelian. Catat lewat formulir “Tambah pembelian” di atas.')+'</div></td></tr>';
+  var tot=state.pembelian.reduce(function(a,p){return a+p.total;},0);
+  document.getElementById('statBeliTotal').textContent=rp(tot);
+  document.getElementById('statBeliCount').textContent=state.pembelian.length+' kali';
+  renderStats();
+}
+function renderSupplier(){
+  var q=(document.getElementById('searchSupplier').value||'').toLowerCase();
+  var rows=state.supplier.filter(function(s){return !q||(s.nama+s.kota+s.utama).toLowerCase().indexOf(q)>-1;});
+  document.getElementById('tbodySupplier').innerHTML=rows.length?rows.map(function(s){return '<tr><td><b>'+s.nama+'</b></td><td>'+s.kontak+'</td><td>'+s.kota+'</td><td>'+s.utama+'</td><td><b>'+rp(s.total)+'</b></td></tr>';}).join(''):'<tr><td colspan="5"><div class="empty">Supplier tidak ditemukan.</div></td></tr>';
+  var sel=document.getElementById('beliSupplier');
+  sel.innerHTML=state.supplier.map(function(s){return '<option>'+s.nama+'</option>';}).join('');
+}
+function renderPelanggan(){
+  var q=(document.getElementById('searchPelanggan').value||'').toLowerCase();var f=document.getElementById('filterPelanggan').value;
+  var rows=state.pelanggan.filter(function(p){return (!f||p.jenis===f)&&(!q||p.nama.toLowerCase().indexOf(q)>-1);});
+  document.getElementById('tbodyPelanggan').innerHTML=rows.length?rows.map(function(p){return '<tr><td><b>'+p.nama+'</b></td><td>'+p.jenis+'</td><td>'+p.kunjungan+' kali</td><td>'+p.favorit+'</td><td><b>'+rp(p.total)+'</b></td><td>'+p.terakhir+'</td></tr>';}).join(''):'<tr><td colspan="6"><div class="empty">'+(state.pelanggan.length?'Pelanggan tidak ditemukan.':'Belum ada pelanggan. Pelanggan otomatis tercatat dari transaksi di Kasir.')+'</div></td></tr>';
+}
+function renderKaryawan(){
+  var q=(document.getElementById('searchKaryawan').value||'').toLowerCase();var f=document.getElementById('filterKaryawan').value;
+  var rows=state.karyawan.filter(function(k){return (!f||k.sif===f)&&(!q||(k.nama+k.jabatan).toLowerCase().indexOf(q)>-1);});
+  document.getElementById('tbodyKaryawan').innerHTML=rows.length?rows.map(function(k){return '<tr><td><b>'+k.nama+'</b></td><td>'+k.jabatan+'</td><td>Sif '+k.sif+'</td><td>'+k.jam+'</td><td><b>'+rp(k.gaji)+'</b></td><td>'+pillStatus(k.status)+'</td></tr>';}).join(''):'<tr><td colspan="6"><div class="empty">Karyawan tidak ditemukan.</div></td></tr>';
+}
+function renderKas(){
+  var q=(document.getElementById('searchKas').value||'').toLowerCase();var f=document.getElementById('filterKas').value;
+  var rows=state.kas.filter(function(k){return (!f||k.jenis===f)&&(!q||(k.ket+k.kategori).toLowerCase().indexOf(q)>-1);});
+  document.getElementById('tbodyKas').innerHTML=rows.length?rows.map(function(k){return '<tr><td>'+k.tgl+'</td><td><b>'+k.ket+'</b></td><td>'+k.kategori+'</td><td>'+(k.jenis==='Masuk'?'<span class="pill pill-green">Masuk</span>':'<span class="pill pill-red">Keluar</span>')+'</td><td><b style="color:'+(k.jenis==='Masuk'?'var(--green)':'var(--red)')+'">'+(k.jenis==='Masuk'?'+ ':'− ')+rp(k.jumlah)+'</b></td></tr>';}).join(''):'<tr><td colspan="5"><div class="empty">'+(state.kas.length?'Catatan kas tidak ditemukan.':'Belum ada catatan kas. Penjualan dari Kasir dan pembelian bahan tercatat otomatis di sini.')+'</div></td></tr>';
+  renderStats();
+}
+function renderLaporan(){
+  var items=[
+   ['Laporan Penjualan Bulanan','Semua transaksi Kasir bulan November 2026','Kasir'],
+   ['Laporan Menu & Stok Bahan','Daftar menu, harga, dan sisa stok bahan','Menu & bahan'],
+   ['Laporan Resep & Produksi','Takaran bahan untuk semua menu','Resep & produksi'],
+   ['Laporan Pembelian & Supplier','Semua pembelian bahan dan daftar supplier','Pembelian'],
+   ['Laporan Pelanggan & Karyawan','Total belanja pelanggan dan gaji karyawan','Pelanggan'],
+   ['Laporan Kas & Biaya','Pemasukan, pengeluaran, dan laba bersih','Kas & biaya']
+  ];
+  document.getElementById('reportList').innerHTML=items.map(function(it){
+    return '<div class="card" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap"><div class="thumb">▤</div><div style="flex:1;min-width:200px"><b>'+it[0]+'</b><div style="color:var(--muted);font-size:13px">'+it[1]+' · Periode November 2026</div></div><span class="pill pill-grey">'+it[2]+'</span><button class="btn btn-ghost btn-sm" onclick="generatePDF()">⬇ Unduh PDF</button></div>';
+  }).join('');
+}
+function renderAll(){renderMenu();renderBahan();renderTx();renderResep();renderSupplier();renderBeli();renderPelanggan();renderKaryawan();renderKas();renderLaporan();renderStats();}
+
+/* ===== FORMULIR ===== */
+function menuHarga(nama){var m=state.menus.find(function(x){return x.nama===nama;});return m?m.harga:0;}
+function syncTxPreview(){
+  var q=Number(document.getElementById('txQty').value||0);var menu=document.getElementById('txMenu').value;var h=menuHarga(menu);
+  var txt='';
+  if(q>0){
+    txt='Total: '+rp(q*h);
+    var needs=kebutuhanStok(menu,q);
+    if(needs.length)txt+=' · Memotong stok: '+needs.map(function(n){return n.ing.nama+' −'+fmtN(n.perlu)+' '+n.satuan;}).join(', ');
+  }
+  document.getElementById('txPreview').textContent=txt;
+  var ab=document.getElementById('txAlert');if(ab)ab.style.display='none';
+}
+document.getElementById('txQty').addEventListener('input',syncTxPreview);
+document.getElementById('txMenu').addEventListener('change',syncTxPreview);
+document.getElementById('formTx').addEventListener('submit',function(e){
+  e.preventDefault();
+  var nama=document.getElementById('txPelanggan').value.trim();if(!nama)return;
+  var menu=document.getElementById('txMenu').value;var qty=Math.max(1,Number(document.getElementById('txQty').value||1));
+  var alertBox=document.getElementById('txAlert');
+  var needs=kebutuhanStok(menu,qty);
+  var kurang=needs.filter(function(n){return !n.bahan||n.bahan.sisa<n.perlu-0.0000001;});
+  if(kurang.length){
+    var daftar=kurang.map(function(n){return '<b>'+n.ing.nama+'</b> — perlu '+fmtN(n.perlu)+' '+n.satuan+', '+(n.bahan?('sisa stok '+fmtN(n.bahan.sisa)+' '+n.bahan.satuan):'belum ada di daftar stok');}).join('<br>');
+    alertBox.innerHTML='<b>⚠ Transaksi belum disimpan — stok bahan tidak cukup:</b><br>'+daftar+'<br>Tambah stok dulu lewat <b>Pembelian</b> atau <b>Menu &amp; bahan</b>, lalu klik Simpan transaksi lagi.';
+    alertBox.style.display='block';
+    alertBox.scrollIntoView({behavior:'smooth',block:'center'});
+    toast('Stok tidak cukup — transaksi belum disimpan.');
+    return;
+  }
+  alertBox.style.display='none';
+  needs.forEach(function(n){n.bahan.sisa=Math.round((n.bahan.sisa-n.perlu)*1000)/1000;});
+  var now=new Date();var jam=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  var t={id:'INV-'+String(state.seqTx++).padStart(4,'0'),pelanggan:nama,menu:menu,qty:qty,jam:jam,total:qty*menuHarga(menu),status:document.getElementById('txStatus').value};
+  state.transaksi.unshift(t);
+  state.kas.unshift({tgl:'4 Nov 2026',ket:'Penjualan #'+t.id+' — '+menu+' × '+qty,kategori:'Penjualan',jenis:'Masuk',jumlah:t.total});
+  var p=state.pelanggan.find(function(x){return x.nama.toLowerCase()===nama.toLowerCase();});
+  if(p){p.kunjungan++;p.total+=t.total;p.terakhir='Hari ini, '+jam;p.favorit=menu;}else{state.pelanggan.unshift({nama:nama,jenis:/meja/i.test(nama)?'Meja':'Pelanggan tetap',kunjungan:1,favorit:menu,total:t.total,terakhir:'Hari ini, '+jam});}
+  var mn=state.menus.find(function(x){return x.nama===menu;});if(mn)mn.terjual+=qty;
+  renderTx();renderPelanggan();renderMenu();renderBahan();renderKas();e.target.reset();document.getElementById('txQty').value=1;syncTxPreview();
+  var potong=needs.length?(' Stok berkurang: '+needs.map(function(n){return n.ing.nama+' −'+fmtN(n.perlu)+' '+n.satuan;}).join(', ')+'.'):'';
+  toast('Transaksi #'+t.id+' tersimpan — '+rp(t.total)+'.'+potong);
 });
-showPage("dashboard");
+document.getElementById('formBahan').addEventListener('submit',function(e){
+  e.preventDefault();
+  var namaB=document.getElementById('bNama').value.trim();if(!namaB)return;
+  var sisaB=Number(document.getElementById('bSisa').value||0);var minB=Number(document.getElementById('bMin').value||0);var satB=document.getElementById('bSatuan').value;
+  var ada=findBahan(namaB);
+  if(ada){ada.sisa=Math.round((ada.sisa+sisaB)*1000)/1000;ada.min=minB;ada.satuan=satB;renderBahan();e.target.reset();toast('Stok “'+ada.nama+'” ditambah — sisa sekarang '+fmtN(ada.sisa)+' '+ada.satuan+'.');return;}
+  state.bahan.push({nama:namaB,sisa:sisaB,satuan:satB,min:minB,harga:0,supplier:'—'});
+  renderBahan(); e.target.reset();
+  toast('Bahan “'+namaB+'” ditambahkan ke stok.');
+});
+function syncBeliHarga(){
+  var nama=document.getElementById('beliBahan').value;var b=state.bahan.find(function(x){return x.nama===nama;});
+  if(b){document.getElementById('beliHarga').value=b.harga||0;var sel=document.getElementById('beliSupplier');if(b.supplier&&b.supplier!=='—')sel.value=b.supplier;}
+  syncBeliPreview();
+}
+function syncBeliPreview(){var q=Number(document.getElementById('beliQty').value||0);var h=Number(document.getElementById('beliHarga').value||0);document.getElementById('beliPreview').textContent=q>0?('Total: '+rp(q*h)):'';}
+document.getElementById('beliBahan').addEventListener('change',syncBeliHarga);
+document.getElementById('beliQty').addEventListener('input',syncBeliPreview);
+document.getElementById('beliHarga').addEventListener('input',syncBeliPreview);
+document.getElementById('formBeli').addEventListener('submit',function(e){
+  e.preventDefault();
+  var nama=document.getElementById('beliBahan').value;var sup=document.getElementById('beliSupplier').value;
+  if(!nama){toast('Belum ada bahan — tambah bahan dulu di halaman Menu & bahan.');return;}
+  var qty=Number(document.getElementById('beliQty').value||0);if(!(qty>0)){toast('Jumlah pembelian harus lebih dari 0.');return;}
+  var harga=Number(document.getElementById('beliHarga').value||0);
+  var b=state.bahan.find(function(x){return x.nama===nama;});var satuan=b?b.satuan:'kg';
+  var p={id:'PB-'+String(state.seqBeli++).padStart(4,'0'),tgl:'4 Nov 2026',bahan:nama,supplier:sup,qty:qty,satuan:satuan,total:Math.round(qty*harga),status:'Diterima'};
+  state.pembelian.unshift(p);
+  if(b){b.sisa=Math.round((b.sisa+qty)*1000)/1000;if(harga>0)b.harga=harga;if(sup)b.supplier=sup;}
+  var s=state.supplier.find(function(x){return x.nama===sup;});if(s)s.total+=p.total;
+  state.kas.unshift({tgl:'4 Nov 2026',ket:'Beli '+nama+' '+fmtN(qty)+' '+satuan+' — '+sup,kategori:'Bahan baku',jenis:'Keluar',jumlah:p.total});
+  renderBeli();renderBahan();renderSupplier();renderKas(); toast('Pembelian #'+p.id+' tersimpan — stok '+nama+' bertambah '+fmtN(qty)+' '+satuan+'.');
+});
+document.getElementById('formSet').addEventListener('submit',function(e){e.preventDefault();toast('Pengaturan tersimpan untuk sesi ini.');});
+
+/* ===== EDIT & HAPUS MENU ===== */
+var editingMenu=null;
+function resetFormMenu(){
+  editingMenu=null;document.getElementById('formMenu').reset();document.getElementById('mHarga').value=15000;
+  document.getElementById('formMenuTitle').textContent='Tambah menu baru';
+  document.getElementById('btnSimpanMenu').textContent='Simpan menu';
+  document.getElementById('btnBatalMenu').style.display='none';
+}
+function editMenuIdx(idx){
+  var m=state.menus[idx];if(!m)return;editingMenu=m.nama;
+  document.getElementById('mNama').value=m.nama;document.getElementById('mKategori').value=m.kategori;document.getElementById('mHarga').value=m.harga;
+  document.getElementById('formMenuTitle').textContent='Edit menu — '+m.nama;
+  document.getElementById('btnSimpanMenu').textContent='Simpan perubahan';
+  document.getElementById('btnBatalMenu').style.display='';
+  flashCard('formMenuCard','mNama');
+}
+function hapusMenuIdx(idx){
+  var m=state.menus[idx];if(!m)return;
+  var adaResep=state.resep.some(function(r){return r.menu===m.nama;});
+  askConfirm('Menu “'+m.nama+'” akan dihapus dari daftar menu dan dari pilihan di Kasir.'+(adaResep?' Resep untuk menu ini juga ikut terhapus.':''),function(){
+    state.menus.splice(idx,1);
+    state.resep=state.resep.filter(function(r){return r.menu!==m.nama;});
+    if(editingMenu===m.nama)resetFormMenu();
+    renderMenu();renderResep();
+    toast('Menu “'+m.nama+'” dihapus.');
+  });
+}
+document.getElementById('btnBatalMenu').addEventListener('click',resetFormMenu);
+document.getElementById('formMenu').addEventListener('submit',function(e){
+  e.preventDefault();
+  var nama=document.getElementById('mNama').value.trim();if(!nama)return;
+  var kategori=document.getElementById('mKategori').value;var harga=Number(document.getElementById('mHarga').value||0);
+  var duplikat=state.menus.find(function(x){return x.nama.toLowerCase()===nama.toLowerCase()&&x.nama!==editingMenu;});
+  if(duplikat){toast('Nama menu “'+nama+'” sudah ada — pakai nama lain atau edit menu yang ada.');return;}
+  if(editingMenu){
+    var m=state.menus.find(function(x){return x.nama===editingMenu;});if(!m){resetFormMenu();return;}
+    var namaLama=m.nama;m.nama=nama;m.kategori=kategori;m.harga=harga;
+    var r=state.resep.find(function(x){return x.menu===namaLama;});if(r){r.menu=nama;r.harga=harga;}
+    renderMenu();renderResep();resetFormMenu();
+    toast('Menu “'+nama+'” diperbarui — perubahan langsung berlaku di Kasir.');
+  }else{
+    state.menus.push({nama:nama,kategori:kategori,harga:harga,terjual:0});
+    renderMenu();resetFormMenu();
+    toast('Menu “'+nama+'” ditambahkan dan sudah bisa dipilih di Kasir.');
+  }
+});
+
+/* ===== EDIT & HAPUS RESEP ===== */
+var editingResep=null;
+function tambahBarisResep(ing){
+  var wrap=document.getElementById('resepBahanRows');
+  var row=document.createElement('div');row.className='rr-row';
+  var satuanOpts=['kg','gram','butir','liter','ml','bungkus','ikat'];
+  row.innerHTML='<div class="field grow"><label>Nama bahan</label><input class="rr-nama" list="bahanSaran" placeholder="Contoh: Kopi bubuk"></div>'
+    +'<div class="field"><label>Jenis</label><select class="rr-jenis"><option>Potong stok</option><option>Pelengkap</option></select></div>'
+    +'<div class="field"><label>Jumlah</label><input class="rr-jumlah" type="number" min="0" step="any" placeholder="15"></div>'
+    +'<div class="field"><label>Satuan</label><select class="rr-satuan">'+satuanOpts.map(function(s){return '<option>'+s+'</option>';}).join('')+'</select></div>'
+    +'<div class="field grow"><label>Takaran tampil</label><input class="rr-tampil" placeholder="Contoh: 15 gram"></div>'
+    +'<button class="btn btn-soft btn-del" type="button">✕</button>';
+  if(ing){
+    row.querySelector('.rr-nama').value=ing.nama||ing.label||'';
+    row.querySelector('.rr-jenis').value=ing.nama?'Potong stok':'Pelengkap';
+    if(ing.nama){row.querySelector('.rr-jumlah').value=ing.jumlah;row.querySelector('.rr-satuan').value=ing.satuan||'kg';}
+    row.querySelector('.rr-tampil').value=ing.tampil||'';
+  }
+  row.querySelector('button').addEventListener('click',function(){row.remove();});
+  wrap.appendChild(row);
+}
+document.getElementById('btnTambahBarisResep').addEventListener('click',function(){tambahBarisResep();});
+function resetFormResep(){
+  editingResep=null;document.getElementById('formResep').reset();document.getElementById('rWaktu').value='10 menit';
+  document.getElementById('resepBahanRows').innerHTML='';tambahBarisResep();
+  document.getElementById('formResepTitle').textContent='Tambah resep baru';
+  document.getElementById('btnSimpanResep').textContent='Simpan resep';
+  document.getElementById('btnBatalResep').style.display='none';
+}
+function editResepIdx(idx){
+  var r=state.resep[idx];if(!r)return;editingResep=r.menu;
+  renderResepMenuSelect();document.getElementById('rMenu').value=r.menu;
+  document.getElementById('rWaktu').value=r.waktu;
+  document.getElementById('resepBahanRows').innerHTML='';
+  r.bahan.forEach(function(ing){tambahBarisResep(ing);});
+  document.getElementById('formResepTitle').textContent='Edit resep — '+r.menu;
+  document.getElementById('btnSimpanResep').textContent='Simpan perubahan';
+  document.getElementById('btnBatalResep').style.display='';
+  flashCard('formResepCard','rWaktu');
+}
+function hapusResepIdx(idx){
+  var r=state.resep[idx];if(!r)return;
+  askConfirm('Resep “'+r.menu+'” akan dihapus. Menu tetap bisa dijual di Kasir, tapi stok bahan tidak lagi berkurang otomatis untuk menu ini.',function(){
+    state.resep.splice(idx,1);
+    if(editingResep===r.menu)resetFormResep();
+    renderResep();
+    toast('Resep “'+r.menu+'” dihapus.');
+  });
+}
+document.getElementById('btnBatalResep').addEventListener('click',resetFormResep);
+document.getElementById('formResep').addEventListener('submit',function(e){
+  e.preventDefault();
+  var menu=document.getElementById('rMenu').value;
+  if(!menu){toast('Belum ada menu — tambah menu dulu di halaman Menu & bahan.');return;}
+  var waktu=document.getElementById('rWaktu').value.trim()||'10 menit';
+  var bahan=[];var gagal='';
+  document.querySelectorAll('#resepBahanRows .rr-row').forEach(function(row){
+    var nama=row.querySelector('.rr-nama').value.trim();if(!nama)return;
+    var jenis=row.querySelector('.rr-jenis').value;var tampil=row.querySelector('.rr-tampil').value.trim();
+    if(jenis==='Potong stok'){
+      var jumlah=Number(row.querySelector('.rr-jumlah').value||0);var satuan=row.querySelector('.rr-satuan').value;
+      if(!(jumlah>0)){gagal=nama;return;}
+      bahan.push({nama:nama,jumlah:jumlah,satuan:satuan,tampil:tampil||(fmtN(jumlah)+' '+satuan)});
+    }else{
+      bahan.push({label:nama,tampil:tampil||'1 porsi'});
+    }
+  });
+  if(gagal){toast('Jumlah bahan “'+gagal+'” harus lebih dari 0 untuk jenis Potong stok.');return;}
+  if(!bahan.length){toast('Isi minimal satu bahan untuk resep ini.');return;}
+  if(editingResep){
+    var idx=state.resep.findIndex(function(x){return x.menu===editingResep;});if(idx<0){resetFormResep();return;}
+    if(menu!==editingResep&&state.resep.some(function(x){return x.menu===menu;})){toast('Menu “'+menu+'” sudah punya resep lain — resep tidak disimpan.');return;}
+    state.resep[idx]={menu:menu,harga:menuHarga(menu),waktu:waktu,bahan:bahan};
+    renderResep();resetFormResep();
+    toast('Resep “'+menu+'” diperbarui — potongan stok di Kasir langsung mengikuti resep baru.');
+  }else{
+    if(state.resep.some(function(x){return x.menu===menu;})){toast('Menu “'+menu+'” sudah punya resep — pakai tombol Edit pada resepnya.');return;}
+    state.resep.push({menu:menu,harga:menuHarga(menu),waktu:waktu,bahan:bahan});
+    renderResep();resetFormResep();
+    toast('Resep “'+menu+'” ditambahkan.');
+  }
+});
+['searchTx','filterTx'].forEach(function(id){document.getElementById(id).addEventListener('input',renderTx);});
+['searchMenu','filterMenu'].forEach(function(id){document.getElementById(id).addEventListener('input',renderMenu);});
+['searchBahan','filterBahan'].forEach(function(id){document.getElementById(id).addEventListener('input',renderBahan);});
+['searchBeli','filterBeli'].forEach(function(id){document.getElementById(id).addEventListener('input',renderBeli);});
+document.getElementById('searchSupplier').addEventListener('input',renderSupplier);
+['searchPelanggan','filterPelanggan'].forEach(function(id){document.getElementById(id).addEventListener('input',renderPelanggan);});
+['searchKaryawan','filterKaryawan'].forEach(function(id){document.getElementById(id).addEventListener('input',renderKaryawan);});
+['searchKas','filterKas'].forEach(function(id){document.getElementById(id).addEventListener('input',renderKas);});
+
+/* ===== PDF ===== */
+function generatePDF(){
+  if(!window.jspdf||!window.jspdf.jsPDF){toast('Pustaka PDF belum termuat, coba lagi sebentar.');return;}
+  var doc=new window.jspdf.jsPDF({unit:'pt',format:'a4'});
+  var W=doc.internal.pageSize.getWidth();
+  function head(title,sub){
+    doc.setFillColor(234,88,12);doc.rect(0,0,W,64,'F');
+    doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(17);doc.text('DapurERP — Warung Senja',40,28);
+    doc.setFont('helvetica','normal');doc.setFontSize(10);doc.text('Cabang utama  •  Laporan Bulanan  •  November 2026',40,46);
+    doc.setTextColor(26,29,33);doc.setFont('helvetica','bold');doc.setFontSize(15);doc.text(title,40,92);
+    doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(107,114,128);doc.text(sub,40,108);
+  }
+  function table(startY,headers,rows){
+    doc.autoTable({startY:startY,head:[headers],body:rows,styles:{fontSize:8.5,cellPadding:5},headStyles:{fillColor:[234,88,12]},alternateRowStyles:{fillColor:[255,247,237]},margin:{left:40,right:40}});
+    return doc.lastAutoTable.finalY+22;
+  }
+  function rowsOr(rows,cols){if(rows.length)return rows;var r=['Belum ada data'];while(r.length<cols)r.push('—');return [r];}
+  head('Laporan Bulanan — November 2026','Ringkasan bisnis, penjualan, dan kesehatan keuangan Warung Senja.');
+  var y=126;
+  doc.setTextColor(26,29,33);doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text('Ringkasan Bisnis',40,y);y+=8;
+  var fin=keuangan();
+  y=table(y+6,['Keterangan','Nilai'],[
+    ['Penjualan tercatat (dari Kasir)',rp(penjualanTotal())+' — '+state.transaksi.length+' transaksi'],
+    ['Laba kotor',rp(fin.masuk-fin.hpp)],
+    ['Nilai persediaan',rp(nilaiPersediaan())+' — '+state.bahan.length+' bahan aktif'],
+    ['Stok perlu dibeli',lowStock().length+' item'],
+    ['Pendapatan bulan ini',rp(fin.masuk)],
+    ['HPP bahan baku','- '+rp(fin.hpp)],
+    ['Biaya operasional','- '+rp(fin.ops)],
+    ['Laba bersih',rp(fin.laba)]
+  ]);
+
+  doc.addPage();head('Kasir — Semua Transaksi','Daftar transaksi penjualan yang tercatat.');y=126;
+  y=table(y,['Nomor','Pelanggan','Menu','Jam','Total','Status'],rowsOr(state.transaksi.map(function(t){return ['#'+t.id,t.pelanggan,t.menu+' x '+t.qty,t.jam,rp(t.total),t.status];}),6));
+  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(26,29,33);doc.text('Menu & Bahan',40,y);y+=6;
+  y=table(y+6,['Menu','Kategori','Harga','Terjual'],rowsOr(state.menus.map(function(m){return [m.nama,m.kategori,rp(m.harga),m.terjual+' porsi'];}),4));
+  y=table(y,['Bahan','Sisa','Minimum','Harga Satuan','Supplier','Status'],rowsOr(state.bahan.map(function(b){return [b.nama,fmtN(b.sisa)+' '+b.satuan,fmtN(b.min)+' '+b.satuan,rp(b.harga),b.supplier,b.sisa<b.min?'Perlu dibeli':'Aman'];}),6));
+
+  doc.addPage();head('Resep, Pembelian & Supplier','Takaran produksi, pembelian bahan, dan daftar pemasok.');y=126;
+  state.resep.forEach(function(r){doc.setFont('helvetica','bold');doc.setFontSize(10.5);doc.setTextColor(26,29,33);doc.text(r.menu+' — '+rp(r.harga)+' / porsi (± '+r.waktu+')',40,y);y+=4;y=table(y+4,['Bahan','Takaran per Porsi'],r.bahan.map(function(b){return [b.nama||b.label,b.tampil];}));});
+  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text('Pembelian Bahan',40,y);y+=6;
+  y=table(y+6,['Nomor','Tanggal','Bahan','Supplier','Jumlah','Total','Status'],rowsOr(state.pembelian.map(function(p){return ['#'+p.id,p.tgl,p.bahan,p.supplier,fmtN(p.qty)+' '+p.satuan,rp(p.total),p.status];}),7));
+  if(y>640){doc.addPage();head('Supplier (lanjutan)','Daftar pemasok Warung Senja.');y=126;}
+  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(26,29,33);doc.text('Supplier',40,y);y+=6;
+  y=table(y+6,['Supplier','Kontak','Kota','Bahan Utama','Total Belanja'],state.supplier.map(function(s){return [s.nama,s.kontak,s.kota,s.utama,rp(s.total)];}));
+
+  doc.addPage();head('Pelanggan, Karyawan & Kas','Total belanja pelanggan, gaji karyawan, dan arus kas November 2026.');y=126;
+  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(26,29,33);doc.text('Pelanggan',40,y);y+=6;
+  y=table(y+6,['Nama','Jenis','Kunjungan','Menu Favorit','Total Belanja','Terakhir Datang'],rowsOr(state.pelanggan.map(function(p){return [p.nama,p.jenis,p.kunjungan+' kali',p.favorit,rp(p.total),p.terakhir];}),6));
+  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text('Karyawan',40,y);y+=6;
+  y=table(y+6,['Nama','Jabatan','Sif','Jam Kerja','Gaji / Bulan','Status'],state.karyawan.map(function(k){return [k.nama,k.jabatan,k.sif,k.jam,rp(k.gaji),k.status];}));
+  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text('Kas & Biaya',40,y);y+=6;
+  y=table(y+6,['Tanggal','Keterangan','Kategori','Jenis','Jumlah'],rowsOr(state.kas.map(function(k){return [k.tgl,k.ket,k.kategori,k.jenis,(k.jenis==='Masuk'?'+ ':'- ')+rp(k.jumlah)];}),5));
+  doc.setFontSize(9);doc.setTextColor(107,114,128);doc.setFont('helvetica','normal');
+  doc.text('Laba bersih November 2026: '+rp(keuangan().laba)+'  •  Dibuat dari DapurERP — Warung Senja, Cabang utama  •  Rabu, 4 November 2026',40,y+6,{maxWidth:W-80});
+  doc.save('Laporan-DapurERP-Warung-Senja-November-2026.pdf');
+  toast('Laporan PDF bulanan berhasil dibuat dan diunduh.');
+}
+
+renderAll();syncBeliHarga();tambahBarisResep();
 </script>
 </body>
 </html>
