@@ -3,346 +3,394 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-<meta name="color-scheme" content="light"/>
+<meta name="color-scheme" content="light dark"/>
 <link rel="icon" href="data:,"/>
-<title>Jindan Dashboard Preview</title>
+<title>Jindan — Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#c8c8c8; --card:#ffffff; --ink:#111111; --muted:#6b7280; --muted2:#9ca3af;
-  --line:#eeeeee; --line2:#e5e7eb;
-  --green:#22c55e; --green2:#16a34a; --green-light:#dcfce7;
-  --lime:#cddc39; --lime2:#a3e635;
-  --pink:#db2777; --pink2:#ec4899;
-  --yellow:#facc15;
-  --radius:18px;
+  --bg:#f4f1eb; --card:#ffffff; --card2:#faf8f3; --ink:#1b2420; --muted:#68736c; --faint:#9aa39c;
+  --line:#e7e0d2; --line-soft:#efe9db;
+  --side:#131f1a; --side2:#1a2b23; --side-ink:#ece7da; --side-muted:#9db0a4;
+  --brass:#b9975c; --brass-bright:#d3b578; --brass-soft:#f1e7d2;
+  --emerald:#2e7d5b; --emerald-soft:#e3efe7;
+  --clay:#b85c48; --clay-soft:#f7e8e2;
+  --goldbar:#cbb26a;
+  --shadow:0 1px 2px rgba(27,36,32,.04),0 12px 32px -18px rgba(27,36,32,.18);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0f1512; --card:#18211c; --card2:#1c2721; --ink:#ece9df; --muted:#a7b0a6; --faint:#7d887e;
+    --line:#2b3a32; --line-soft:#243129;
+    --side:#0b120e; --side2:#121d16;
+    --brass-soft:#2c2718; --emerald-soft:#1d2f26; --clay-soft:#33221d;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px -18px rgba(0,0,0,.6);
+    color-scheme:dark;
+  }
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
-body{font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+body{font-family:'Manrope',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
 button,input,select{font:inherit}
-button{cursor:pointer;min-height:36px}
-a{color:inherit;text-decoration:none}
+button{cursor:pointer}
+.serif{font-family:'DM Serif Display',Georgia,serif;font-weight:400}
 
-/* Page shell like screenshot - gray backdrop, white card */
-.page{ min-height:100vh; background:#cfcfcf; padding:28px 18px 28px; }
-.shell{ max-width:1420px; margin:0 auto; background:var(--card); border-radius:18px; box-shadow:0 10px 40px rgba(0,0,0,.18), 0 2px 10px rgba(0,0,0,.08); overflow:hidden; }
+/* ---------- App frame: sidebar + main (deliberately unlike the old top-nav card) ---------- */
+.app{display:flex;min-height:100vh;align-items:stretch}
 
-/* Top nav */
-.topbar{ display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 22px 10px; border-bottom:1px solid #f3f4f6; flex-wrap:wrap; }
-.brand{ display:flex; align-items:center; gap:9px; font-weight:800; letter-spacing:-.02em; font-size:17px; white-space:nowrap; }
-.logo{ width:28px;height:28px;background:#111;color:#fff;border-radius:7px;display:grid;place-items:center;font-weight:900;font-size:15px; line-height:1 }
-.brand span{font-weight:400;color:#9ca3af;margin-left:2px}
-.mainnav{ display:flex; gap:28px; align-items:center; flex-wrap:wrap; justify-content:center; }
-.mainnav a{ font-size:13.5px; font-weight:500; color:#6b7280; padding:8px 2px; position:relative; cursor:pointer }
-.mainnav a:hover{ color:#111 }
-.mainnav a.active{ color:#111; font-weight:600 }
-/* Sub-pages (one view per top-nav menu) */
-.viewpage{ padding:22px 26px 26px }
-.viewpage[hidden]{ display:none !important }
-#view-dashboard[hidden]{ display:none !important }
-.view-head{ margin-bottom:16px }
-.view-head h2{ font-size:20px; margin:0 0 4px; letter-spacing:-.02em }
-.view-head p{ margin:0; color:#6b7280; font-size:13px }
-.statgrid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:20px }
-.statcard{ border:1px solid #f3f4f6; background:#fafafa; border-radius:12px; padding:14px }
-.statcard label{ display:block; font-size:10px; letter-spacing:.07em; text-transform:uppercase; color:#9ca3af; font-weight:600; margin-bottom:6px }
-.statcard .big{ font-size:19px; font-weight:800; letter-spacing:-.01em }
-.statcard .sub{ font-size:12px; color:#6b7280; margin-top:3px }
-.ptable{ border-top:1px solid #f3f4f6 }
-.prow{ display:grid; gap:8px; align-items:center; padding:10px 4px; border-bottom:1px solid #f9fafb; font-size:13px }
-.prow.head{ font-size:12px; font-weight:600; color:#111; border-bottom:1px solid #f3f4f6 }
-.prow .r{ text-align:right; font-weight:600 }
-.prow .muted{ color:#4b5563; font-size:12.5px; overflow:hidden; text-overflow:ellipsis }
-.cols-customer{ grid-template-columns:1.5fr 1.4fr .55fr .7fr .8fr }
-.cols-fleet{ grid-template-columns:.6fr 1.4fr .7fr 1fr .8fr }
-.cols-report{ grid-template-columns:1.6fr 1.3fr .8fr auto }
-.cols-employee{ grid-template-columns:1.4fr 1fr .8fr .8fr }
-.insight-list{ display:flex; flex-direction:column; gap:12px }
-.insight-item{ display:flex; gap:12px; align-items:flex-start; border:1px solid #f3f4f6; background:#fafafa; border-radius:12px; padding:14px }
-.insight-item .n{ width:26px; height:26px; border-radius:50%; background:#111; color:#fff; display:grid; place-items:center; font-size:12px; font-weight:800; flex-shrink:0 }
-.insight-item h3{ margin:0 0 3px; font-size:14px }
-.insight-item p{ margin:0; color:#4b5563; font-size:13px; line-height:1.5 }
-.btn-dark{ background:#111; color:#fff; border:0; border-radius:999px; padding:9px 14px; font-size:12.5px; font-weight:600; white-space:nowrap }
-.two-col{ display:grid; grid-template-columns:1fr 1fr; gap:28px }
-@media (max-width:640px){
-  .viewpage{ padding:18px 14px 20px }
-  .statgrid{ grid-template-columns:1fr 1fr }
-  .two-col{ grid-template-columns:1fr }
-  .prow.head{ display:none }
-  .cols-customer,.cols-fleet,.cols-report,.cols-employee{ grid-template-columns:1fr auto }
-  .prow .muted{ grid-column:1 }
-  .prow .r{ grid-column:2; grid-row:1 }
-}
-.mainnav a.active::after{ content:""; position:absolute; left:0; right:0; bottom:-11px; height:2px; background:#111; border-radius:2px }
-.top-actions{ display:flex; align-items:center; gap:12px }
-.btn-report{ background:#fff; border:1px solid #e5e7eb; padding:8px 14px; border-radius:999px; font-size:13px; font-weight:600; box-shadow:0 1px 2px rgba(0,0,0,.05) }
-.btn-report:hover{ background:#111; color:#fff; border-color:#111 }
-.avatar{ width:32px;height:32px;border-radius:50%; background:linear-gradient(135deg,#fde68a,#f59e0b); display:grid; place-items:center; overflow:hidden; border:2px solid #fff; box-shadow:0 0 0 1px #e5e7eb; font-size:16px }
+/* Sidebar */
+.sidebar{width:264px;flex-shrink:0;background:linear-gradient(180deg,var(--side) 0%,var(--side2) 100%);color:var(--side-ink);display:flex;flex-direction:column;padding:28px 22px 22px;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:12px;padding-bottom:22px;border-bottom:1px solid rgba(236,231,218,.14)}
+.mark{width:42px;height:42px;border-radius:50%;border:1px solid var(--brass);display:grid;place-items:center;font-family:'DM Serif Display',serif;font-size:21px;color:var(--brass-bright);flex-shrink:0}
+.brand-name{font-family:'DM Serif Display',serif;font-size:24px;letter-spacing:.01em;line-height:1;color:#fff}
+.brand-sub{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--side-muted);margin-top:3px}
+.side-label{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--side-muted);margin:24px 4px 10px}
+.mainnav{display:flex;flex-direction:column;gap:2px}
+.mainnav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:#cfd8cd;font-size:14px;font-weight:600;cursor:pointer;border:1px solid transparent}
+.mainnav a .num{font-family:'DM Serif Display',serif;font-style:italic;font-size:12px;color:var(--side-muted);width:20px}
+.mainnav a:hover{background:rgba(255,255,255,.05);color:#fff}
+.mainnav a.active{background:rgba(185,151,92,.14);border-color:rgba(185,151,92,.35);color:#fff}
+.mainnav a.active .num{color:var(--brass-bright)}
+.mainnav a .dotnav{margin-left:auto;width:6px;height:6px;border-radius:50%;background:var(--brass-bright);opacity:0}
+.mainnav a.active .dotnav{opacity:1}
+.side-foot{margin-top:auto;padding-top:20px}
+.period-card{border:1px solid rgba(236,231,218,.16);border-radius:14px;padding:14px;background:rgba(255,255,255,.03)}
+.period-card label{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--side-muted);margin-bottom:6px}
+.period-card .per{font-family:'DM Serif Display',serif;font-size:16.5px;color:#fff;line-height:1.25}
+.period-card .upd{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--side-muted);margin-top:9px}
+.period-card .upd i{width:7px;height:7px;border-radius:50%;background:#5ec98a;display:inline-block}
+.side-note{font-size:11.5px;color:var(--side-muted);line-height:1.5;margin:14px 4px 0}
 
-.subbar{ display:flex; justify-content:space-between; align-items:center; gap:12px; padding:9px 22px; background:#fafafa; border-bottom:1px solid #f3f4f6; font-size:12px; color:#6b7280; flex-wrap:wrap }
-.subbar b{ color:#374151; font-weight:600 }
-.subbar .left{ display:flex; gap:18px; flex-wrap:wrap; align-items:center }
-.pill-period{ display:inline-flex; align-items:center; gap:6px }
-.manage{ display:flex; align-items:center; gap:6px; color:#6b7280; font-size:12px }
+/* Main */
+.main{flex:1;min-width:0;padding:30px 34px 40px;max-width:1180px;margin:0 auto;width:100%}
+.main-head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:24px}
+.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--brass);font-weight:800;margin:0 0 6px}
+.main-head h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:38px;line-height:1.05;margin:0;letter-spacing:.005em}
+.main-head .lede{color:var(--muted);font-size:13.5px;margin:7px 0 0;max-width:52ch;line-height:1.55}
+.head-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pill-period{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:9px 14px;font-size:12.5px;font-weight:700;color:var(--ink)}
+.pill-period i{width:7px;height:7px;border-radius:50%;background:var(--emerald)}
+.btn-report{background:var(--side);color:#f3ecd9;border:1px solid var(--side);padding:11px 18px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.01em}
+.btn-report:hover{background:var(--brass);border-color:var(--brass);color:#fff}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--brass-soft);border:1px solid var(--brass);display:grid;place-items:center;font-family:'DM Serif Display',serif;font-size:15px;color:var(--brass)}
 
-/* Main grid */
-.grid{ display:grid; grid-template-columns: .92fr 1.08fr; gap:0; }
-.leftcol{ padding:22px 22px 20px 26px; border-right:1px solid #f3f4f6; display:flex; flex-direction:column; gap:26px }
-.rightcol{ padding:22px 22px 20px 22px; }
+/* Views */
+.viewpage[hidden],#view-dashboard[hidden]{display:none!important}
+.view-head{margin-bottom:18px}
+.view-head p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.6;max-width:62ch}
 
-.section-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:16px }
-.section-head h2{ font-size:17px; line-height:1; margin:0; font-weight:700; letter-spacing:-.02em }
-.dots{ color:#9ca3af; letter-spacing:2px; font-weight:700; border:0;background:transparent; min-height:28px; padding:0 4px }
+/* Cards */
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:22px 24px}
+.card-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:6px}
+.card-head h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:21px;margin:0}
+.card-head .hint{font-size:12px;color:var(--faint);white-space:nowrap}
+.rule{height:1px;background:var(--line-soft);margin:12px 0 16px}
 
-/* Deliveries */
-.deliv-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px }
-.metric label{ display:block; font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:#9ca3af; font-weight:600; margin-bottom:6px }
-.metric .val{ font-size:15px; font-weight:700; display:flex; align-items:center; gap:6px }
-.metric .val small{ color:var(--green2); font-size:11px; font-weight:700 }
-.bars-mini{ display:flex; align-items:flex-end; gap:2px; height:28px; margin-top:12px; position:relative }
-.bars-mini i{ display:block; width:4px; border-radius:2px; background:var(--green); flex:1 }
-.bars-mini i.y{ background:var(--yellow) } .bars-mini i.l{ background:var(--lime2) }
-.bars-mini::after{ content:"▼"; position:absolute; right:6px; top:-6px; font-size:8px; color:#111 }
-.gradient-bar{ height:7px; border-radius:999px; background:linear-gradient(90deg,#f97316,#facc15,#a3e635,#22c55e); margin-top:28px; position:relative }
-.gradient-bar::after{ content:"▼"; position:absolute; right:18px; top:-12px; font-size:8px }
-.spark{ margin-top:8px; width:100%; height:36px }
+/* Dashboard KPI row — three editorial stat cards */
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:20px 22px 18px;position:relative;overflow:hidden}
+.kpi::before{content:"";position:absolute;top:0;left:22px;right:22px;height:2px;background:linear-gradient(90deg,var(--brass),transparent)}
+.kpi label{display:block;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:8px}
+.kpi .big{font-family:'DM Serif Display',serif;font-size:40px;line-height:1;display:flex;align-items:baseline;gap:9px}
+.kpi .big small{font-family:'Manrope',sans-serif;font-size:12px;font-weight:800;color:var(--emerald)}
+.kpi .cap{font-size:12.5px;color:var(--muted);margin-top:7px;line-height:1.5}
+.bars-mini{display:flex;align-items:flex-end;gap:3px;height:30px;margin-top:14px}
+.bars-mini i{display:block;border-radius:2px 2px 0 0;background:var(--emerald);flex:1;opacity:.85}
+.bars-mini i.y{background:var(--brass)} .bars-mini i.l{background:#8fbc9f}
+.gradient-bar{height:8px;border-radius:999px;background:linear-gradient(90deg,#d98a68,var(--goldbar),#8fbc9f,var(--emerald));margin-top:24px;position:relative}
+.gradient-bar::after{content:"";position:absolute;right:16%;top:-4px;width:2px;height:16px;background:var(--ink)}
+.spark{margin-top:12px;width:100%;height:38px}
 
 /* Revenue */
-.legend{ display:flex; gap:16px; align-items:center; flex-wrap:wrap; margin-top:10px }
-.legend span{ display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:500 }
-.legend i{ width:14px;height:14px;border-radius:4px;display:inline-block }
-.legend .vs{ margin-left:auto; color:#9ca3af; font-size:12px; display:flex; align-items:center; gap:6px }
-.switch{ width:28px;height:16px;background:#e5e7eb;border-radius:999px; position:relative; display:inline-block }
-.switch::after{ content:""; position:absolute; width:12px;height:12px;background:#fff;border-radius:50%; top:2px; left:2px; box-shadow:0 1px 2px rgba(0,0,0,.2) }
+.legend{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.legend span{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600}
+.legend i{width:16px;height:3px;border-radius:2px;display:inline-block}
+.legend .vs{margin-left:auto;color:var(--faint);font-size:12px;display:flex;align-items:center;gap:7px;font-weight:600}
+.switch{width:30px;height:17px;background:var(--line);border-radius:999px;position:relative;display:inline-block;flex-shrink:0}
+.switch::after{content:"";position:absolute;width:13px;height:13px;background:var(--card);border-radius:50%;top:2px;left:2px;box-shadow:0 1px 3px rgba(0,0,0,.25)}
 
-/* Bottom row */
-.bottom-row{ display:grid; grid-template-columns:1fr 1fr; gap:28px }
-.balance-bars{ display:flex; align-items:flex-end; gap:3px; height:82px; margin-top:12px; border-bottom:1px dashed #e5e7eb; padding-bottom:2px; position:relative }
-.balance-bars i{ flex:1; border-radius:3px 3px 0 0; background:var(--green); min-height:8px }
-.balance-bars i.p{ background:var(--pink2) }
-.target{ font-size:11px; color:#9ca3af }
-.target b{ color:#6b7280 }
-
-.cost-seg{ display:flex; height:8px; border-radius:999px; overflow:hidden; gap:2px; margin:6px 0 14px }
-.cost-seg i{ display:block; height:100% }
-.cost-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:7px }
-.cost-list li{ display:grid; grid-template-columns:10px 1fr auto 36px; align-items:center; gap:8px; font-size:12.5px }
-.cost-list li b{ font-weight:600 } .cost-list li em{ font-style:normal; text-align:right; color:#374151; font-weight:600 }
-.dot{ width:7px;height:7px;border-radius:50% }
+/* Balance + costs row */
+.two-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.balance-bars{display:flex;align-items:flex-end;gap:3px;height:86px;margin-top:14px;border-bottom:1px dashed var(--line);padding-bottom:2px}
+.balance-bars i{flex:1;border-radius:3px 3px 0 0;background:var(--emerald);min-height:8px}
+.balance-bars i.p{background:var(--clay)}
+.target{font-size:11.5px;color:var(--faint)} .target b{color:var(--muted)}
+.cost-seg{display:flex;height:9px;border-radius:999px;overflow:hidden;gap:2px;margin:8px 0 16px}
+.cost-seg i{display:block;height:100%}
+.cost-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.cost-list li{display:grid;grid-template-columns:9px 1fr auto 38px;align-items:center;gap:10px;font-size:13px;padding:7px 0;border-bottom:1px solid var(--line-soft)}
+.cost-list li:last-child{border-bottom:0}
+.cost-list li b{font-weight:700} .cost-list li em{font-style:normal;text-align:right;color:var(--muted);font-weight:700}
+.dot{width:8px;height:8px;border-radius:50%}
 
 /* Invoices */
-.inv-summary{ display:grid; grid-template-columns:1.6fr 1fr .7fr; gap:0; border-bottom:1px solid #f3f4f6; }
-.inv-box{ padding:4px 14px 14px 0; border-right:1px solid #f3f4f6 }
-.inv-box + .inv-box{ padding-left:14px } .inv-box:last-child{ border-right:0 }
-.inv-box label{ font-size:10px; letter-spacing:.07em; text-transform:uppercase; color:#9ca3af; font-weight:600 }
-.inv-box .amt{ font-size:15px; font-weight:700; margin-top:4px }
-.inv-progress{ display:flex; height:6px; border-radius:999px; overflow:hidden; margin-top:6px; background:#f3f4f6 }
-.inv-progress i{ display:block }
-.inv-pcts{ display:grid; grid-template-columns:1.6fr 1fr .7fr; font-size:11px; color:#6b7280; padding:6px 0 0 }
-.inv-pcts span:nth-child(2){ padding-left:14px } .inv-pcts span:nth-child(3){ padding-left:14px }
+.inv-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.inv-box{padding:14px 16px;background:var(--card2);border:1px solid var(--line-soft);border-radius:14px}
+.inv-box label{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:800}
+.inv-box .amt{font-family:'DM Serif Display',serif;font-size:27px;margin-top:5px}
+.inv-box .pct{font-size:12px;color:var(--muted);margin-top:2px}
+.inv-progress{display:flex;height:7px;border-radius:999px;overflow:hidden;margin-top:14px;background:var(--line-soft)}
+.inv-progress i{display:block}
+.filters{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:18px 0 8px}
+.filter-btn{border:1px solid transparent;background:transparent;padding:8px 13px;border-radius:999px;font-size:13px;font-weight:600;color:var(--muted);min-height:38px}
+.filter-btn:hover{color:var(--ink)}
+.filter-btn.active{background:var(--side);color:#f3ecd9;font-weight:700}
+.searchbox{margin-left:auto;display:flex;align-items:center;gap:7px;background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:0 13px;min-height:38px;flex:1;max-width:230px}
+.searchbox input{border:0;outline:0;background:transparent;width:100%;font-size:13px;min-height:36px;color:var(--ink)}
+.searchbox span{color:var(--faint);font-size:12px;white-space:nowrap}
+.btn-add{background:var(--brass);color:#fff;border:0;border-radius:999px;padding:9px 15px;font-size:12.5px;font-weight:800;white-space:nowrap;min-height:38px}
+.btn-add:hover{background:var(--side)}
+.table-head,.tr{display:grid;grid-template-columns:22px 1.62fr .68fr 1.32fr .52fr 12px;align-items:center;gap:8px;padding:10px 4px}
+.table-head{font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:800;color:var(--muted);border-bottom:1px solid var(--line)}
+.tr{border-bottom:1px solid var(--line-soft);font-size:13.5px}
+.tr:hover{background:var(--card2)}
+.tr .company{display:flex;align-items:center;gap:10px;font-weight:600;min-width:0}
+.comp-icon{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
+.comp-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.status-pill{font-size:9.5px;font-weight:800;letter-spacing:.03em;padding:3px 7px;border-radius:999px;margin-left:2px;white-space:nowrap;flex-shrink:0;text-transform:uppercase}
+.status-paid{background:var(--emerald-soft);color:var(--emerald)} .status-unpaid{background:var(--clay-soft);color:var(--clay)} .status-resent{background:var(--brass-soft);color:#8a6d35}
+@media (prefers-color-scheme:dark){.status-resent{color:var(--brass-bright)}}
+.tr .date{color:var(--muted);font-size:12.5px} .tr .contact{color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .tr .value{text-align:right;font-weight:800}
+.check{width:15px;height:15px;border:1.5px solid var(--line);border-radius:4px;display:inline-block}
+.rowdots{color:var(--faint);text-align:center}
+.table-foot{display:flex;justify-content:space-between;align-items:center;padding:12px 4px 2px;font-size:12px;color:var(--muted);flex-wrap:wrap;gap:10px}
+.empty{padding:28px 10px;text-align:center;color:var(--muted);font-size:13px;display:none}
+.btn-report.wide{width:100%;margin-top:16px;padding:13px}
+.fineprint{font-size:11.5px;color:var(--faint);line-height:1.55;margin:10px 2px 0}
 
-.filters{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin:18px 0 10px }
-.filter-btn{ border:0; background:transparent; padding:7px 10px; border-radius:999px; font-size:13px; font-weight:500; color:#6b7280; min-height:36px }
-.filter-btn.active{ background:#111; color:#fff; font-weight:600 }
-.filter-btn[data-filter="unpaid"].active{ background:#fff; color:#111; box-shadow:inset 0 0 0 1px #e5e7eb }
-.searchbox{ margin-left:auto; display:flex; align-items:center; gap:6px; background:#fafafa; border:1px solid #f3f4f6; border-radius:999px; padding:0 10px; min-height:36px; flex:1; max-width:210px }
-.searchbox input{ border:0; outline:0; background:transparent; width:100%; font-size:13px; min-height:34px }
-.searchbox span{ color:#9ca3af; font-size:12px; white-space:nowrap }
-.btn-add{ background:#111; color:#fff; border:0; border-radius:999px; padding:8px 12px; font-size:12.5px; font-weight:600; white-space:nowrap }
-
-.table-head,.tr{ display:grid; grid-template-columns:24px 1.62fr .68fr 1.32fr .52fr 14px; align-items:center; gap:6px; padding:9px 4px }
-.table-head{ font-size:12px; font-weight:600; color:#111; border-bottom:1px solid #f3f4f6 }
-.tr{ border-bottom:1px solid #f9fafb; font-size:13px }
-.tr:hover{ background:#fafafa }
-.tr .company{ display:flex; align-items:center; gap:9px; font-weight:500; min-width:0 }
-.comp-icon{ width:26px;height:26px;border-radius:50%; display:grid; place-items:center; font-size:11px; font-weight:800; color:#fff; flex-shrink:0 }
-.comp-name{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
-.status-pill{ font-size:9.5px; font-weight:700; letter-spacing:.02em; padding:2px 6px; border-radius:999px; margin-left:2px; vertical-align:middle; white-space:nowrap; flex-shrink:0 }
-.status-paid{ background:#dcfce7; color:#166534 } .status-unpaid{ background:#fee2e2; color:#991b1b } .status-resent{ background:#fef9c3; color:#854d0e }
-.tr .date{ color:#374151; font-size:12.5px } .tr .contact{ color:#4b5563; font-size:12.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis } .tr .value{ text-align:right; font-weight:600 }
-.check{ width:16px;height:16px;border:1.5px solid #d1d5db;border-radius:4px; display:inline-block }
-.rowdots{ color:#9ca3af; text-align:center }
-.table-foot{ display:flex; justify-content:space-between; align-items:center; padding:12px 4px 2px; font-size:12px; color:#6b7280; flex-wrap:wrap; gap:10px }
-.empty{ padding:28px 10px; text-align:center; color:#6b7280; font-size:13px; display:none }
+/* Sub pages */
+.statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+.statcard{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:16px 18px}
+.statcard label{display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:7px}
+.statcard .big{font-family:'DM Serif Display',serif;font-size:26px}
+.statcard .sub{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.5}
+.ptable{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:6px 18px}
+.prow{display:grid;gap:10px;align-items:center;padding:12px 2px;border-bottom:1px solid var(--line-soft);font-size:13.5px}
+.prow:last-child{border-bottom:0}
+.prow.head{font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:800;color:var(--muted)}
+.prow .r{text-align:right;font-weight:800}
+.prow .muted{color:var(--muted);font-size:12.5px;overflow:hidden;text-overflow:ellipsis;line-height:1.5}
+.cols-customer{grid-template-columns:1.5fr 1.4fr .55fr .7fr .8fr}
+.cols-fleet{grid-template-columns:.6fr 1.4fr .7fr 1fr .8fr}
+.cols-report{grid-template-columns:1.5fr 1.4fr .8fr auto}
+.cols-employee{grid-template-columns:1.4fr 1fr .8fr .8fr}
+.insight-list{display:flex;flex-direction:column;gap:12px}
+.insight-item{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px 20px}
+.insight-item .n{font-family:'DM Serif Display',serif;font-style:italic;width:30px;height:30px;border-radius:50%;border:1px solid var(--brass);color:var(--brass);display:grid;place-items:center;font-size:14px;flex-shrink:0}
+.insight-item h3{margin:1px 0 4px;font-size:14.5px}
+.insight-item p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+.btn-dark{background:var(--side);color:#f3ecd9;border:0;border-radius:999px;padding:10px 16px;font-size:12.5px;font-weight:700;white-space:nowrap}
+.btn-dark:hover{background:var(--brass);color:#fff}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.stack{display:flex;flex-direction:column;gap:16px}
 
 /* Modal */
-.modal-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.45); display:none; align-items:center; justify-content:center; padding:16px; z-index:50 }
-.modal-backdrop.open{ display:flex }
-.modal{ background:#fff; width:100%; max-width:440px; border-radius:16px; padding:20px; box-shadow:0 20px 50px rgba(0,0,0,.25) }
-.modal h3{ margin:0 0 4px; font-size:17px } .modal p{ margin:0 0 14px; color:#6b7280; font-size:13px }
-.field{ margin-bottom:10px } .field label{ display:block; font-size:12px; font-weight:600; margin-bottom:5px }
-.field input,.field select{ width:100%; border:1px solid #e5e7eb; border-radius:10px; padding:10px 12px; min-height:42px; background:#fff }
-.modal-actions{ display:flex; gap:8px; justify-content:flex-end; margin-top:14px }
-.btn-cancel{ background:#fff; border:1px solid #e5e7eb; border-radius:999px; padding:8px 14px; font-weight:600 }
-.btn-save{ background:#111; color:#fff; border:0; border-radius:999px; padding:8px 16px; font-weight:700 }
-.toast{ position:fixed; left:50%; transform:translateX(-50%) translateY(20px); bottom:18px; background:#111; color:#fff; padding:10px 14px; border-radius:999px; font-size:13px; font-weight:600; opacity:0; pointer-events:none; transition:.25s; z-index:60; max-width:92vw; text-align:center }
-.toast.show{ opacity:1; transform:translateX(-50%) translateY(0) }
+.modal-backdrop{position:fixed;inset:0;background:rgba(15,20,17,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+.modal-backdrop.open{display:flex}
+.modal{background:var(--card);color:var(--ink);width:100%;max-width:440px;border-radius:20px;padding:24px;box-shadow:0 24px 60px rgba(0,0,0,.3);border:1px solid var(--line)}
+.modal h3{font-family:'DM Serif Display',serif;font-weight:400;margin:0 0 4px;font-size:22px} .modal p{margin:0 0 14px;color:var(--muted);font-size:13px;line-height:1.55}
+.field{margin-bottom:10px} .field label{display:block;font-size:12px;font-weight:700;margin-bottom:5px}
+.field input,.field select{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-height:42px;background:var(--card);color:var(--ink)}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+.btn-cancel{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:9px 15px;font-weight:700}
+.btn-save{background:var(--side);color:#f3ecd9;border:0;border-radius:999px;padding:9px 17px;font-weight:700}
+.toast{position:fixed;left:50%;transform:translateX(-50%) translateY(20px);bottom:18px;background:var(--side);color:#f3ecd9;padding:11px 16px;border-radius:999px;font-size:13px;font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:60;max-width:92vw;text-align:center;border:1px solid var(--brass)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* Print / PDF fallback */
-@media print{ body{background:#fff} .page{padding:0} .shell{box-shadow:none; border-radius:0} .btn-report,.btn-add,.modal-backdrop{display:none!important} }
-
+@media print{body{background:#fff}.sidebar,.btn-report,.btn-add,.modal-backdrop{display:none!important}.main{padding:0}}
 @media (max-width:1020px){
-  .grid{ grid-template-columns:1fr } .leftcol{ border-right:0; border-bottom:1px solid #f3f4f6 } .mainnav{ order:3; width:100%; justify-content:flex-start; overflow:auto; padding-bottom:4px } .mainnav a.active::after{ bottom:-2px }
+  .app{flex-direction:column}
+  .sidebar{width:100%;height:auto;position:static;padding:18px 18px 14px}
+  .brand{padding-bottom:14px}
+  .side-label{display:none}
+  .mainnav{flex-direction:row;flex-wrap:nowrap;overflow-x:auto;padding:12px 0 4px;gap:6px}
+  .mainnav a{white-space:nowrap;padding:8px 11px}
+  .mainnav a .num{display:none}
+  .side-foot{display:none}
+  .main{padding:22px 18px 32px}
+  .kpi-row{grid-template-columns:1fr}
+  .statgrid{grid-template-columns:1fr 1fr}
+  .two-row,.two-col{grid-template-columns:1fr}
 }
 @media (max-width:640px){
-  .page{ padding:0; background:#fff } .shell{ border-radius:0; box-shadow:none }
-  .topbar{ padding:12px 14px } .subbar,.leftcol,.rightcol{ padding-left:14px; padding-right:14px }
-  .deliv-grid{ grid-template-columns:1fr 1fr; gap:14px } .deliv-grid .metric:last-child{ grid-column:span 2 }
-  .bottom-row{ grid-template-columns:1fr }
-  .inv-summary{ grid-template-columns:1fr 1fr 1fr } .inv-box{ padding-right:8px } .inv-box + .inv-box{ padding-left:8px }
-  .searchbox{ max-width:none; flex-basis:100%; order:3; margin-left:0 }
-  .table-head{ display:none }
-  .tr{ grid-template-columns:26px 1fr auto; grid-template-rows:auto auto; padding:12px 4px }
-  .tr .date{ grid-column:2; font-size:12px; color:#6b7280 } .tr .contact{ grid-column:2; } .tr .value{ grid-column:3; grid-row:1 } .rowdots{ display:none }
+  .main-head h1{font-size:31px}
+  .inv-summary{grid-template-columns:1fr}
+  .searchbox{max-width:none;flex-basis:100%;order:3;margin-left:0}
+  .table-head{display:none}
+  .tr{grid-template-columns:24px 1fr auto;grid-template-rows:auto auto;padding:12px 4px}
+  .tr .date{grid-column:2} .tr .contact{grid-column:2} .tr .value{grid-column:3;grid-row:1} .rowdots{display:none}
+  .prow.head{display:none}
+  .cols-customer,.cols-fleet,.cols-report,.cols-employee{grid-template-columns:1fr auto}
+  .prow .muted{grid-column:1}
+  .prow .r{grid-column:2;grid-row:1}
+  .head-actions{width:100%}
 }
 </style>
 </head>
 <body>
-<div class="page">
-  <div class="shell" id="reportArea">
-    <!-- TOP NAV -->
-    <header class="topbar">
-      <div class="brand"><div class="logo">J</div> Jindan <span>:</span></div>
-      <nav class="mainnav" aria-label="Main">
-        <a href="#" class="active" data-nav="dashboard">Dashboard</a>
-        <a href="#" data-nav="financials">Financials</a>
-        <a href="#" data-nav="customers">Customers</a>
-        <a href="#" data-nav="fleet">Fleet</a>
-        <a href="#" data-nav="reports">Reports</a>
-        <a href="#" data-nav="insights">Insights</a>
-        <a href="#" data-nav="employees">Employees</a>
-      </nav>
-      <div class="top-actions">
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="mark">J</div>
+      <div><div class="brand-name">Jindan</div><div class="brand-sub">Logistics · Finance</div></div>
+    </div>
+    <div class="side-label">Menu</div>
+    <nav class="mainnav" aria-label="Main">
+      <a href="#" class="active" data-nav="dashboard"><span class="num">01</span>Dashboard<span class="dotnav"></span></a>
+      <a href="#" data-nav="financials"><span class="num">02</span>Financials<span class="dotnav"></span></a>
+      <a href="#" data-nav="customers"><span class="num">03</span>Customers<span class="dotnav"></span></a>
+      <a href="#" data-nav="fleet"><span class="num">04</span>Fleet<span class="dotnav"></span></a>
+      <a href="#" data-nav="reports"><span class="num">05</span>Reports<span class="dotnav"></span></a>
+      <a href="#" data-nav="insights"><span class="num">06</span>Insights<span class="dotnav"></span></a>
+      <a href="#" data-nav="employees"><span class="num">07</span>Employees<span class="dotnav"></span></a>
+    </nav>
+    <div class="side-foot">
+      <div class="period-card">
+        <label>Reporting period</label>
+        <div class="per">Last month<br>Jul 20 – Aug 20</div>
+        <div class="upd"><i></i>Last update: 3 min ago</div>
+      </div>
+      <p class="side-note">Jindan Dashboard Preview · Static share version · No login required</p>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main" id="reportArea">
+    <header class="main-head">
+      <div>
+        <p class="eyebrow" id="pageEyebrow">Overview</p>
+        <h1 id="pageTitle">Dashboard</h1>
+        <p class="lede" id="pageLede">Deliveries, revenue and invoices for Jul 20 – Aug 20, gathered in one calm view.</p>
+      </div>
+      <div class="head-actions">
+        <span class="pill-period"><i></i>Jul 20 – Aug 20</span>
         <button class="btn-report" id="generateTop">Generate Report</button>
-        <div class="avatar" aria-label="Profile">👤</div>
+        <div class="avatar" aria-label="Profile">J</div>
       </div>
     </header>
-    <div class="subbar">
-      <div class="left">
-        <span class="pill-period">▣ <b>Changes:</b>&nbsp; Last month (Jul 20 - Aug 20) ⌄</span>
-        <span>Last update: 3 min ago</span>
-      </div>
-      <div class="manage">◎ Manage layout</div>
-    </div>
-    <div class="grid" id="view-dashboard">
-      <!-- LEFT -->
-      <div class="leftcol">
-        <!-- Deliveries -->
-        <section id="section-deliveries">
-          <div class="section-head"><h2>Deliveries</h2><button class="dots" aria-label="More">⋮</button></div>
-          <div class="deliv-grid">
-            <div class="metric">
-              <label>Fleet utilization</label><div class="val">95.1%</div>
-              <div class="bars-mini" id="fleetBars"></div>
-            </div>
-            <div class="metric">
-              <label>On-time delivery rate</label><div class="val">97.9%</div>
-              <div class="gradient-bar"></div>
-            </div>
-            <div class="metric">
-              <label>Total deliveries</label><div class="val">1,352 <small>↑ 3.5%</small></div>
-              <svg class="spark" viewBox="0 0 180 36" preserveAspectRatio="none" aria-hidden="true">
-                <defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22c55e" stop-opacity=".25"/><stop offset="100%" stop-color="#22c55e" stop-opacity="0"/></linearGradient></defs>
-                <path d="M0,26 L15,22 L30,24 L45,18 L60,20 L75,14 L90,16 L105,10 L120,12 L135,8 L150,10 L165,6 L180,7 L180,36 L0,36 Z" fill="url(#sg)"/>
-                <path d="M0,26 L15,22 L30,24 L45,18 L60,20 L75,14 L90,16 L105,10 L120,12 L135,8 L150,10 L165,6 L180,7" fill="none" stroke="#22c55e" stroke-width="1.8" stroke-linejoin="round"/>
-              </svg>
-            </div>
-          </div>
-        </section>
 
-        <!-- Revenue and costs -->
-        <section id="section-revenue">
-          <div class="section-head"><h2>Revenue and costs</h2><div style="display:flex;gap:8px;align-items:center;color:#6b7280"><span style="font-size:13px">∿ &nbsp; 📊</span><button class="dots">⋮</button></div></div>
-          <div style="display:flex;justify-content:space-between;font-size:11px;color:#9ca3af"><span>Revenue, net profit, $</span><span>Costs, $</span></div>
-          <svg viewBox="0 0 520 190" style="width:100%;height:auto;display:block;margin-top:6px" role="img" aria-label="Revenue and costs chart">
-            <g font-size="10" fill="#9ca3af">
-              <text x="0" y="22">11K</text><text x="0" y="62">10K</text><text x="0" y="102">9K</text><text x="0" y="142">8K</text><text x="0" y="178">7K</text>
-              <text x="500" y="22">4K</text><text x="500" y="72">3K</text><text x="500" y="122">2K</text><text x="500" y="168">1K</text><text x="505" y="185">0</text>
-              <text x="28" y="188">20</text><text x="245" y="188">Aug</text><text x="365" y="188">10</text><text x="485" y="188">20</text>
-            </g>
-            <g stroke="#f3f4f6"><line x1="28" y1="20" x2="495" y2="20"/><line x1="28" y1="60" x2="495" y2="60"/><line x1="28" y1="100" x2="495" y2="100"/><line x1="28" y1="140" x2="495" y2="140"/></g>
-            <defs><linearGradient id="rg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22c55e" stop-opacity=".18"/><stop offset="100%" stop-color="#22c55e" stop-opacity="0"/></linearGradient></defs>
-            <path d="M28,78 L70,52 L110,28 L150,62 L190,48 L230,38 L270,46 L310,30 L350,42 L390,28 L430,36 L470,26 L495,30 L495,170 L28,170 Z" fill="url(#rg)"/>
-            <path d="M28,78 L70,52 L110,28 L150,62 L190,48 L230,38 L270,46 L310,30 L350,42 L390,28 L430,36 L470,26 L495,30" fill="none" stroke="#22c55e" stroke-width="2" stroke-linejoin="round"/>
-            <path d="M28,135 L70,128 L110,92 L150,138 L190,118 L230,132 L270,108 L310,124 L350,96 L390,70 L430,118 L470,132 L495,108" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
-            <path d="M28,148 L70,132 L110,108 L150,142 L190,126 L230,138 L270,112 L310,140 L350,96 L390,138 L430,102 L470,128 L495,142" fill="none" stroke="#db2777" stroke-width="1.8" stroke-linejoin="round"/>
+    <!-- DASHBOARD VIEW -->
+    <div id="view-dashboard">
+      <!-- KPI row -->
+      <div class="kpi-row">
+        <div class="kpi">
+          <label>Fleet utilization</label>
+          <div class="big">95.1%</div>
+          <p class="cap">Of available vehicle capacity in use across the fleet.</p>
+          <div class="bars-mini" id="fleetBars"></div>
+        </div>
+        <div class="kpi">
+          <label>On-time delivery rate</label>
+          <div class="big">97.9%</div>
+          <p class="cap">Delivered within the promised window this period.</p>
+          <div class="gradient-bar"></div>
+        </div>
+        <div class="kpi">
+          <label>Total deliveries</label>
+          <div class="big">1,352 <small>↑ 3.5%</small></div>
+          <p class="cap">Versus the previous period, with service levels holding.</p>
+          <svg class="spark" viewBox="0 0 180 36" preserveAspectRatio="none" aria-hidden="true">
+            <defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2e7d5b" stop-opacity=".22"/><stop offset="100%" stop-color="#2e7d5b" stop-opacity="0"/></linearGradient></defs>
+            <path d="M0,26 L15,22 L30,24 L45,18 L60,20 L75,14 L90,16 L105,10 L120,12 L135,8 L150,10 L165,6 L180,7 L180,36 L0,36 Z" fill="url(#sg)"/>
+            <path d="M0,26 L15,22 L30,24 L45,18 L60,20 L75,14 L90,16 L105,10 L120,12 L135,8 L150,10 L165,6 L180,7" fill="none" stroke="#2e7d5b" stroke-width="1.8" stroke-linejoin="round"/>
           </svg>
-          <div class="legend">
-            <span><i style="background:#22c55e"></i> Revenue</span>
-            <span><i style="background:#ec4899"></i> Costs</span>
-            <span><i style="background:#111"></i> Net profit</span>
-            <span class="vs"><span class="switch"></span> Vs. previous period</span>
-          </div>
-        </section>
-
-        <!-- Bottom -->
-        <div class="bottom-row">
-          <section id="section-balance">
-            <div class="section-head"><h2 style="font-size:15px">Balance and costs</h2><button class="dots">⋮</button></div>
-            <div style="display:flex;justify-content:space-between;align-items:flex-start">
-              <div><div style="font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:#9ca3af;font-weight:600">Cash balance</div><div style="font-size:16px;font-weight:800;margin-top:4px">$126K</div></div>
-              <div class="target">Target: <b>&gt;$100K</b></div>
-            </div>
-            <div class="balance-bars" id="balanceBars"></div>
-          </section>
-          <section>
-            <div class="section-head"><h2 style="font-size:15px">Costs by category</h2><button class="dots">⋮</button></div>
-            <div class="cost-seg">
-              <i style="width:35%;background:#22c55e"></i><i style="width:25%;background:#4ade80"></i><i style="width:15%;background:#a3e635"></i><i style="width:10%;background:#facc15"></i><i style="width:7%;background:#e7e5a0"></i><i style="width:5%;background:#e5e7eb"></i>
-            </div>
-            <ul class="cost-list">
-              <li><span class="dot" style="background:#22c55e"></span><span>Fuel</span><b>$89.2K</b><em>35%</em></li>
-              <li><span class="dot" style="background:#4ade80"></span><span>Driver salaries</span><b>$63.7K</b><em>25%</em></li>
-              <li><span class="dot" style="background:#a3e635"></span><span>Vehicle maintenance</span><b>$38.2K</b><em>15%</em></li>
-              <li><span class="dot" style="background:#facc15"></span><span>Warehousing</span><b>$25.5K</b><em>10%</em></li>
-              <li><span class="dot" style="background:#d6d68a"></span><span>Insurance</span><b>$17.8K</b><em>7%</em></li>
-              <li><span class="dot" style="background:#d1d5db"></span><span>Tech &amp; software</span><b>$12.7K</b><em>5%</em></li>
-            </ul>
-          </section>
         </div>
       </div>
 
-      <!-- RIGHT / INVOICES -->
-      <div class="rightcol">
-        <section id="section-invoices">
-          <div class="section-head"><h2>Invoices</h2><button class="dots">⋮</button></div>
-          <div class="inv-summary">
-            <div class="inv-box"><label>Paid</label><div class="amt">$169K</div></div>
-            <div class="inv-box"><label>Resent request</label><div class="amt">$95K</div></div>
-            <div class="inv-box"><label>Unpaid</label><div class="amt">$64K</div></div>
+      <!-- Revenue -->
+      <section class="card" id="section-revenue">
+        <div class="card-head"><h2>Revenue and costs</h2><span class="hint">Daily · Jul 20 – Aug 20</span></div>
+        <div class="rule"></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--faint)"><span>Revenue, net profit, $</span><span>Costs, $</span></div>
+        <svg viewBox="0 0 520 190" style="width:100%;height:auto;display:block;margin-top:6px" role="img" aria-label="Revenue and costs chart">
+          <g font-size="10" fill="#9aa39c">
+            <text x="0" y="22">11K</text><text x="0" y="62">10K</text><text x="0" y="102">9K</text><text x="0" y="142">8K</text><text x="0" y="178">7K</text>
+            <text x="500" y="22">4K</text><text x="500" y="72">3K</text><text x="500" y="122">2K</text><text x="500" y="168">1K</text><text x="505" y="185">0</text>
+            <text x="28" y="188">20</text><text x="245" y="188">Aug</text><text x="365" y="188">10</text><text x="485" y="188">20</text>
+          </g>
+          <g stroke="#efe9db"><line x1="28" y1="20" x2="495" y2="20"/><line x1="28" y1="60" x2="495" y2="60"/><line x1="28" y1="100" x2="495" y2="100"/><line x1="28" y1="140" x2="495" y2="140"/></g>
+          <defs><linearGradient id="rg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2e7d5b" stop-opacity=".16"/><stop offset="100%" stop-color="#2e7d5b" stop-opacity="0"/></linearGradient></defs>
+          <path d="M28,78 L70,52 L110,28 L150,62 L190,48 L230,38 L270,46 L310,30 L350,42 L390,28 L430,36 L470,26 L495,30 L495,170 L28,170 Z" fill="url(#rg)"/>
+          <path d="M28,78 L70,52 L110,28 L150,62 L190,48 L230,38 L270,46 L310,30 L350,42 L390,28 L430,36 L470,26 L495,30" fill="none" stroke="#2e7d5b" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M28,135 L70,128 L110,92 L150,138 L190,118 L230,132 L270,108 L310,124 L350,96 L390,70 L430,118 L470,132 L495,108" fill="none" stroke="#1b2420" stroke-width="1.8" stroke-linejoin="round"/>
+          <path d="M28,148 L70,132 L110,108 L150,142 L190,126 L230,138 L270,112 L310,140 L350,96 L390,138 L430,102 L470,128 L495,142" fill="none" stroke="#b85c48" stroke-width="1.8" stroke-linejoin="round"/>
+        </svg>
+        <div class="legend">
+          <span><i style="background:#2e7d5b"></i> Revenue</span>
+          <span><i style="background:#b85c48"></i> Costs</span>
+          <span><i style="background:#1b2420"></i> Net profit</span>
+          <span class="vs"><span class="switch"></span> Vs. previous period</span>
+        </div>
+      </section>
+
+      <!-- Balance + Costs -->
+      <div class="two-row">
+        <section class="card" id="section-balance">
+          <div class="card-head"><h2>Balance and costs</h2><span class="target">Target: <b>&gt;$100K</b></span></div>
+          <div class="rule"></div>
+          <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:800">Cash balance</div>
+          <div class="serif" style="font-size:34px;margin-top:4px">$126K</div>
+          <div class="balance-bars" id="balanceBars"></div>
+        </section>
+        <section class="card">
+          <div class="card-head"><h2>Costs by category</h2><span class="hint">Total $247.1K</span></div>
+          <div class="rule"></div>
+          <div class="cost-seg">
+            <i style="width:35%;background:#2e7d5b"></i><i style="width:25%;background:#5a9a7d"></i><i style="width:15%;background:#b9975c"></i><i style="width:10%;background:#d3b578"></i><i style="width:7%;background:#cbbfa4"></i><i style="width:5%;background:#d8d2c2"></i>
           </div>
-          <div class="inv-progress"><i style="width:51.5%;background:#22c55e"></i><i style="width:29%;background:#cddc39"></i><i style="width:19.5%;background:#f3f4f6"></i></div>
-          <div class="inv-pcts"><span>51.5%</span><span>29 %</span><span>19.5%</span></div>
-
-          <div class="filters" role="tablist" aria-label="Invoice filters">
-            <button class="filter-btn" data-filter="all">All</button>
-            <button class="filter-btn active" data-filter="unpaid">Unpaid</button>
-            <button class="filter-btn" data-filter="resent">Resent request</button>
-            <button class="filter-btn" data-filter="paid">Paid</button>
-            <div class="searchbox"><span>⌕</span><input id="searchInput" type="search" placeholder="Search" aria-label="Search invoices"/><span>⌘ F</span></div>
-            <button class="btn-add" id="openAdd">+ Add Invoice</button>
-          </div>
-          <div style="font-size:12px;color:#6b7280;margin-bottom:4px" id="resultCount"></div>
-
-          <div class="table-head"><span></span><span>Company</span><span>Issue date ⌄</span><span>Contact</span><span style="text-align:right">Value</span><span></span></div>
-          <div id="invoiceList"></div>
-          <div class="empty" id="emptyState">No invoices match your search. Try another company name or clear the filter.</div>
-
-          <div class="table-foot">
-            <span>Show by &nbsp;<b style="color:#111">10 ⌄</b></span>
-            <span style="display:flex;gap:14px;align-items:center"><b style="color:#111">1</b> / 4 <span style="font-size:16px">›</span></span>
-          </div>
-
-          <button class="btn-report" id="generateBottom" style="width:100%;margin-top:16px;padding:11px">⬇ Generate Report — Export PDF</button>
-          <p style="font-size:11.5px;color:#9ca3af;line-height:1.5;margin:10px 2px 0">Period: Last month · Jul 20 – Aug 20. Preview version — invoices you add here are only kept until you refresh the page.</p>
+          <ul class="cost-list">
+            <li><span class="dot" style="background:#2e7d5b"></span><span>Fuel</span><b>$89.2K</b><em>35%</em></li>
+            <li><span class="dot" style="background:#5a9a7d"></span><span>Driver salaries</span><b>$63.7K</b><em>25%</em></li>
+            <li><span class="dot" style="background:#b9975c"></span><span>Vehicle maintenance</span><b>$38.2K</b><em>15%</em></li>
+            <li><span class="dot" style="background:#d3b578"></span><span>Warehousing</span><b>$25.5K</b><em>10%</em></li>
+            <li><span class="dot" style="background:#cbbfa4"></span><span>Insurance</span><b>$17.8K</b><em>7%</em></li>
+            <li><span class="dot" style="background:#d8d2c2"></span><span>Tech &amp; software</span><b>$12.7K</b><em>5%</em></li>
+          </ul>
         </section>
       </div>
+
+      <!-- Invoices -->
+      <section class="card" id="section-invoices">
+        <div class="card-head"><h2>Invoices</h2><span class="hint">10 invoices · Jul 20 – Aug 20</span></div>
+        <div class="rule"></div>
+        <div class="inv-summary">
+          <div class="inv-box"><label>Paid</label><div class="amt">$169K</div><div class="pct">51.5% of invoiced total</div></div>
+          <div class="inv-box"><label>Resent request</label><div class="amt">$95K</div><div class="pct">29% awaiting payment</div></div>
+          <div class="inv-box"><label>Unpaid</label><div class="amt">$64K</div><div class="pct">19.5% outstanding</div></div>
+        </div>
+        <div class="inv-progress"><i style="width:51.5%;background:#2e7d5b"></i><i style="width:29%;background:#cbb26a"></i><i style="width:19.5%;background:#e7e0d2"></i></div>
+
+        <div class="filters" role="tablist" aria-label="Invoice filters">
+          <button class="filter-btn" data-filter="all">All</button>
+          <button class="filter-btn active" data-filter="unpaid">Unpaid</button>
+          <button class="filter-btn" data-filter="resent">Resent request</button>
+          <button class="filter-btn" data-filter="paid">Paid</button>
+          <div class="searchbox"><span>⌕</span><input id="searchInput" type="search" placeholder="Search company or contact" aria-label="Search invoices"/><span>⌘ F</span></div>
+          <button class="btn-add" id="openAdd">+ Add Invoice</button>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px" id="resultCount"></div>
+
+        <div class="table-head"><span></span><span>Company</span><span>Issue date</span><span>Contact</span><span style="text-align:right">Value</span><span></span></div>
+        <div id="invoiceList"></div>
+        <div class="empty" id="emptyState">No invoices match your search. Try another company name or clear the filter.</div>
+
+        <div class="table-foot">
+          <span>Show by &nbsp;<b style="color:var(--ink)">10</b></span>
+          <span style="display:flex;gap:14px;align-items:center"><b style="color:var(--ink)">1</b> / 4 <span style="font-size:16px">›</span></span>
+        </div>
+
+        <button class="btn-report wide" id="generateBottom">Generate Report — Export PDF</button>
+        <p class="fineprint">Period: Last month · Jul 20 – Aug 20. Preview version — invoices you add here are only kept until you refresh the page.</p>
+      </section>
     </div>
+
     <!-- FINANCIALS VIEW -->
     <div class="viewpage" id="view-financials" hidden>
-      <div class="view-head"><h2>Financials</h2><p>Revenue, costs and invoices for Jul 20 – Aug 20 — the same figures as the Dashboard.</p></div>
+      <div class="view-head"><p>Revenue, costs and invoices for Jul 20 – Aug 20 — the same figures as the Dashboard.</p></div>
       <div class="statgrid">
         <div class="statcard"><label>Cash balance</label><div class="big">$126K</div><div class="sub">Target: &gt;$100K</div></div>
         <div class="statcard"><label>Invoices paid</label><div class="big">$169K</div><div class="sub">51.5% of invoiced total</div></div>
@@ -350,38 +398,40 @@ a{color:inherit;text-decoration:none}
         <div class="statcard"><label>Unpaid</label><div class="big">$64K</div><div class="sub">19.5% outstanding</div></div>
       </div>
       <div class="two-col">
-        <section>
-          <div class="section-head"><h2 style="font-size:15px">Revenue and costs</h2></div>
+        <section class="card">
+          <div class="card-head"><h2>Revenue and costs</h2></div>
+          <div class="rule"></div>
           <svg viewBox="0 0 520 190" style="width:100%;height:auto;display:block" role="img" aria-label="Revenue and costs chart">
-            <g font-size="10" fill="#9ca3af"><text x="0" y="22">11K</text><text x="0" y="62">10K</text><text x="0" y="102">9K</text><text x="0" y="142">8K</text><text x="0" y="178">7K</text><text x="28" y="188">20</text><text x="245" y="188">Aug</text><text x="365" y="188">10</text><text x="485" y="188">20</text></g>
-            <g stroke="#f3f4f6"><line x1="28" y1="20" x2="495" y2="20"/><line x1="28" y1="60" x2="495" y2="60"/><line x1="28" y1="100" x2="495" y2="100"/><line x1="28" y1="140" x2="495" y2="140"/></g>
-            <defs><linearGradient id="rg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22c55e" stop-opacity=".18"/><stop offset="100%" stop-color="#22c55e" stop-opacity="0"/></linearGradient></defs>
+            <g font-size="10" fill="#9aa39c"><text x="0" y="22">11K</text><text x="0" y="62">10K</text><text x="0" y="102">9K</text><text x="0" y="142">8K</text><text x="0" y="178">7K</text><text x="28" y="188">20</text><text x="245" y="188">Aug</text><text x="365" y="188">10</text><text x="485" y="188">20</text></g>
+            <g stroke="#efe9db"><line x1="28" y1="20" x2="495" y2="20"/><line x1="28" y1="60" x2="495" y2="60"/><line x1="28" y1="100" x2="495" y2="100"/><line x1="28" y1="140" x2="495" y2="140"/></g>
+            <defs><linearGradient id="rg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2e7d5b" stop-opacity=".16"/><stop offset="100%" stop-color="#2e7d5b" stop-opacity="0"/></linearGradient></defs>
             <path d="M28,78 L70,52 L110,28 L150,62 L190,48 L230,38 L270,46 L310,30 L350,42 L390,28 L430,36 L470,26 L495,30 L495,170 L28,170 Z" fill="url(#rg2)"/>
-            <path d="M28,78 L70,52 L110,28 L150,62 L190,48 L230,38 L270,46 L310,30 L350,42 L390,28 L430,36 L470,26 L495,30" fill="none" stroke="#22c55e" stroke-width="2" stroke-linejoin="round"/>
-            <path d="M28,135 L70,128 L110,92 L150,138 L190,118 L230,132 L270,108 L310,124 L350,96 L390,70 L430,118 L470,132 L495,108" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
-            <path d="M28,148 L70,132 L110,108 L150,142 L190,126 L230,138 L270,112 L310,140 L350,96 L390,138 L430,102 L470,128 L495,142" fill="none" stroke="#db2777" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M28,78 L70,52 L110,28 L150,62 L190,48 L230,38 L270,46 L310,30 L350,42 L390,28 L430,36 L470,26 L495,30" fill="none" stroke="#2e7d5b" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M28,135 L70,128 L110,92 L150,138 L190,118 L230,132 L270,108 L310,124 L350,96 L390,70 L430,118 L470,132 L495,108" fill="none" stroke="#1b2420" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M28,148 L70,132 L110,108 L150,142 L190,126 L230,138 L270,112 L310,140 L350,96 L390,138 L430,102 L470,128 L495,142" fill="none" stroke="#b85c48" stroke-width="1.8" stroke-linejoin="round"/>
           </svg>
-          <div class="legend"><span><i style="background:#22c55e"></i> Revenue</span><span><i style="background:#ec4899"></i> Costs</span><span><i style="background:#111"></i> Net profit</span></div>
+          <div class="legend"><span><i style="background:#2e7d5b"></i> Revenue</span><span><i style="background:#b85c48"></i> Costs</span><span><i style="background:#1b2420"></i> Net profit</span></div>
         </section>
-        <section>
-          <div class="section-head"><h2 style="font-size:15px">Costs by category</h2></div>
-          <div class="cost-seg"><i style="width:35%;background:#22c55e"></i><i style="width:25%;background:#4ade80"></i><i style="width:15%;background:#a3e635"></i><i style="width:10%;background:#facc15"></i><i style="width:7%;background:#e7e5a0"></i><i style="width:5%;background:#e5e7eb"></i></div>
+        <section class="card">
+          <div class="card-head"><h2>Costs by category</h2></div>
+          <div class="rule"></div>
+          <div class="cost-seg"><i style="width:35%;background:#2e7d5b"></i><i style="width:25%;background:#5a9a7d"></i><i style="width:15%;background:#b9975c"></i><i style="width:10%;background:#d3b578"></i><i style="width:7%;background:#cbbfa4"></i><i style="width:5%;background:#d8d2c2"></i></div>
           <ul class="cost-list">
-            <li><span class="dot" style="background:#22c55e"></span><span>Fuel</span><b>$89.2K</b><em>35%</em></li>
-            <li><span class="dot" style="background:#4ade80"></span><span>Driver salaries</span><b>$63.7K</b><em>25%</em></li>
-            <li><span class="dot" style="background:#a3e635"></span><span>Vehicle maintenance</span><b>$38.2K</b><em>15%</em></li>
-            <li><span class="dot" style="background:#facc15"></span><span>Warehousing</span><b>$25.5K</b><em>10%</em></li>
-            <li><span class="dot" style="background:#d6d68a"></span><span>Insurance</span><b>$17.8K</b><em>7%</em></li>
-            <li><span class="dot" style="background:#d1d5db"></span><span>Tech &amp; software</span><b>$12.7K</b><em>5%</em></li>
+            <li><span class="dot" style="background:#2e7d5b"></span><span>Fuel</span><b>$89.2K</b><em>35%</em></li>
+            <li><span class="dot" style="background:#5a9a7d"></span><span>Driver salaries</span><b>$63.7K</b><em>25%</em></li>
+            <li><span class="dot" style="background:#b9975c"></span><span>Vehicle maintenance</span><b>$38.2K</b><em>15%</em></li>
+            <li><span class="dot" style="background:#d3b578"></span><span>Warehousing</span><b>$25.5K</b><em>10%</em></li>
+            <li><span class="dot" style="background:#cbbfa4"></span><span>Insurance</span><b>$17.8K</b><em>7%</em></li>
+            <li><span class="dot" style="background:#d8d2c2"></span><span>Tech &amp; software</span><b>$12.7K</b><em>5%</em></li>
           </ul>
-          <p style="font-size:12.5px;color:#6b7280;line-height:1.6;margin:14px 0 0">Total tracked costs: <b style="color:#111">$247.1K</b>. Largest category is Fuel at $89.2K (35%), followed by Driver salaries at $63.7K (25%).</p>
+          <p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin:14px 0 0">Total tracked costs: <b style="color:var(--ink)">$247.1K</b>. Largest category is Fuel at $89.2K (35%), followed by Driver salaries at $63.7K (25%).</p>
         </section>
       </div>
     </div>
 
     <!-- CUSTOMERS VIEW -->
     <div class="viewpage" id="view-customers" hidden>
-      <div class="view-head"><h2>Customers</h2><p>Every company from the invoice table, with contact, invoice count and total value. Adding an invoice on the Dashboard updates this list.</p></div>
+      <div class="view-head"><p>Every company from the invoice table, with contact, invoice count and total value. Adding an invoice on the Dashboard updates this list.</p></div>
       <div class="statgrid">
         <div class="statcard"><label>Customers</label><div class="big" id="custCount">10</div><div class="sub">Companies invoiced this period</div></div>
         <div class="statcard"><label>Total invoiced (sample)</label><div class="big" id="custTotal">$16,540</div><div class="sub">Sum of the 10 sample invoices</div></div>
@@ -396,38 +446,37 @@ a{color:inherit;text-decoration:none}
 
     <!-- FLEET VIEW -->
     <div class="viewpage" id="view-fleet" hidden>
-      <div class="view-head"><h2>Fleet</h2><p>Deliveries for Jul 20 – Aug 20, matched to the customer invoices on the Dashboard.</p></div>
+      <div class="view-head"><p>Deliveries for Jul 20 – Aug 20, matched to the customer invoices on the Dashboard.</p></div>
       <div class="statgrid">
         <div class="statcard"><label>Fleet utilization</label><div class="big">95.1%</div><div class="sub">Of available vehicle capacity</div></div>
         <div class="statcard"><label>On-time delivery rate</label><div class="big">97.9%</div><div class="sub">Delivered within the promised window</div></div>
         <div class="statcard"><label>Total deliveries</label><div class="big">1,352</div><div class="sub">↑ 3.5% vs. previous period</div></div>
         <div class="statcard"><label>Fuel cost</label><div class="big">$89.2K</div><div class="sub">35% of total costs — largest category</div></div>
       </div>
-      <div class="section-head"><h2 style="font-size:15px">Recent deliveries</h2></div>
-      <div class="ptable">
+      <div class="card" style="padding:6px 18px">
         <div class="prow head cols-fleet"><span>Vehicle</span><span>Company</span><span>Date</span><span>Contact</span><span class="r">Delivery status</span></div>
         <div id="fleetList"></div>
       </div>
-      <p style="font-size:12px;color:#9ca3af;margin:10px 2px 0">Delivery status follows the invoice status: Paid → Delivered · Unpaid → In transit · Resent request → Scheduled.</p>
+      <p style="font-size:12px;color:var(--faint);margin:10px 2px 0">Delivery status follows the invoice status: Paid → Delivered · Unpaid → In transit · Resent request → Scheduled.</p>
     </div>
 
     <!-- REPORTS VIEW -->
     <div class="viewpage" id="view-reports" hidden>
-      <div class="view-head"><h2>Reports</h2><p>Every report below exports the same complete PDF: Dashboard, Financials, Customers, Fleet, Insights and Employees — all data included.</p></div>
+      <div class="view-head"><p>Every report below exports the same complete PDF: Dashboard, Financials, Customers, Fleet, Insights and Employees — all data included.</p></div>
       <div class="ptable">
         <div class="prow head cols-report"><span>Report</span><span>Covers</span><span>Period</span><span></span></div>
-        <div class="prow cols-report"><span><b>Complete report</b></span><span class="muted">Deliveries, Revenue &amp; costs, Balance, Costs by category, all 10 invoices, plus Financials, Customers, Fleet, Insights, Employees</span><span class="muted">Jul 20 – Aug 20</span><span><button class="btn-dark js-report">⬇ Generate Report</button></span></div>
-        <div class="prow cols-report"><span><b>Financial report</b></span><span class="muted">Revenue and costs, cash balance $126K, costs by category, invoice summary</span><span class="muted">Jul 20 – Aug 20</span><span><button class="btn-dark js-report">⬇ Generate Report</button></span></div>
-        <div class="prow cols-report"><span><b>Invoices report</b></span><span class="muted">All invoices with company, issue date, contact, value and status</span><span class="muted">Jul 20 – Aug 20</span><span><button class="btn-dark js-report">⬇ Generate Report</button></span></div>
-        <div class="prow cols-report"><span><b>Fleet &amp; deliveries report</b></span><span class="muted">Fleet utilization 95.1%, on-time rate 97.9%, 1,352 deliveries and the delivery list</span><span class="muted">Jul 20 – Aug 20</span><span><button class="btn-dark js-report">⬇ Generate Report</button></span></div>
-        <div class="prow cols-report"><span><b>Team &amp; costs report</b></span><span class="muted">Driver roster and salaries totalling $63.7K, plus costs by category</span><span class="muted">Jul 20 – Aug 20</span><span><button class="btn-dark js-report">⬇ Generate Report</button></span></div>
+        <div class="prow cols-report"><span><b>Complete report</b></span><span class="muted">Deliveries, Revenue &amp; costs, Balance, Costs by category, all 10 invoices, plus Financials, Customers, Fleet, Insights, Employees</span><span class="muted">Jul 20 – Aug 20</span><span><button class="btn-dark js-report">Generate Report</button></span></div>
+        <div class="prow cols-report"><span><b>Financial report</b></span><span class="muted">Revenue and costs, cash balance $126K, costs by category, invoice summary</span><span class="muted">Jul 20 – Aug 20</span><span><button class="btn-dark js-report">Generate Report</button></span></div>
+        <div class="prow cols-report"><span><b>Invoices report</b></span><span class="muted">All invoices with company, issue date, contact, value and status</span><span class="muted">Jul 20 – Aug 20</span><span><button class="btn-dark js-report">Generate Report</button></span></div>
+        <div class="prow cols-report"><span><b>Fleet &amp; deliveries report</b></span><span class="muted">Fleet utilization 95.1%, on-time rate 97.9%, 1,352 deliveries and the delivery list</span><span class="muted">Jul 20 – Aug 20</span><span><button class="btn-dark js-report">Generate Report</button></span></div>
+        <div class="prow cols-report"><span><b>Team &amp; costs report</b></span><span class="muted">Driver roster and salaries totalling $63.7K, plus costs by category</span><span class="muted">Jul 20 – Aug 20</span><span><button class="btn-dark js-report">Generate Report</button></span></div>
       </div>
-      <button class="btn-dark js-report" style="width:100%;margin-top:16px;padding:12px">⬇ Generate Report — Export complete PDF</button>
+      <button class="btn-dark js-report" style="width:100%;margin-top:16px;padding:13px">Generate Report — Export complete PDF</button>
     </div>
 
     <!-- INSIGHTS VIEW -->
     <div class="viewpage" id="view-insights" hidden>
-      <div class="view-head"><h2>Insights</h2><p>Read-outs calculated from the same demo data — invoice figures update when you add an invoice on the Dashboard.</p></div>
+      <div class="view-head"><p>Read-outs calculated from the same demo data — invoice figures update when you add an invoice on the Dashboard.</p></div>
       <div class="insight-list">
         <div class="insight-item"><span class="n">1</span><div><h3>Top customer: <span id="insTopCustomer">Arvox Solutions</span></h3><p id="insTopCustomerText">Highest single invoice in the sample at $2,800 (Paid, 08/16/25). BlueHorizon Ltd. is next at $2,100.</p></div></div>
         <div class="insight-item"><span class="n">2</span><div><h3>Fuel is the biggest cost</h3><p>Fuel takes $89.2K — 35% of the $247.1K tracked costs, ahead of Driver salaries ($63.7K, 25%). A 5% fuel saving would be worth about $4.5K this period.</p></div></div>
@@ -440,7 +489,7 @@ a{color:inherit;text-decoration:none}
 
     <!-- EMPLOYEES VIEW -->
     <div class="viewpage" id="view-employees" hidden>
-      <div class="view-head"><h2>Employees</h2><p>Driver roster for this period. Salaries add up to the Driver salaries line in Costs by category: $63.7K (25% of costs).</p></div>
+      <div class="view-head"><p>Driver roster for this period. Salaries add up to the Driver salaries line in Costs by category: $63.7K (25% of costs).</p></div>
       <div class="statgrid">
         <div class="statcard"><label>Drivers on roster</label><div class="big">8</div><div class="sub">Active this period</div></div>
         <div class="statcard"><label>Total driver salaries</label><div class="big">$63.7K</div><div class="sub">25% of total costs</div></div>
@@ -450,23 +499,23 @@ a{color:inherit;text-decoration:none}
       <div class="ptable">
         <div class="prow head cols-employee"><span>Driver</span><span>Role</span><span>Vehicle</span><span class="r">Salary (period)</span></div>
         <div id="employeeList"></div>
-        <div class="prow cols-employee" style="font-weight:700"><span>Total</span><span></span><span></span><span class="r">$63,700</span></div>
+        <div class="prow cols-employee" style="font-weight:800"><span>Total</span><span></span><span></span><span class="r">$63,700</span></div>
       </div>
-      <div style="margin-top:22px">
-        <div class="section-head"><h2 style="font-size:15px">Costs by category</h2></div>
-        <div class="cost-seg"><i style="width:35%;background:#22c55e"></i><i style="width:25%;background:#4ade80"></i><i style="width:15%;background:#a3e635"></i><i style="width:10%;background:#facc15"></i><i style="width:7%;background:#e7e5a0"></i><i style="width:5%;background:#e5e7eb"></i></div>
+      <section class="card" style="margin-top:16px">
+        <div class="card-head"><h2>Costs by category</h2></div>
+        <div class="rule"></div>
+        <div class="cost-seg"><i style="width:35%;background:#2e7d5b"></i><i style="width:25%;background:#5a9a7d"></i><i style="width:15%;background:#b9975c"></i><i style="width:10%;background:#d3b578"></i><i style="width:7%;background:#cbbfa4"></i><i style="width:5%;background:#d8d2c2"></i></div>
         <ul class="cost-list">
-          <li><span class="dot" style="background:#22c55e"></span><span>Fuel</span><b>$89.2K</b><em>35%</em></li>
-          <li><span class="dot" style="background:#4ade80"></span><span>Driver salaries</span><b>$63.7K</b><em>25%</em></li>
-          <li><span class="dot" style="background:#a3e635"></span><span>Vehicle maintenance</span><b>$38.2K</b><em>15%</em></li>
-          <li><span class="dot" style="background:#facc15"></span><span>Warehousing</span><b>$25.5K</b><em>10%</em></li>
-          <li><span class="dot" style="background:#d6d68a"></span><span>Insurance</span><b>$17.8K</b><em>7%</em></li>
-          <li><span class="dot" style="background:#d1d5db"></span><span>Tech &amp; software</span><b>$12.7K</b><em>5%</em></li>
+          <li><span class="dot" style="background:#2e7d5b"></span><span>Fuel</span><b>$89.2K</b><em>35%</em></li>
+          <li><span class="dot" style="background:#5a9a7d"></span><span>Driver salaries</span><b>$63.7K</b><em>25%</em></li>
+          <li><span class="dot" style="background:#b9975c"></span><span>Vehicle maintenance</span><b>$38.2K</b><em>15%</em></li>
+          <li><span class="dot" style="background:#d3b578"></span><span>Warehousing</span><b>$25.5K</b><em>10%</em></li>
+          <li><span class="dot" style="background:#cbbfa4"></span><span>Insurance</span><b>$17.8K</b><em>7%</em></li>
+          <li><span class="dot" style="background:#d8d2c2"></span><span>Tech &amp; software</span><b>$12.7K</b><em>5%</em></li>
         </ul>
-      </div>
+      </section>
     </div>
-  </div>
-  <p style="text-align:center;color:#6b7280;font-size:12px;margin:14px 0 0">Jindan Dashboard Preview · Static share version · No login required</p>
+  </main>
 </div>
 
 <!-- Add Invoice Modal -->
@@ -489,23 +538,20 @@ a{color:inherit;text-decoration:none}
 <div class="toast" id="toast">Done</div>
 
 <script>
-// Data - exactly from brief / screenshot
 var invoices = [
-  {company:"BlueHorizon Ltd.", date:"08/17/25", contact:"accounts@bluehorizonltd.com", value:2100, status:"paid", color:"#111827", icon:"◉"},
-  {company:"NexaCorp", date:"08/17/25", contact:"payments@nexacorp.com", value:1100, status:"unpaid", color:"#fce7f3", icon:"N", dark:true},
-  {company:"StarFreight Co.", date:"08/16/25", contact:"info@starfreight.com", value:1500, status:"resent", color:"#4f46e5", icon:"✦"},
-  {company:"Movers", date:"08/16/25", contact:"invoices@movers.com", value:1030, status:"unpaid", color:"#fef08a", icon:"🚚", dark:true},
-  {company:"Arvox Solutions", date:"08/16/25", contact:"payments@arvox.com", value:2800, status:"paid", color:"#111827", icon:"▲"},
-  {company:"Keystone Transport", date:"08/16/25", contact:"invoices@keystonetr.com", value:1200, status:"resent", color:"#f3f4f6", icon:"⬢", dark:true},
-  {company:"Kestrel Freight", date:"08/16/25", contact:"info@kestrelt.com", value:1400, status:"unpaid", color:"#111827", icon:"✕"},
-  {company:"SwiftLogix", date:"08/15/25", contact:"accounts@swiftlogix.com", value:1600, status:"paid", color:"#111827", icon:"⚡"},
-  {company:"GlobalTrade Inc.", date:"08/15/25", contact:"accounts@globaltrade.com", value:2300, status:"paid", color:"#0ea5e9", icon:"❄"},
-  {company:"PathBlaze Inc.", date:"08/15/25", contact:"invoices@pathblaze.com", value:1510, status:"resent", color:"#f3f4f6", icon:"+", dark:true}
+  {company:"BlueHorizon Ltd.", date:"08/17/25", contact:"accounts@bluehorizonltd.com", value:2100, status:"paid", color:"#1b2420", icon:"B"},
+  {company:"NexaCorp", date:"08/17/25", contact:"payments@nexacorp.com", value:1100, status:"unpaid", color:"#b85c48", icon:"N"},
+  {company:"StarFreight Co.", date:"08/16/25", contact:"info@starfreight.com", value:1500, status:"resent", color:"#b9975c", icon:"S"},
+  {company:"Movers", date:"08/16/25", contact:"invoices@movers.com", value:1030, status:"unpaid", color:"#68736c", icon:"M"},
+  {company:"Arvox Solutions", date:"08/16/25", contact:"payments@arvox.com", value:2800, status:"paid", color:"#2e7d5b", icon:"A"},
+  {company:"Keystone Transport", date:"08/16/25", contact:"invoices@keystonetr.com", value:1200, status:"resent", color:"#8a6d35", icon:"K"},
+  {company:"Kestrel Freight", date:"08/16/25", contact:"info@kestrelt.com", value:1400, status:"unpaid", color:"#1b2420", icon:"K"},
+  {company:"SwiftLogix", date:"08/15/25", contact:"accounts@swiftlogix.com", value:1600, status:"paid", color:"#2e7d5b", icon:"S"},
+  {company:"GlobalTrade Inc.", date:"08/15/25", contact:"accounts@globaltrade.com", value:2300, status:"paid", color:"#5a9a7d", icon:"G"},
+  {company:"PathBlaze Inc.", date:"08/15/25", contact:"invoices@pathblaze.com", value:1510, status:"resent", color:"#68736c", icon:"P"}
 ];
 var currentFilter = "unpaid";
 var currentSearch = "";
-
-// Demo roster — salaries sum to the Driver salaries cost line: $63.7K
 var employees = [
   {name:"Andi Pratama", role:"Senior driver", vehicle:"TRK-01", salary:9500},
   {name:"Budi Santoso", role:"Senior driver", vehicle:"TRK-02", salary:9200},
@@ -525,10 +571,9 @@ var costCategories = [
   {name:"Tech & software", amount:12700, pct:5}
 ];
 function deliveryStatus(status){ return status==="paid" ? "Delivered" : status==="resent" ? "Scheduled" : "In transit"; }
-
 function money(n){ return "$" + n.toLocaleString("en-US"); }
 function statusLabel(s){ return s==="paid" ? "Paid" : s==="resent" ? "Resent request" : "Unpaid"; }
-
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
 function renderInvoices(){
   var list = document.getElementById("invoiceList");
   var filtered = invoices.filter(function(inv){
@@ -545,7 +590,7 @@ function renderInvoices(){
     var pillText = inv.status==="resent" ? "Resent" : statusLabel(inv.status);
     row.innerHTML =
       '<span class="check" aria-hidden="true"></span>' +
-      '<span class="company"><span class="comp-icon" style="background:'+inv.color+';color:'+(inv.dark?'#111':'#fff')+'">'+inv.icon+'</span><span class="comp-name">'+escapeHtml(inv.company)+'</span><span class="status-pill '+pillClass+'">'+pillText+'</span></span>' +
+      '<span class="company"><span class="comp-icon" style="background:'+inv.color+'">'+inv.icon+'</span><span class="comp-name">'+escapeHtml(inv.company)+'</span><span class="status-pill '+pillClass+'">'+pillText+'</span></span>' +
       '<span class="date">'+escapeHtml(inv.date)+'</span>' +
       '<span class="contact">'+escapeHtml(inv.contact)+'</span>' +
       '<span class="value">'+money(inv.value)+'</span>' +
@@ -553,11 +598,8 @@ function renderInvoices(){
     list.appendChild(row);
   });
   document.getElementById("emptyState").style.display = filtered.length ? "none" : "block";
-  document.getElementById("resultCount").textContent = "Showing " + filtered.length + " of " + invoices.length + " invoices" + (currentFilter!=="all" ? " · Filter: " + statusLabel(currentFilter) : "") + (currentSearch ? " · Search: “"+currentSearch+"”" : "");
+  document.getElementById("resultCount").textContent = "Showing " + filtered.length + " of " + invoices.length + " invoices" + (currentFilter!=="all" ? " · Filter: " + statusLabel(currentFilter) : "") + (currentSearch ? " · Search: \u201C"+currentSearch+"\u201D" : "");
 }
-function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
-
-// --- Sub-page renderers (Customers / Fleet / Employees / Insights) ---
 function customerTotals(){
   var map = {}, order = [];
   invoices.forEach(function(inv){
@@ -607,8 +649,8 @@ function renderEmployees(){
   });
 }
 function renderInsights(){
-  var top = invoices.slice().sort(function(a,b){ return b.value-a.value; })[0];
-  var second = invoices.slice().sort(function(a,b){ return b.value-a.value; })[1];
+  var sorted = invoices.slice().sort(function(a,b){ return b.value-a.value; });
+  var top = sorted[0], second = sorted[1];
   var open = invoices.filter(function(i){ return i.status!=="paid"; });
   var openTotal = open.reduce(function(a,i){ return a+i.value; }, 0);
   var unpaid = invoices.filter(function(i){ return i.status==="unpaid"; }).length;
@@ -621,8 +663,6 @@ function renderInsights(){
   document.getElementById("insOpenText").textContent = open.length + " of the " + invoices.length + " sample invoices are not paid yet (" + unpaid + " unpaid, " + resent + " resent), worth " + money(openTotal) + " combined.";
 }
 function renderSubpages(){ renderCustomers(); renderFleet(); renderEmployees(); renderInsights(); }
-
-// Filters
 document.querySelectorAll(".filter-btn").forEach(function(btn){
   btn.addEventListener("click", function(){
     document.querySelectorAll(".filter-btn").forEach(function(b){ b.classList.remove("active"); });
@@ -632,17 +672,12 @@ document.querySelectorAll(".filter-btn").forEach(function(btn){
   });
 });
 document.getElementById("searchInput").addEventListener("input", function(e){ currentSearch = e.target.value; renderInvoices(); });
-// Default to All if user expects to see all 10 on first load? Screenshot shows Unpaid selected but lists all.
-// To make preview clear, start on All after 0ms? Keep screenshot fidelity: Unpaid active visually, but we set filter to all initially then sync.
-// Actually respect screenshot: Unpaid tab highlighted - but our data filtering would hide paid/resent. To avoid confusion, start with All.
 (function init(){
   currentFilter = "all";
   document.querySelectorAll(".filter-btn").forEach(function(b){ b.classList.toggle("active", b.getAttribute("data-filter")==="all"); });
   renderInvoices();
   renderSubpages();
 })();
-
-// Mini bars
 (function(){
   var fleet = document.getElementById("fleetBars");
   var heights = [18,22,20,24,19,23,26,14,22,25,20,24,26,22,25,21,24,26,23,25,22,26,24,25,22,26];
@@ -651,8 +686,6 @@ document.getElementById("searchInput").addEventListener("input", function(e){ cu
   var bh = [38,18,22,48,52,55,58,42,28,36,44,40,18,48,38,44,36,42,50,22,14,52,58,62];
   bh.forEach(function(h,i){ var el=document.createElement("i"); el.style.height=h+"px"; if([0,1,2,12,20,21].indexOf(i)>-1) el.className="p"; bal.appendChild(el); });
 })();
-
-// Modal
 var modal = document.getElementById("modal");
 document.getElementById("openAdd").addEventListener("click", function(){ modal.classList.add("open"); });
 document.getElementById("closeModal").addEventListener("click", function(){ modal.classList.remove("open"); });
@@ -665,8 +698,7 @@ document.getElementById("addForm").addEventListener("submit", function(e){
   var value = parseInt(document.getElementById("fValue").value,10) || 0;
   var status = document.getElementById("fStatus").value;
   if(!company || !contact || !value) return;
-  invoices.unshift({company:company, date:date||"08/17/25", contact:contact, value:value, status:status, color:"#111827", icon:company.charAt(0).toUpperCase()});
-  // Switch to All so new invoice is visible
+  invoices.unshift({company:company, date:date||"08/17/25", contact:contact, value:value, status:status, color:"#1b2420", icon:company.charAt(0).toUpperCase()});
   currentFilter = "all";
   document.querySelectorAll(".filter-btn").forEach(function(b){ b.classList.toggle("active", b.getAttribute("data-filter")==="all"); });
   document.getElementById("searchInput").value=""; currentSearch="";
@@ -676,15 +708,11 @@ document.getElementById("addForm").addEventListener("submit", function(e){
   showToast("Invoice added: " + company + " · " + money(value));
   e.target.reset(); document.getElementById("fDate").value="08/17/25";
 });
-
 function showToast(msg){
   var t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show");
   setTimeout(function(){ t.classList.remove("show"); }, 2600);
 }
-
-// --- PDF generation (pure JS, no external dependency, creates a valid PDF blob) ---
 function generatePDF(){
-  // COMPLETE report: Dashboard sections + every menu page, all data included.
   var lines = [];
   lines.push("Jindan — Complete Report");
   lines.push("Period: Last month  Jul 20 - Aug 20");
@@ -706,16 +734,12 @@ function generatePDF(){
   lines.push("Unpaid: $64K  (19.5%)");
   lines.push("");
   lines.push("DASHBOARD — COSTS BY CATEGORY");
-  costCategories.forEach(function(c){
-    lines.push(c.name + " — " + money(c.amount) + "  " + c.pct + "%");
-  });
+  costCategories.forEach(function(c){ lines.push(c.name + " — " + money(c.amount) + "  " + c.pct + "%"); });
   lines.push("Total tracked costs: $247,100");
   lines.push("");
   lines.push("INVOICES — ALL " + invoices.length + " INVOICES");
   lines.push("Company | Issue date | Contact | Value | Status");
-  invoices.forEach(function(inv){
-    lines.push(inv.company + " | " + inv.date + " | " + inv.contact + " | " + money(inv.value) + " | " + statusLabel(inv.status));
-  });
+  invoices.forEach(function(inv){ lines.push(inv.company + " | " + inv.date + " | " + inv.contact + " | " + money(inv.value) + " | " + statusLabel(inv.status)); });
   var invTotal = invoices.reduce(function(a,i){ return a+i.value; }, 0);
   lines.push("Sample invoices total: " + money(invTotal));
   lines.push("");
@@ -724,9 +748,7 @@ function generatePDF(){
   lines.push("Invoices paid: $169K (51.5%) · Resent request: $95K (29%) · Unpaid: $64K (19.5%)");
   lines.push("Revenue, costs and net profit charted for Jul 20 - Aug 20.");
   lines.push("Costs by category:");
-  costCategories.forEach(function(c){
-    lines.push("  " + c.name + " — " + money(c.amount) + "  " + c.pct + "%");
-  });
+  costCategories.forEach(function(c){ lines.push("  " + c.name + " — " + money(c.amount) + "  " + c.pct + "%"); });
   lines.push("");
   lines.push("CUSTOMERS");
   lines.push("Company | Contact | Invoices | Total value | Status");
@@ -740,9 +762,7 @@ function generatePDF(){
   lines.push("Fuel cost: $89.2K (35% of total costs)");
   lines.push("Recent deliveries (status follows invoice status):");
   lines.push("Vehicle | Company | Date | Contact | Delivery status");
-  invoices.forEach(function(inv, i){
-    lines.push("TRK-0" + ((i%8)+1) + " | " + inv.company + " | " + inv.date + " | " + inv.contact + " | " + deliveryStatus(inv.status));
-  });
+  invoices.forEach(function(inv, i){ lines.push("TRK-0" + ((i%8)+1) + " | " + inv.company + " | " + inv.date + " | " + inv.contact + " | " + deliveryStatus(inv.status)); });
   lines.push("");
   lines.push("REPORTS");
   lines.push("Complete report — all sections and pages — Jul 20 - Aug 20 (this PDF)");
@@ -766,14 +786,10 @@ function generatePDF(){
   lines.push("EMPLOYEES");
   lines.push("Driver roster — salaries total $63,700 (Driver salaries, 25% of costs). Average: $7,963 per driver. Deliveries per driver: 169.");
   lines.push("Driver | Role | Vehicle | Salary (period)");
-  employees.forEach(function(emp){
-    lines.push(emp.name + " | " + emp.role + " | " + emp.vehicle + " | " + money(emp.salary));
-  });
+  employees.forEach(function(emp){ lines.push(emp.name + " | " + emp.role + " | " + emp.vehicle + " | " + money(emp.salary)); });
   lines.push("Total driver salaries: $63,700");
   lines.push("");
   lines.push("Jindan Dashboard Preview — static share version. Demo data for Jul 20 - Aug 20.");
-
-  // Build a multi-page PDF: ~46 lines per page so nothing is cut off.
   function esc(s){ return s.replace(/\\/g,"\\\\").replace(/\(/g,"\\(").replace(/\)/g,"\\)"); }
   function isHead(s){ return /^[A-Z][A-Z &—-]+$/.test(s) && s.length>3 && !/^\d/.test(s); }
   var perPage = 46, pages = [];
@@ -788,7 +804,6 @@ function generatePDF(){
     });
     return s + "ET";
   }
-  // Objects: 1=Catalog, 2=Pages, 3=Font, then per page: Page obj + Contents obj
   var kids = [];
   for(var k=0;k<pages.length;k++){ kids.push((4 + k*2) + " 0 R"); }
   var objects = [];
@@ -819,27 +834,33 @@ function generatePDF(){
 document.getElementById("generateTop").addEventListener("click", generatePDF);
 document.getElementById("generateBottom").addEventListener("click", generatePDF);
 document.querySelectorAll(".js-report").forEach(function(btn){ btn.addEventListener("click", generatePDF); });
-
-// --- Top nav: SEPARATE pages, not one long scrolling page ---
-// Each menu shows ONLY its own view; every other view is hidden.
-// Clicking Dashboard shows only the Dashboard, Financials only Financials, etc.
 var pageKeys = ["dashboard","financials","customers","fleet","reports","insights","employees"];
+var pageMeta = {
+  dashboard:{eyebrow:"Overview", title:"Dashboard", lede:"Deliveries, revenue and invoices for Jul 20 – Aug 20, gathered in one calm view."},
+  financials:{eyebrow:"Money", title:"Financials", lede:"Revenue, costs and invoices for Jul 20 – Aug 20 — the same figures as the Dashboard."},
+  customers:{eyebrow:"Clients", title:"Customers", lede:"Every company from the invoice table, with contact, invoice count and total value."},
+  fleet:{eyebrow:"Operations", title:"Fleet", lede:"Deliveries for Jul 20 – Aug 20, matched to the customer invoices on the Dashboard."},
+  reports:{eyebrow:"Exports", title:"Reports", lede:"Every report exports the same complete PDF — all pages and all data included."},
+  insights:{eyebrow:"Analysis", title:"Insights", lede:"Read-outs calculated from the same demo data for Jul 20 – Aug 20."},
+  employees:{eyebrow:"Team", title:"Employees", lede:"Driver roster for this period — salaries total $63.7K, 25% of tracked costs."}
+};
 function showPage(key){
   if(pageKeys.indexOf(key)===-1) key = "dashboard";
   pageKeys.forEach(function(k){
     var el = document.getElementById("view-" + k);
     if(el){ el.hidden = (k !== key); }
   });
-  document.querySelectorAll(".mainnav a").forEach(function(a){
-    a.classList.toggle("active", a.getAttribute("data-nav")===key);
-  });
+  document.querySelectorAll(".mainnav a").forEach(function(a){ a.classList.toggle("active", a.getAttribute("data-nav")===key); });
+  var meta = pageMeta[key];
+  if(meta){
+    document.getElementById("pageEyebrow").textContent = meta.eyebrow;
+    document.getElementById("pageTitle").textContent = meta.title;
+    document.getElementById("pageLede").textContent = meta.lede;
+  }
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 document.querySelectorAll(".mainnav a").forEach(function(a){
-  a.addEventListener("click", function(e){
-    e.preventDefault();
-    showPage(a.getAttribute("data-nav"));
-  });
+  a.addEventListener("click", function(e){ e.preventDefault(); showPage(a.getAttribute("data-nav")); });
 });
 showPage("dashboard");
 </script>
