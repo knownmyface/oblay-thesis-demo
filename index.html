@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="color-scheme" content="light"/>
+<link rel="icon" href="data:,"/>
+<title>Sypher Dashboard Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#c8c8c8; --card:#ffffff; --ink:#111111; --muted:#6b7280; --muted2:#9ca3af;
+  --line:#eeeeee; --line2:#e5e7eb;
+  --green:#22c55e; --green2:#16a34a; --green-light:#dcfce7;
+  --lime:#cddc39; --lime2:#a3e635;
+  --pink:#db2777; --pink2:#ec4899;
+  --yellow:#facc15;
+  --radius:18px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit}
+button{cursor:pointer;min-height:36px}
+a{color:inherit;text-decoration:none}
+
+/* Page shell like screenshot - gray backdrop, white card */
+.page{ min-height:100vh; background:#cfcfcf; padding:28px 18px 28px; }
+.shell{ max-width:1420px; margin:0 auto; background:var(--card); border-radius:18px; box-shadow:0 10px 40px rgba(0,0,0,.18), 0 2px 10px rgba(0,0,0,.08); overflow:hidden; }
+
+/* Top nav */
+.topbar{ display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 22px 10px; border-bottom:1px solid #f3f4f6; flex-wrap:wrap; }
+.brand{ display:flex; align-items:center; gap:9px; font-weight:800; letter-spacing:-.02em; font-size:17px; white-space:nowrap; }
+.logo{ width:28px;height:28px;background:#111;color:#fff;border-radius:7px;display:grid;place-items:center;font-weight:900;font-size:15px; line-height:1 }
+.brand span{font-weight:400;color:#9ca3af;margin-left:2px}
+.mainnav{ display:flex; gap:28px; align-items:center; flex-wrap:wrap; justify-content:center; }
+.mainnav a{ font-size:13.5px; font-weight:500; color:#6b7280; padding:8px 2px; position:relative; }
+.mainnav a.active{ color:#111; font-weight:600 }
+.mainnav a.active::after{ content:""; position:absolute; left:0; right:0; bottom:-11px; height:2px; background:#111; border-radius:2px }
+.top-actions{ display:flex; align-items:center; gap:12px }
+.btn-report{ background:#fff; border:1px solid #e5e7eb; padding:8px 14px; border-radius:999px; font-size:13px; font-weight:600; box-shadow:0 1px 2px rgba(0,0,0,.05) }
+.btn-report:hover{ background:#111; color:#fff; border-color:#111 }
+.avatar{ width:32px;height:32px;border-radius:50%; background:linear-gradient(135deg,#fde68a,#f59e0b); display:grid; place-items:center; overflow:hidden; border:2px solid #fff; box-shadow:0 0 0 1px #e5e7eb; font-size:16px }
+
+.subbar{ display:flex; justify-content:space-between; align-items:center; gap:12px; padding:9px 22px; background:#fafafa; border-bottom:1px solid #f3f4f6; font-size:12px; color:#6b7280; flex-wrap:wrap }
+.subbar b{ color:#374151; font-weight:600 }
+.subbar .left{ display:flex; gap:18px; flex-wrap:wrap; align-items:center }
+.pill-period{ display:inline-flex; align-items:center; gap:6px }
+.manage{ display:flex; align-items:center; gap:6px; color:#6b7280; font-size:12px }
+
+/* Main grid */
+.grid{ display:grid; grid-template-columns: .92fr 1.08fr; gap:0; }
+.leftcol{ padding:22px 22px 20px 26px; border-right:1px solid #f3f4f6; display:flex; flex-direction:column; gap:26px }
+.rightcol{ padding:22px 22px 20px 22px; }
+
+.section-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:16px }
+.section-head h2{ font-size:17px; line-height:1; margin:0; font-weight:700; letter-spacing:-.02em }
+.dots{ color:#9ca3af; letter-spacing:2px; font-weight:700; border:0;background:transparent; min-height:28px; padding:0 4px }
+
+/* Deliveries */
+.deliv-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px }
+.metric label{ display:block; font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:#9ca3af; font-weight:600; margin-bottom:6px }
+.metric .val{ font-size:15px; font-weight:700; display:flex; align-items:center; gap:6px }
+.metric .val small{ color:var(--green2); font-size:11px; font-weight:700 }
+.bars-mini{ display:flex; align-items:flex-end; gap:2px; height:28px; margin-top:12px; position:relative }
+.bars-mini i{ display:block; width:4px; border-radius:2px; background:var(--green); flex:1 }
+.bars-mini i.y{ background:var(--yellow) } .bars-mini i.l{ background:var(--lime2) }
+.bars-mini::after{ content:"▼"; position:absolute; right:6px; top:-6px; font-size:8px; color:#111 }
+.gradient-bar{ height:7px; border-radius:999px; background:linear-gradient(90deg,#f97316,#facc15,#a3e635,#22c55e); margin-top:28px; position:relative }
+.gradient-bar::after{ content:"▼"; position:absolute; right:18px; top:-12px; font-size:8px }
+.spark{ margin-top:8px; width:100%; height:36px }
+
+/* Revenue */
+.legend{ display:flex; gap:16px; align-items:center; flex-wrap:wrap; margin-top:10px }
+.legend span{ display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:500 }
+.legend i{ width:14px;height:14px;border-radius:4px;display:inline-block }
+.legend .vs{ margin-left:auto; color:#9ca3af; font-size:12px; display:flex; align-items:center; gap:6px }
+.switch{ width:28px;height:16px;background:#e5e7eb;border-radius:999px; position:relative; display:inline-block }
+.switch::after{ content:""; position:absolute; width:12px;height:12px;background:#fff;border-radius:50%; top:2px; left:2px; box-shadow:0 1px 2px rgba(0,0,0,.2) }
+
+/* Bottom row */
+.bottom-row{ display:grid; grid-template-columns:1fr 1fr; gap:28px }
+.balance-bars{ display:flex; align-items:flex-end; gap:3px; height:82px; margin-top:12px; border-bottom:1px dashed #e5e7eb; padding-bottom:2px; position:relative }
+.balance-bars i{ flex:1; border-radius:3px 3px 0 0; background:var(--green); min-height:8px }
+.balance-bars i.p{ background:var(--pink2) }
+.target{ font-size:11px; color:#9ca3af }
+.target b{ color:#6b7280 }
+
+.cost-seg{ display:flex; height:8px; border-radius:999px; overflow:hidden; gap:2px; margin:6px 0 14px }
+.cost-seg i{ display:block; height:100% }
+.cost-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:7px }
+.cost-list li{ display:grid; grid-template-columns:10px 1fr auto 36px; align-items:center; gap:8px; font-size:12.5px }
+.cost-list li b{ font-weight:600 } .cost-list li em{ font-style:normal; text-align:right; color:#374151; font-weight:600 }
+.dot{ width:7px;height:7px;border-radius:50% }
+
+/* Invoices */
+.inv-summary{ display:grid; grid-template-columns:1.6fr 1fr .7fr; gap:0; border-bottom:1px solid #f3f4f6; }
+.inv-box{ padding:4px 14px 14px 0; border-right:1px solid #f3f4f6 }
+.inv-box + .inv-box{ padding-left:14px } .inv-box:last-child{ border-right:0 }
+.inv-box label{ font-size:10px; letter-spacing:.07em; text-transform:uppercase; color:#9ca3af; font-weight:600 }
+.inv-box .amt{ font-size:15px; font-weight:700; margin-top:4px }
+.inv-progress{ display:flex; height:6px; border-radius:999px; overflow:hidden; margin-top:6px; background:#f3f4f6 }
+.inv-progress i{ display:block }
+.inv-pcts{ display:grid; grid-template-columns:1.6fr 1fr .7fr; font-size:11px; color:#6b7280; padding:6px 0 0 }
+.inv-pcts span:nth-child(2){ padding-left:14px } .inv-pcts span:nth-child(3){ padding-left:14px }
+
+.filters{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin:18px 0 10px }
+.filter-btn{ border:0; background:transparent; padding:7px 10px; border-radius:999px; font-size:13px; font-weight:500; color:#6b7280; min-height:36px }
+.filter-btn.active{ background:#111; color:#fff; font-weight:600 }
+.filter-btn[data-filter="unpaid"].active{ background:#fff; color:#111; box-shadow:inset 0 0 0 1px #e5e7eb }
+.searchbox{ margin-left:auto; display:flex; align-items:center; gap:6px; background:#fafafa; border:1px solid #f3f4f6; border-radius:999px; padding:0 10px; min-height:36px; flex:1; max-width:210px }
+.searchbox input{ border:0; outline:0; background:transparent; width:100%; font-size:13px; min-height:34px }
+.searchbox span{ color:#9ca3af; font-size:12px; white-space:nowrap }
+.btn-add{ background:#111; color:#fff; border:0; border-radius:999px; padding:8px 12px; font-size:12.5px; font-weight:600; white-space:nowrap }
+
+.table-head,.tr{ display:grid; grid-template-columns:24px 1.62fr .68fr 1.32fr .52fr 14px; align-items:center; gap:6px; padding:9px 4px }
+.table-head{ font-size:12px; font-weight:600; color:#111; border-bottom:1px solid #f3f4f6 }
+.tr{ border-bottom:1px solid #f9fafb; font-size:13px }
+.tr:hover{ background:#fafafa }
+.tr .company{ display:flex; align-items:center; gap:9px; font-weight:500; min-width:0 }
+.comp-icon{ width:26px;height:26px;border-radius:50%; display:grid; place-items:center; font-size:11px; font-weight:800; color:#fff; flex-shrink:0 }
+.comp-name{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.status-pill{ font-size:9.5px; font-weight:700; letter-spacing:.02em; padding:2px 6px; border-radius:999px; margin-left:2px; vertical-align:middle; white-space:nowrap; flex-shrink:0 }
+.status-paid{ background:#dcfce7; color:#166534 } .status-unpaid{ background:#fee2e2; color:#991b1b } .status-resent{ background:#fef9c3; color:#854d0e }
+.tr .date{ color:#374151; font-size:12.5px } .tr .contact{ color:#4b5563; font-size:12.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis } .tr .value{ text-align:right; font-weight:600 }
+.check{ width:16px;height:16px;border:1.5px solid #d1d5db;border-radius:4px; display:inline-block }
+.rowdots{ color:#9ca3af; text-align:center }
+.table-foot{ display:flex; justify-content:space-between; align-items:center; padding:12px 4px 2px; font-size:12px; color:#6b7280; flex-wrap:wrap; gap:10px }
+.empty{ padding:28px 10px; text-align:center; color:#6b7280; font-size:13px; display:none }
+
+/* Modal */
+.modal-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.45); display:none; align-items:center; justify-content:center; padding:16px; z-index:50 }
+.modal-backdrop.open{ display:flex }
+.modal{ background:#fff; width:100%; max-width:440px; border-radius:16px; padding:20px; box-shadow:0 20px 50px rgba(0,0,0,.25) }
+.modal h3{ margin:0 0 4px; font-size:17px } .modal p{ margin:0 0 14px; color:#6b7280; font-size:13px }
+.field{ margin-bottom:10px } .field label{ display:block; font-size:12px; font-weight:600; margin-bottom:5px }
+.field input,.field select{ width:100%; border:1px solid #e5e7eb; border-radius:10px; padding:10px 12px; min-height:42px; background:#fff }
+.modal-actions{ display:flex; gap:8px; justify-content:flex-end; margin-top:14px }
+.btn-cancel{ background:#fff; border:1px solid #e5e7eb; border-radius:999px; padding:8px 14px; font-weight:600 }
+.btn-save{ background:#111; color:#fff; border:0; border-radius:999px; padding:8px 16px; font-weight:700 }
+.toast{ position:fixed; left:50%; transform:translateX(-50%) translateY(20px); bottom:18px; background:#111; color:#fff; padding:10px 14px; border-radius:999px; font-size:13px; font-weight:600; opacity:0; pointer-events:none; transition:.25s; z-index:60; max-width:92vw; text-align:center }
+.toast.show{ opacity:1; transform:translateX(-50%) translateY(0) }
+
+/* Print / PDF fallback */
+@media print{ body{background:#fff} .page{padding:0} .shell{box-shadow:none; border-radius:0} .btn-report,.btn-add,.modal-backdrop{display:none!important} }
+
+@media (max-width:1020px){
+  .grid{ grid-template-columns:1fr } .leftcol{ border-right:0; border-bottom:1px solid #f3f4f6 } .mainnav{ order:3; width:100%; justify-content:flex-start; overflow:auto; padding-bottom:4px } .mainnav a.active::after{ bottom:-2px }
+}
+@media (max-width:640px){
+  .page{ padding:0; background:#fff } .shell{ border-radius:0; box-shadow:none }
+  .topbar{ padding:12px 14px } .subbar,.leftcol,.rightcol{ padding-left:14px; padding-right:14px }
+  .deliv-grid{ grid-template-columns:1fr 1fr; gap:14px } .deliv-grid .metric:last-child{ grid-column:span 2 }
+  .bottom-row{ grid-template-columns:1fr }
+  .inv-summary{ grid-template-columns:1fr 1fr 1fr } .inv-box{ padding-right:8px } .inv-box + .inv-box{ padding-left:8px }
+  .searchbox{ max-width:none; flex-basis:100%; order:3; margin-left:0 }
+  .table-head{ display:none }
+  .tr{ grid-template-columns:26px 1fr auto; grid-template-rows:auto auto; padding:12px 4px }
+  .tr .date{ grid-column:2; font-size:12px; color:#6b7280 } .tr .contact{ grid-column:2; } .tr .value{ grid-column:3; grid-row:1 } .rowdots{ display:none }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="shell" id="reportArea">
+    <!-- TOP NAV -->
+    <header class="topbar">
+      <div class="brand"><div class="logo">▦</div> Sypher <span>:</span></div>
+      <nav class="mainnav" aria-label="Main">
+        <a href="#" class="active">Dashboard</a>
+        <a href="#">Financials</a>
+        <a href="#">Customers</a>
+        <a href="#">Fleet</a>
+        <a href="#">Reports</a>
+        <a href="#">Insights</a>
+        <a href="#">Employees</a>
+      </nav>
+      <div class="top-actions">
+        <button class="btn-report" id="generateTop">Generate Report</button>
+        <div class="avatar" aria-label="Profile">👤</div>
+      </div>
+    </header>
+    <div class="subbar">
+      <div class="left">
+        <span class="pill-period">▣ <b>Changes:</b>&nbsp; Last month (Jul 20 - Aug 20) ⌄</span>
+        <span>Last update: 3 min ago</span>
+      </div>
+      <div class="manage">◎ Manage layout</div>
+    </div>
+
+    <div class="grid">
+      <!-- LEFT -->
+      <div class="leftcol">
+        <!-- Deliveries -->
+        <section>
+          <div class="section-head"><h2>Deliveries</h2><button class="dots" aria-label="More">⋮</button></div>
+          <div class="deliv-grid">
+            <div class="metric">
+              <label>Fleet utilization</label><div class="val">95.1%</div>
+              <div class="bars-mini" id="fleetBars"></div>
+            </div>
+            <div class="metric">
+              <label>On-time delivery rate</label><div class="val">97.9%</div>
+              <div class="gradient-bar"></div>
+            </div>
+            <div class="metric">
+              <label>Total deliveries</label><div class="val">1,352 <small>↑ 3.5%</small></div>
+              <svg class="spark" viewBox="0 0 180 36" preserveAspectRatio="none" aria-hidden="true">
+                <defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22c55e" stop-opacity=".25"/><stop offset="100%" stop-color="#22c55e" stop-opacity="0"/></linearGradient></defs>
+                <path d="M0,26 L15,22 L30,24 L45,18 L60,20 L75,14 L90,16 L105,10 L120,12 L135,8 L150,10 L165,6 L180,7 L180,36 L0,36 Z" fill="url(#sg)"/>
+                <path d="M0,26 L15,22 L30,24 L45,18 L60,20 L75,14 L90,16 L105,10 L120,12 L135,8 L150,10 L165,6 L180,7" fill="none" stroke="#22c55e" stroke-width="1.8" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        </section>
+
+        <!-- Revenue and costs -->
+        <section>
+          <div class="section-head"><h2>Revenue and costs</h2><div style="display:flex;gap:8px;align-items:center;color:#6b7280"><span style="font-size:13px">∿ &nbsp; 📊</span><button class="dots">⋮</button></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:#9ca3af"><span>Revenue, net profit, $</span><span>Costs, $</span></div>
+          <svg viewBox="0 0 520 190" style="width:100%;height:auto;display:block;margin-top:6px" role="img" aria-label="Revenue and costs chart">
+            <g font-size="10" fill="#9ca3af">
+              <text x="0" y="22">11K</text><text x="0" y="62">10K</text><text x="0" y="102">9K</text><text x="0" y="142">8K</text><text x="0" y="178">7K</text>
+              <text x="500" y="22">4K</text><text x="500" y="72">3K</text><text x="500" y="122">2K</text><text x="500" y="168">1K</text><text x="505" y="185">0</text>
+              <text x="28" y="188">20</text><text x="245" y="188">Aug</text><text x="365" y="188">10</text><text x="485" y="188">20</text>
+            </g>
+            <g stroke="#f3f4f6"><line x1="28" y1="20" x2="495" y2="20"/><line x1="28" y1="60" x2="495" y2="60"/><line x1="28" y1="100" x2="495" y2="100"/><line x1="28" y1="140" x2="495" y2="140"/></g>
+            <defs><linearGradient id="rg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22c55e" stop-opacity=".18"/><stop offset="100%" stop-color="#22c55e" stop-opacity="0"/></linearGradient></defs>
+            <path d="M28,78 L70,52 L110,28 L150,62 L190,48 L230,38 L270,46 L310,30 L350,42 L390,28 L430,36 L470,26 L495,30 L495,170 L28,170 Z" fill="url(#rg)"/>
+            <path d="M28,78 L70,52 L110,28 L150,62 L190,48 L230,38 L270,46 L310,30 L350,42 L390,28 L430,36 L470,26 L495,30" fill="none" stroke="#22c55e" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M28,135 L70,128 L110,92 L150,138 L190,118 L230,132 L270,108 L310,124 L350,96 L390,70 L430,118 L470,132 L495,108" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M28,148 L70,132 L110,108 L150,142 L190,126 L230,138 L270,112 L310,140 L350,96 L390,138 L430,102 L470,128 L495,142" fill="none" stroke="#db2777" stroke-width="1.8" stroke-linejoin="round"/>
+          </svg>
+          <div class="legend">
+            <span><i style="background:#22c55e"></i> Revenue</span>
+            <span><i style="background:#ec4899"></i> Costs</span>
+            <span><i style="background:#111"></i> Net profit</span>
+            <span class="vs"><span class="switch"></span> Vs. previous period</span>
+          </div>
+        </section>
+
+        <!-- Bottom -->
+        <div class="bottom-row">
+          <section>
+            <div class="section-head"><h2 style="font-size:15px">Balance and costs</h2><button class="dots">⋮</button></div>
+            <div style="display:flex;justify-content:space-between;align-items:flex-start">
+              <div><div style="font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:#9ca3af;font-weight:600">Cash balance</div><div style="font-size:16px;font-weight:800;margin-top:4px">$126K</div></div>
+              <div class="target">Target: <b>&gt;$100K</b></div>
+            </div>
+            <div class="balance-bars" id="balanceBars"></div>
+          </section>
+          <section>
+            <div class="section-head"><h2 style="font-size:15px">Costs by category</h2><button class="dots">⋮</button></div>
+            <div class="cost-seg">
+              <i style="width:35%;background:#22c55e"></i><i style="width:25%;background:#4ade80"></i><i style="width:15%;background:#a3e635"></i><i style="width:10%;background:#facc15"></i><i style="width:7%;background:#e7e5a0"></i><i style="width:5%;background:#e5e7eb"></i>
+            </div>
+            <ul class="cost-list">
+              <li><span class="dot" style="background:#22c55e"></span><span>Fuel</span><b>$89.2K</b><em>35%</em></li>
+              <li><span class="dot" style="background:#4ade80"></span><span>Driver salaries</span><b>$63.7K</b><em>25%</em></li>
+              <li><span class="dot" style="background:#a3e635"></span><span>Vehicle maintenance</span><b>$38.2K</b><em>15%</em></li>
+              <li><span class="dot" style="background:#facc15"></span><span>Warehousing</span><b>$25.5K</b><em>10%</em></li>
+              <li><span class="dot" style="background:#d6d68a"></span><span>Insurance</span><b>$17.8K</b><em>7%</em></li>
+              <li><span class="dot" style="background:#d1d5db"></span><span>Tech &amp; software</span><b>$12.7K</b><em>5%</em></li>
+            </ul>
+          </section>
+        </div>
+      </div>
+
+      <!-- RIGHT / INVOICES -->
+      <div class="rightcol">
+        <section>
+          <div class="section-head"><h2>Invoices</h2><button class="dots">⋮</button></div>
+          <div class="inv-summary">
+            <div class="inv-box"><label>Paid</label><div class="amt">$169K</div></div>
+            <div class="inv-box"><label>Resent request</label><div class="amt">$95K</div></div>
+            <div class="inv-box"><label>Unpaid</label><div class="amt">$64K</div></div>
+          </div>
+          <div class="inv-progress"><i style="width:51.5%;background:#22c55e"></i><i style="width:29%;background:#cddc39"></i><i style="width:19.5%;background:#f3f4f6"></i></div>
+          <div class="inv-pcts"><span>51.5%</span><span>29 %</span><span>19.5%</span></div>
+
+          <div class="filters" role="tablist" aria-label="Invoice filters">
+            <button class="filter-btn" data-filter="all">All</button>
+            <button class="filter-btn active" data-filter="unpaid">Unpaid</button>
+            <button class="filter-btn" data-filter="resent">Resent request</button>
+            <button class="filter-btn" data-filter="paid">Paid</button>
+            <div class="searchbox"><span>⌕</span><input id="searchInput" type="search" placeholder="Search" aria-label="Search invoices"/><span>⌘ F</span></div>
+            <button class="btn-add" id="openAdd">+ Add Invoice</button>
+          </div>
+          <div style="font-size:12px;color:#6b7280;margin-bottom:4px" id="resultCount"></div>
+
+          <div class="table-head"><span></span><span>Company</span><span>Issue date ⌄</span><span>Contact</span><span style="text-align:right">Value</span><span></span></div>
+          <div id="invoiceList"></div>
+          <div class="empty" id="emptyState">No invoices match your search. Try another company name or clear the filter.</div>
+
+          <div class="table-foot">
+            <span>Show by &nbsp;<b style="color:#111">10 ⌄</b></span>
+            <span style="display:flex;gap:14px;align-items:center"><b style="color:#111">1</b> / 4 <span style="font-size:16px">›</span></span>
+          </div>
+
+          <button class="btn-report" id="generateBottom" style="width:100%;margin-top:16px;padding:11px">⬇ Generate Report — Export PDF</button>
+          <p style="font-size:11.5px;color:#9ca3af;line-height:1.5;margin:10px 2px 0">Period: Last month · Jul 20 – Aug 20. Preview version — invoices you add here are only kept until you refresh the page.</p>
+        </section>
+      </div>
+    </div>
+  </div>
+  <p style="text-align:center;color:#6b7280;font-size:12px;margin:14px 0 0">Sypher Dashboard Preview · Static share version · No login required</p>
+</div>
+
+<!-- Add Invoice Modal -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h3 id="modalTitle">Add invoice</h3>
+    <p>Add a new invoice to try the table. It will appear instantly — and disappear after refresh in this preview.</p>
+    <form id="addForm">
+      <div class="field"><label for="fCompany">Company</label><input id="fCompany" required placeholder="e.g. BlueHorizon Ltd."/></div>
+      <div class="field"><label for="fDate">Issue date</label><input id="fDate" required value="08/17/25" placeholder="08/17/25"/></div>
+      <div class="field"><label for="fContact">Contact (email)</label><input id="fContact" type="email" required placeholder="accounts@company.com"/></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="field"><label for="fValue">Value ($)</label><input id="fValue" type="number" min="1" step="1" required placeholder="2100"/></div>
+        <div class="field"><label for="fStatus">Status</label><select id="fStatus"><option value="unpaid">Unpaid</option><option value="paid">Paid</option><option value="resent">Resent request</option></select></div>
+      </div>
+      <div class="modal-actions"><button type="button" class="btn-cancel" id="closeModal">Cancel</button><button type="submit" class="btn-save">Add Invoice</button></div>
+    </form>
+  </div>
+</div>
+<div class="toast" id="toast">Done</div>
+
+<script>
+// Data - exactly from brief / screenshot
+var invoices = [
+  {company:"BlueHorizon Ltd.", date:"08/17/25", contact:"accounts@bluehorizonltd.com", value:2100, status:"paid", color:"#111827", icon:"◉"},
+  {company:"NexaCorp", date:"08/17/25", contact:"payments@nexacorp.com", value:1100, status:"unpaid", color:"#fce7f3", icon:"N", dark:true},
+  {company:"StarFreight Co.", date:"08/16/25", contact:"info@starfreight.com", value:1500, status:"resent", color:"#4f46e5", icon:"✦"},
+  {company:"Movers", date:"08/16/25", contact:"invoices@movers.com", value:1030, status:"unpaid", color:"#fef08a", icon:"🚚", dark:true},
+  {company:"Arvox Solutions", date:"08/16/25", contact:"payments@arvox.com", value:2800, status:"paid", color:"#111827", icon:"▲"},
+  {company:"Keystone Transport", date:"08/16/25", contact:"invoices@keystonetr.com", value:1200, status:"resent", color:"#f3f4f6", icon:"⬢", dark:true},
+  {company:"Kestrel Freight", date:"08/16/25", contact:"info@kestrelt.com", value:1400, status:"unpaid", color:"#111827", icon:"✕"},
+  {company:"SwiftLogix", date:"08/15/25", contact:"accounts@swiftlogix.com", value:1600, status:"paid", color:"#111827", icon:"⚡"},
+  {company:"GlobalTrade Inc.", date:"08/15/25", contact:"accounts@globaltrade.com", value:2300, status:"paid", color:"#0ea5e9", icon:"❄"},
+  {company:"PathBlaze Inc.", date:"08/15/25", contact:"invoices@pathblaze.com", value:1510, status:"resent", color:"#f3f4f6", icon:"+", dark:true}
+];
+var currentFilter = "unpaid";
+var currentSearch = "";
+
+function money(n){ return "$" + n.toLocaleString("en-US"); }
+function statusLabel(s){ return s==="paid" ? "Paid" : s==="resent" ? "Resent request" : "Unpaid"; }
+
+function renderInvoices(){
+  var list = document.getElementById("invoiceList");
+  var filtered = invoices.filter(function(inv){
+    var okFilter = currentFilter==="all" || inv.status===currentFilter;
+    var q = currentSearch.trim().toLowerCase();
+    var okSearch = !q || inv.company.toLowerCase().indexOf(q)>-1 || inv.contact.toLowerCase().indexOf(q)>-1;
+    return okFilter && okSearch;
+  });
+  list.innerHTML = "";
+  filtered.forEach(function(inv){
+    var row = document.createElement("div");
+    row.className = "tr";
+    var pillClass = inv.status==="paid" ? "status-paid" : inv.status==="resent" ? "status-resent" : "status-unpaid";
+    var pillText = inv.status==="resent" ? "Resent" : statusLabel(inv.status);
+    row.innerHTML =
+      '<span class="check" aria-hidden="true"></span>' +
+      '<span class="company"><span class="comp-icon" style="background:'+inv.color+';color:'+(inv.dark?'#111':'#fff')+'">'+inv.icon+'</span><span class="comp-name">'+escapeHtml(inv.company)+'</span><span class="status-pill '+pillClass+'">'+pillText+'</span></span>' +
+      '<span class="date">'+escapeHtml(inv.date)+'</span>' +
+      '<span class="contact">'+escapeHtml(inv.contact)+'</span>' +
+      '<span class="value">'+money(inv.value)+'</span>' +
+      '<span class="rowdots">⋮</span>';
+    list.appendChild(row);
+  });
+  document.getElementById("emptyState").style.display = filtered.length ? "none" : "block";
+  document.getElementById("resultCount").textContent = "Showing " + filtered.length + " of " + invoices.length + " invoices" + (currentFilter!=="all" ? " · Filter: " + statusLabel(currentFilter) : "") + (currentSearch ? " · Search: “"+currentSearch+"”" : "");
+}
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+
+// Filters
+document.querySelectorAll(".filter-btn").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    document.querySelectorAll(".filter-btn").forEach(function(b){ b.classList.remove("active"); });
+    btn.classList.add("active");
+    currentFilter = btn.getAttribute("data-filter");
+    renderInvoices();
+  });
+});
+document.getElementById("searchInput").addEventListener("input", function(e){ currentSearch = e.target.value; renderInvoices(); });
+// Default to All if user expects to see all 10 on first load? Screenshot shows Unpaid selected but lists all.
+// To make preview clear, start on All after 0ms? Keep screenshot fidelity: Unpaid active visually, but we set filter to all initially then sync.
+// Actually respect screenshot: Unpaid tab highlighted - but our data filtering would hide paid/resent. To avoid confusion, start with All.
+(function init(){
+  currentFilter = "all";
+  document.querySelectorAll(".filter-btn").forEach(function(b){ b.classList.toggle("active", b.getAttribute("data-filter")==="all"); });
+  renderInvoices();
+})();
+
+// Mini bars
+(function(){
+  var fleet = document.getElementById("fleetBars");
+  var heights = [18,22,20,24,19,23,26,14,22,25,20,24,26,22,25,21,24,26,23,25,22,26,24,25,22,26];
+  heights.forEach(function(h,i){ var el=document.createElement("i"); el.style.height=h+"px"; if(i===7) el.className="y"; if(i===3) el.className="l"; fleet.appendChild(el); });
+  var bal = document.getElementById("balanceBars");
+  var bh = [38,18,22,48,52,55,58,42,28,36,44,40,18,48,38,44,36,42,50,22,14,52,58,62];
+  bh.forEach(function(h,i){ var el=document.createElement("i"); el.style.height=h+"px"; if([0,1,2,12,20,21].indexOf(i)>-1) el.className="p"; bal.appendChild(el); });
+})();
+
+// Modal
+var modal = document.getElementById("modal");
+document.getElementById("openAdd").addEventListener("click", function(){ modal.classList.add("open"); });
+document.getElementById("closeModal").addEventListener("click", function(){ modal.classList.remove("open"); });
+modal.addEventListener("click", function(e){ if(e.target===modal) modal.classList.remove("open"); });
+document.getElementById("addForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  var company = document.getElementById("fCompany").value.trim();
+  var date = document.getElementById("fDate").value.trim();
+  var contact = document.getElementById("fContact").value.trim();
+  var value = parseInt(document.getElementById("fValue").value,10) || 0;
+  var status = document.getElementById("fStatus").value;
+  if(!company || !contact || !value) return;
+  invoices.unshift({company:company, date:date||"08/17/25", contact:contact, value:value, status:status, color:"#111827", icon:company.charAt(0).toUpperCase()});
+  // Switch to All so new invoice is visible
+  currentFilter = "all";
+  document.querySelectorAll(".filter-btn").forEach(function(b){ b.classList.toggle("active", b.getAttribute("data-filter")==="all"); });
+  document.getElementById("searchInput").value=""; currentSearch="";
+  renderInvoices();
+  modal.classList.remove("open");
+  showToast("Invoice added: " + company + " · " + money(value));
+  e.target.reset(); document.getElementById("fDate").value="08/17/25";
+});
+
+function showToast(msg){
+  var t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show");
+  setTimeout(function(){ t.classList.remove("show"); }, 2600);
+}
+
+// --- PDF generation (pure JS, no external dependency, creates a valid PDF blob) ---
+function generatePDF(){
+  var lines = [];
+  lines.push("Sypher — Financial Report");
+  lines.push("Period: Last month  Jul 20 - Aug 20");
+  lines.push("Generated: " + new Date().toLocaleDateString("en-US"));
+  lines.push("");
+  lines.push("DELIVERIES");
+  lines.push("Fleet utilization: 95.1%");
+  lines.push("On-time delivery rate: 97.9%");
+  lines.push("Total deliveries: 1,352  (+3.5%)");
+  lines.push("");
+  lines.push("INVOICES SUMMARY");
+  lines.push("Paid: $169K  (51.5%)");
+  lines.push("Resent request: $95K  (29%)");
+  lines.push("Unpaid: $64K  (19.5%)");
+  lines.push("");
+  lines.push("BALANCE AND COSTS");
+  lines.push("Cash balance: $126K   Target: >$100K");
+  lines.push("");
+  lines.push("COSTS BY CATEGORY");
+  lines.push("Fuel — $89.2K  35%");
+  lines.push("Driver salaries — $63.7K  25%");
+  lines.push("Vehicle maintenance — $38.2K  15%");
+  lines.push("Warehousing — $25.5K  10%");
+  lines.push("Insurance — $17.8K  7%");
+  lines.push("Tech & software — $12.7K  5%");
+  lines.push("");
+  lines.push("INVOICES");
+  lines.push("Company | Issue date | Contact | Value | Status");
+  invoices.forEach(function(inv){
+    lines.push(inv.company + " | " + inv.date + " | " + inv.contact + " | " + money(inv.value) + " | " + statusLabel(inv.status));
+  });
+  lines.push("");
+  lines.push("Revenue and costs: Revenue, Costs and Net profit tracked for Jul 20 - Aug 20.");
+  lines.push("Sypher Dashboard Preview — static share version.");
+
+  // Build PDF content stream
+  function esc(s){ return s.replace(/\\/g,"\\\\").replace(/\(/g,"\\(").replace(/\)/g,"\\)"); }
+  var stream = "BT /F1 18 Tf 50 790 Td ";
+  lines.forEach(function(line, idx){
+    if(idx===0){ stream += "/F1 18 Tf (" + esc(line) + ") Tj "; }
+    else if(line==="DELIVERIES"||line==="INVOICES SUMMARY"||line==="BALANCE AND COSTS"||line==="COSTS BY CATEGORY"||line==="INVOICES"){
+      stream += "0 -22 Td /F1 12 Tf (" + esc(line) + ") Tj ";
+    } else if(line===""){
+      stream += "0 -10 Td ";
+    } else {
+      stream += "0 -14 Td /F1 10 Tf (" + esc(line) + ") Tj ";
+    }
+  });
+  stream += "ET";
+  var objects = [];
+  objects[1] = "<< /Type /Catalog /Pages 2 0 R >>";
+  objects[2] = "<< /Type /Pages /Kids [3 0 R] /Count 1 >>";
+  objects[3] = "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>";
+  objects[4] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>";
+  objects[5] = "<< /Length " + stream.length + " >>\nstream\n" + stream + "\nendstream";
+  var pdf = "%PDF-1.4\n";
+  var offsets = [0];
+  for(var i=1;i<=5;i++){ offsets[i]=pdf.length; pdf += i + " 0 obj\n" + objects[i] + "\nendobj\n"; }
+  var xrefPos = pdf.length;
+  pdf += "xref\n0 6\n0000000000 65535 f \n";
+  for(var j=1;j<=5;j++){ pdf += String(offsets[j]).padStart(10,"0") + " 00000 n \n"; }
+  pdf += "trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n" + xrefPos + "\n%%EOF";
+  var blob = new Blob([pdf], {type:"application/pdf"});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url; a.download = "Sypher-Report-Jul20-Aug20.pdf";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
+  showToast("Report downloaded — Sypher-Report-Jul20-Aug20.pdf");
+}
+document.getElementById("generateTop").addEventListener("click", generatePDF);
+document.getElementById("generateBottom").addEventListener("click", generatePDF);
+</script>
+</body>
+</html>
