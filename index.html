@@ -206,9 +206,10 @@ button{cursor:pointer}
   .sidebar{width:100%;height:auto;position:static;padding:18px 18px 14px}
   .brand{padding-bottom:14px}
   .side-label{display:none}
-  .mainnav{flex-direction:row;flex-wrap:nowrap;overflow-x:auto;padding:12px 0 4px;gap:6px}
-  .mainnav a{white-space:nowrap;padding:8px 11px}
+  .mainnav{flex-direction:row;flex-wrap:wrap;overflow:visible;padding:12px 0 4px;gap:6px}
+  .mainnav a{white-space:normal;flex:1 1 22%;justify-content:center;text-align:center;padding:10px 8px;min-height:44px}
   .mainnav a .num{display:none}
+  .mainnav a .dotnav{display:none}
   .side-foot{display:none}
   .main{padding:22px 18px 32px}
   .kpi-row{grid-template-columns:1fr}
@@ -216,6 +217,7 @@ button{cursor:pointer}
   .two-row,.two-col{grid-template-columns:1fr}
 }
 @media (max-width:640px){
+  .mainnav a{flex:1 1 30%;font-size:13.5px;padding:10px 6px}
   .main-head h1{font-size:31px}
   .inv-summary{grid-template-columns:1fr}
   .searchbox{max-width:none;flex-basis:100%;order:3;margin-left:0}
