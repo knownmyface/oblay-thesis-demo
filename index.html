@@ -335,8 +335,26 @@ tr:last-child td{border-bottom:0}
 
     <!-- LAPORAN -->
     <section class="page" id="page-laporan">
-      <div class="hero-row"><div><h2>Laporan</h2><p>Unduh laporan bulanan lengkap — semua bagian masuk dalam satu berkas PDF.</p></div><button class="btn btn-orange" onclick="generatePDF()">⬇ Buat Laporan PDF Bulanan</button></div>
+      <div class="hero-row"><div><h2>Laporan</h2><p>Unduh laporan bulanan lengkap — semua bagian masuk dalam satu berkas PDF.</p></div><button class="btn btn-orange" id="btnExportPDF" onclick="generatePDF()">⬇ Buat Laporan PDF Bulanan</button></div>
       <div class="note" style="margin-bottom:16px"><b>Isi laporan PDF:</b> Ringkasan bisnis, semua transaksi Kasir, Menu &amp; bahan + stok, Resep &amp; produksi, Pembelian, Supplier, Pelanggan, Karyawan, dan Kas &amp; biaya — periode November 2026, Warung Senja Cabang utama. Data yang baru ditambah lewat formulir ikut masuk.</div>
+      <div class="card" id="tutupBukuCard" style="margin-bottom:16px">
+        <div class="card-head"><h3>🔒 Tutup Buku — November 2026</h3><span class="pill pill-red" id="exportStatusPill">Belum di-export</span></div>
+        <p style="color:var(--muted);font-size:14px;line-height:1.65;margin:0 0 12px">Tutup buku mengakhiri periode November 2026: history bulan ini dibersihkan supaya bulan baru mulai lagi dari <b>Rp 0</b>, dan laporan PDF-nya disimpan di <b>Riwayat Laporan</b> di bawah supaya tetap bisa dibuka dan diunduh lagi kapan saja.</p>
+        <div class="alert-err" id="tutupBukuWarn" style="margin:0 0 14px"><b>⚠ Laporan bulan ini belum di-export.</b> Export PDF dulu lewat tombol <b>“Buat Laporan PDF Bulanan”</b> di atas — setelah itu tombol Tutup Buku baru bisa dipakai. Kalau ada transaksi atau pembelian baru setelah export terakhir, export perlu diulang supaya arsipnya lengkap.</div>
+        <div class="note" id="tutupBukuReady" style="display:none;margin:0 0 14px;background:#F0FDF4;border-color:#BBF7D0;color:#166534"><b>✓ Laporan November 2026 sudah di-export.</b> Tombol Tutup Buku sudah bisa diklik. PDF bulan ini akan tersimpan di Riwayat Laporan setelah buku ditutup.</div>
+        <div style="display:grid;gap:6px;font-size:13.5px;color:var(--muted);margin-bottom:14px">
+          <div><b style="color:var(--red)">Dibersihkan:</b> transaksi penjualan, pembelian, dan catatan kas bulan ini.</div>
+          <div><b style="color:var(--green)">Tetap ada:</b> menu, resep, bahan beserta stok saat ini, supplier, pelanggan, dan karyawan.</div>
+        </div>
+        <div class="form-actions" style="margin-top:0">
+          <button class="btn btn-danger" id="btnTutupBuku" onclick="klikTutupBuku()" style="opacity:.55">🔒 Tutup Buku</button>
+          <button class="btn btn-ghost" onclick="generatePDF()">⬇ Export PDF</button>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-head"><h3>Riwayat Laporan</h3><span style="color:var(--muted);font-size:13px;font-weight:600" id="riwayatCount">Belum ada arsip</span></div>
+        <div id="riwayatList"><div class="empty">Belum ada laporan yang ditutup. Setelah Tutup Buku, laporan PDF tiap bulan tersimpan di sini dan bisa diunduh lagi.</div></div>
+      </div>
       <div class="section-gap" id="reportList"></div>
     </section>
 
@@ -404,6 +422,8 @@ function baruTransaksi(){
 ['btnTxBaruRingkasan','btnTxBaruKasir'].forEach(function(id){var b=document.getElementById(id);if(b)b.addEventListener('click',baruTransaksi);});
 var confirmCb=null;
 function askConfirm(text,cb){
+  document.getElementById('confirmTitle').textContent='Hapus data ini?';
+  document.getElementById('confirmYes').textContent='Ya, hapus';
   document.getElementById('confirmText').textContent=text;confirmCb=cb;
   document.getElementById('confirmModal').style.display='grid';
 }
@@ -449,6 +469,7 @@ function renderStats(){
 /* ===== DATA ===== */
 var state={
  seqTx:1, seqBeli:1,
+ sudahExport:false, riwayat:[],
  transaksi:[],
  menus:[
   {nama:'Nasi Goreng',kategori:'Makanan',harga:18000,terjual:0},
@@ -623,7 +644,7 @@ function renderLaporan(){
     return '<div class="card" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap"><div class="thumb">▤</div><div style="flex:1;min-width:200px"><b>'+it[0]+'</b><div style="color:var(--muted);font-size:13px">'+it[1]+' · Periode November 2026</div></div><span class="pill pill-grey">'+it[2]+'</span><button class="btn btn-ghost btn-sm" onclick="generatePDF()">⬇ Unduh PDF</button></div>';
   }).join('');
 }
-function renderAll(){renderMenu();renderBahan();renderTx();renderResep();renderSupplier();renderBeli();renderPelanggan();renderKaryawan();renderKas();renderLaporan();renderStats();}
+function renderAll(){renderMenu();renderBahan();renderTx();renderResep();renderSupplier();renderBeli();renderPelanggan();renderKaryawan();renderKas();renderLaporan();renderTutupBuku();renderRiwayat();renderStats();}
 
 /* ===== FORMULIR ===== */
 function menuHarga(nama){var m=state.menus.find(function(x){return x.nama===nama;});return m?m.harga:0;}
@@ -660,11 +681,12 @@ document.getElementById('formTx').addEventListener('submit',function(e){
   var now=new Date();var jam=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
   var t={id:'INV-'+String(state.seqTx++).padStart(4,'0'),pelanggan:nama,menu:menu,qty:qty,jam:jam,hari:HARI_INI,total:qty*menuHarga(menu),status:document.getElementById('txStatus').value};
   state.transaksi.unshift(t);
+  state.sudahExport=false;
   state.kas.unshift({tgl:'4 Nov 2026',ket:'Penjualan #'+t.id+' — '+menu+' × '+qty,kategori:'Penjualan',jenis:'Masuk',jumlah:t.total});
   var p=state.pelanggan.find(function(x){return x.nama.toLowerCase()===nama.toLowerCase();});
   if(p){p.kunjungan++;p.total+=t.total;p.terakhir='Hari ini, '+jam;p.favorit=menu;}else{state.pelanggan.unshift({nama:nama,jenis:/meja/i.test(nama)?'Meja':'Pelanggan tetap',kunjungan:1,favorit:menu,total:t.total,terakhir:'Hari ini, '+jam});}
   var mn=state.menus.find(function(x){return x.nama===menu;});if(mn)mn.terjual+=qty;
-  renderTx();renderPelanggan();renderMenu();renderBahan();renderKas();e.target.reset();document.getElementById('txQty').value=1;syncTxPreview();
+  renderTx();renderPelanggan();renderMenu();renderBahan();renderKas();renderTutupBuku();e.target.reset();document.getElementById('txQty').value=1;syncTxPreview();
   var potong=needs.length?(' Stok berkurang: '+needs.map(function(n){return n.ing.nama+' −'+fmtN(n.perlu)+' '+n.satuan;}).join(', ')+'.'):'';
   toast('Transaksi #'+t.id+' tersimpan — '+rp(t.total)+'.'+potong);
 });
@@ -696,10 +718,11 @@ document.getElementById('formBeli').addEventListener('submit',function(e){
   var b=state.bahan.find(function(x){return x.nama===nama;});var satuan=b?b.satuan:'kg';
   var p={id:'PB-'+String(state.seqBeli++).padStart(4,'0'),tgl:'4 Nov 2026',bahan:nama,supplier:sup,qty:qty,satuan:satuan,total:Math.round(qty*harga),status:'Diterima'};
   state.pembelian.unshift(p);
+  state.sudahExport=false;
   if(b){b.sisa=Math.round((b.sisa+qty)*1000)/1000;if(harga>0)b.harga=harga;if(sup)b.supplier=sup;}
   var s=state.supplier.find(function(x){return x.nama===sup;});if(s)s.total+=p.total;
   state.kas.unshift({tgl:'4 Nov 2026',ket:'Beli '+nama+' '+fmtN(qty)+' '+satuan+' — '+sup,kategori:'Bahan baku',jenis:'Keluar',jumlah:p.total});
-  renderBeli();renderBahan();renderSupplier();renderKas(); toast('Pembelian #'+p.id+' tersimpan — stok '+nama+' bertambah '+fmtN(qty)+' '+satuan+'.');
+  renderBeli();renderBahan();renderSupplier();renderKas();renderTutupBuku(); toast('Pembelian #'+p.id+' tersimpan — stok '+nama+' bertambah '+fmtN(qty)+' '+satuan+'.');
 });
 document.getElementById('formSet').addEventListener('submit',function(e){e.preventDefault();toast('Pengaturan tersimpan untuk sesi ini.');});
 
@@ -842,8 +865,8 @@ document.getElementById('searchSupplier').addEventListener('input',renderSupplie
 ['searchKas','filterKas'].forEach(function(id){document.getElementById(id).addEventListener('input',renderKas);});
 
 /* ===== PDF ===== */
-function generatePDF(){
-  if(!window.jspdf||!window.jspdf.jsPDF){toast('Pustaka PDF belum termuat, coba lagi sebentar.');return;}
+function buildPDFDoc(){
+  if(!window.jspdf||!window.jspdf.jsPDF){return null;}
   var doc=new window.jspdf.jsPDF({unit:'pt',format:'a4'});
   var W=doc.internal.pageSize.getWidth();
   function head(title,sub){
@@ -896,8 +919,100 @@ function generatePDF(){
   y=table(y+6,['Tanggal','Keterangan','Kategori','Jenis','Jumlah'],rowsOr(state.kas.map(function(k){return [k.tgl,k.ket,k.kategori,k.jenis,(k.jenis==='Masuk'?'+ ':'- ')+rp(k.jumlah)];}),5));
   doc.setFontSize(9);doc.setTextColor(107,114,128);doc.setFont('helvetica','normal');
   doc.text('Laba bersih November 2026: '+rp(keuangan().laba)+'  •  Dibuat dari DapurERP — Warung Senja, Cabang utama  •  Rabu, 4 November 2026',40,y+6,{maxWidth:W-80});
+  return doc;
+}
+function generatePDF(){
+  var doc=buildPDFDoc();
+  if(!doc){toast('Pustaka PDF belum termuat, coba lagi sebentar.');return;}
   doc.save('Laporan-DapurERP-Warung-Senja-November-2026.pdf');
-  toast('Laporan PDF bulanan berhasil dibuat dan diunduh.');
+  state.sudahExport=true;
+  renderTutupBuku();
+  toast('Laporan PDF bulanan berhasil dibuat dan diunduh. Tombol Tutup Buku sekarang sudah bisa diklik.');
+}
+function buildPDFDocDariSnapshot(snap){
+  var cur={transaksi:state.transaksi,pembelian:state.pembelian,kas:state.kas,menus:state.menus,bahan:state.bahan,resep:state.resep,supplier:state.supplier,pelanggan:state.pelanggan,karyawan:state.karyawan};
+  state.transaksi=snap.transaksi;state.pembelian=snap.pembelian;state.kas=snap.kas;state.menus=snap.menus;state.bahan=snap.bahan;state.resep=snap.resep;state.supplier=snap.supplier;state.pelanggan=snap.pelanggan;state.karyawan=snap.karyawan;
+  try{return buildPDFDoc();}
+  finally{state.transaksi=cur.transaksi;state.pembelian=cur.pembelian;state.kas=cur.kas;state.menus=cur.menus;state.bahan=cur.bahan;state.resep=cur.resep;state.supplier=cur.supplier;state.pelanggan=cur.pelanggan;state.karyawan=cur.karyawan;}
+}
+
+/* ===== TUTUP BUKU ===== */
+function renderTutupBuku(){
+  var pill=document.getElementById('exportStatusPill');if(!pill)return;
+  var warn=document.getElementById('tutupBukuWarn');var ready=document.getElementById('tutupBukuReady');var btn=document.getElementById('btnTutupBuku');
+  if(state.sudahExport){
+    pill.textContent='Sudah di-export — siap tutup buku';pill.className='pill pill-green';
+    if(warn)warn.style.display='none';if(ready)ready.style.display='block';
+    if(btn)btn.style.opacity='1';
+  }else{
+    pill.textContent='Belum di-export';pill.className='pill pill-red';
+    if(warn)warn.style.display='block';if(ready)ready.style.display='none';
+    if(btn)btn.style.opacity='.55';
+  }
+}
+function klikTutupBuku(){
+  if(!state.sudahExport){
+    var btnExp=document.getElementById('btnExportPDF');
+    if(btnExp){btnExp.scrollIntoView({behavior:'smooth',block:'center'});try{btnExp.focus({preventScroll:true});}catch(e){}}
+    toast('Belum bisa tutup buku — export laporan PDF bulan ini dulu lewat tombol “Buat Laporan PDF Bulanan”.');
+    return;
+  }
+  var fin=keuangan();
+  document.getElementById('confirmTitle').textContent='Tutup Buku — November 2026?';
+  document.getElementById('confirmYes').textContent='Ya, Tutup Buku';
+  document.getElementById('confirmText').innerHTML='Periode <b>November 2026</b> akan ditutup.<br><br>'
+    +'<b>Yang dibersihkan</b> supaya bulan baru mulai dari Rp 0: <b>'+state.transaksi.length+' transaksi penjualan</b> ('+rp(penjualanTotal())+'), <b>'+state.pembelian.length+' pembelian</b>, dan <b>'+state.kas.length+' catatan kas</b> bulan ini. Angka Ringkasan, grafik penjualan minggu ini, dan kesehatan keuangan kembali ke 0.<br><br>'
+    +'<b>Yang tetap ada:</b> menu, resep, bahan beserta stok saat ini, supplier, pelanggan, dan karyawan — tidak ikut terhapus.<br><br>'
+    +'Laporan PDF bulan ini (laba bersih '+rp(fin.laba)+') tersimpan di <b>Riwayat Laporan</b> di halaman ini dan bisa diunduh lagi kapan saja. Aksi ini tidak bisa dibatalkan.';
+  confirmCb=function(){doTutupBuku();};
+  document.getElementById('confirmModal').style.display='grid';
+}
+function doTutupBuku(){
+  var fin=keuangan();
+  var doc=buildPDFDoc();var blob=null;
+  if(doc){try{blob=doc.output('blob');}catch(e){blob=null;}}
+  var snapshot=JSON.parse(JSON.stringify({transaksi:state.transaksi,pembelian:state.pembelian,kas:state.kas,menus:state.menus,bahan:state.bahan,resep:state.resep,supplier:state.supplier,pelanggan:state.pelanggan,karyawan:state.karyawan}));
+  var now=new Date();var jam=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  state.riwayat.unshift({
+    periode:'November 2026',
+    ditutupPada:'4 Nov 2026, '+jam,
+    penjualan:penjualanTotal(),laba:fin.laba,
+    jumlahTx:state.transaksi.length,jumlahBeli:state.pembelian.length,jumlahKas:state.kas.length,
+    blob:blob,snapshot:snapshot,
+    namaFile:'Laporan-DapurERP-Warung-Senja-November-2026.pdf'
+  });
+  state.transaksi=[];state.pembelian=[];state.kas=[];
+  state.menus.forEach(function(m){m.terjual=0;});
+  state.supplier.forEach(function(s){s.total=0;});
+  state.seqTx=1;state.seqBeli=1;
+  state.sudahExport=false;
+  renderAll();
+  toast('Tutup Buku selesai — November 2026 diarsipkan ke Riwayat Laporan. Bulan baru mulai dari Rp 0; menu, resep, stok, supplier, pelanggan, dan karyawan tetap ada.');
+  var rl=document.getElementById('riwayatList');if(rl)rl.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function renderRiwayat(){
+  var el=document.getElementById('riwayatList');if(!el)return;
+  var cnt=document.getElementById('riwayatCount');
+  if(cnt)cnt.textContent=state.riwayat.length?(state.riwayat.length+' laporan tersimpan'):'Belum ada arsip';
+  if(!state.riwayat.length){el.innerHTML='<div class="empty">Belum ada laporan yang ditutup. Setelah Tutup Buku, laporan PDF tiap bulan tersimpan di sini dan bisa diunduh lagi.</div>';return;}
+  el.innerHTML=state.riwayat.map(function(r,idx){
+    return '<div class="list-item"><div class="thumb">▤</div><div><b>Laporan Bulanan — '+r.periode+'</b><span>Ditutup '+r.ditutupPada+' · '+r.jumlahTx+' transaksi · '+r.jumlahBeli+' pembelian · '+r.jumlahKas+' catatan kas</span><br><span>Penjualan '+rp(r.penjualan)+' · Laba bersih '+rp(r.laba)+'</span></div><div class="right"><button class="btn btn-ghost btn-sm" onclick="unduhArsip('+idx+')">⬇ Unduh PDF</button></div></div>';
+  }).join('');
+}
+function unduhArsip(idx){
+  var r=state.riwayat[idx];if(!r)return;
+  if(r.blob){
+    var url=URL.createObjectURL(r.blob);var a=document.createElement('a');
+    a.href=url;a.download=r.namaFile;document.body.appendChild(a);a.click();a.remove();
+    setTimeout(function(){URL.revokeObjectURL(url);},4000);
+    toast('Laporan '+r.periode+' diunduh lagi dari Riwayat Laporan.');
+    return;
+  }
+  if(r.snapshot){
+    var doc=buildPDFDocDariSnapshot(r.snapshot);
+    if(doc){doc.save(r.namaFile);toast('Laporan '+r.periode+' diunduh lagi dari Riwayat Laporan.');return;}
+  }
+  toast('Berkas PDF arsip belum bisa dibuat — pustaka PDF belum termuat, coba lagi sebentar.');
 }
 
 renderAll();syncBeliHarga();tambahBarisResep();
