@@ -176,15 +176,8 @@ tr:last-child td{border-bottom:0}
       </div>
       <div class="grid2">
         <div class="card"><div class="card-head"><h3>Penjualan minggu ini</h3><span style="color:var(--muted);font-size:13px;font-weight:600">4–10 Nov 2026 ⌄</span></div>
-          <div class="chart">
-            <div class="bar-wrap"><div class="bar" style="height:4%"></div><span>Sen</span></div>
-            <div class="bar-wrap"><div class="bar" style="height:4%"></div><span>Sel</span></div>
-            <div class="bar-wrap"><div class="bar" style="height:4%"></div><span>Rab</span></div>
-            <div class="bar-wrap"><div class="bar" style="height:4%"></div><span>Kam</span></div>
-            <div class="bar-wrap"><div class="bar" style="height:4%"></div><span>Jum</span></div>
-            <div class="bar-wrap"><div class="bar" style="height:4%"></div><span>Sab</span></div>
-            <div class="bar-wrap"><div class="bar" style="height:4%"></div><span>Min</span></div>
-          </div><p style="margin:12px 0 0;color:var(--muted);font-size:13px">Belum ada penjualan tercatat minggu ini. Total penjualan yang diinput lewat Kasir tampil di kartu Penjualan hari ini di atas.</p>
+          <div class="chart" id="weekChart"></div>
+          <p style="margin:12px 0 0;color:var(--muted);font-size:13px" id="chartNote">Belum ada penjualan tercatat minggu ini. Total penjualan yang diinput lewat Kasir tampil di kartu Penjualan hari ini di atas.</p>
         </div>
         <div class="card"><div class="card-head"><h3>Bahan perlu dibeli</h3><button class="link" onclick="goPage('menu')">Kelola stok</button></div><div id="lowStockList"></div></div>
       </div>
@@ -450,6 +443,7 @@ function renderStats(){
   set('#kasMarginSub',fin.masuk>0?('Margin bersih '+pct(fin.laba,fin.masuk)):'Belum ada pemasukan');
   var best=null;state.menus.forEach(function(m){if(m.terjual>0&&(!best||m.terjual>best.terjual))best=m;});
   set('#statMenuLaku',best?best.nama:'—');set('#statMenuLakuSub',best?(best.terjual+' porsi terjual dari transaksi yang diinput'):'Belum ada penjualan');
+  renderChart();
 }
 
 /* ===== DATA ===== */
@@ -526,6 +520,28 @@ function renderRecent(){
   el.innerHTML=state.transaksi.slice(0,3).map(function(t){
     return '<div class="list-item"><div class="thumb">🧾</div><div><b>#'+t.id+' · '+t.pelanggan+'</b><span>'+t.menu+' × '+t.qty+' · '+t.jam+'</span></div><div class="right"><b>'+rp(t.total)+'</b><br>'+pillStatus(t.status)+'</div></div>';
   }).join('');
+}
+/* ===== GRAFIK PENJUALAN MINGGU INI (4–10 Nov 2026) ===== */
+var HARI_LABEL=['Sen','Sel','Rab','Kam','Jum','Sab','Min'];
+var HARI_NAMA=['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu'];
+var HARI_INI=2; /* Hari ini: Rabu, 4 November 2026 */
+function renderChart(){
+  var el=document.getElementById('weekChart');if(!el)return;
+  var totals=[0,0,0,0,0,0,0];var counts=[0,0,0,0,0,0,0];
+  state.transaksi.forEach(function(t){var h=(typeof t.hari==='number')?t.hari:HARI_INI;if(h<0||h>6)h=HARI_INI;totals[h]+=t.total;counts[h]++;});
+  var totalMinggu=totals.reduce(function(a,b){return a+b;},0);
+  var maks=Math.max.apply(null,totals);
+  el.innerHTML=HARI_LABEL.map(function(lb,i){
+    var h=totals[i]>0?Math.max(7,Math.round(totals[i]/maks*88)):4;
+    var nilai=totals[i]>0?'<b>'+rp(totals[i])+'</b>':'';
+    var lbl=i===HARI_INI?'<span style="color:var(--orange);font-weight:800">'+lb+'</span>':'<span>'+lb+'</span>';
+    return '<div class="bar-wrap">'+nilai+'<div class="bar'+(i===HARI_INI?' hot':'')+'" style="height:'+h+'%" title="'+HARI_NAMA[i]+' — '+rp(totals[i])+'"></div>'+lbl+'</div>';
+  }).join('');
+  var note=document.getElementById('chartNote');
+  if(note){
+    if(totalMinggu>0){var nTx=counts.reduce(function(a,b){return a+b;},0);note.textContent='Total penjualan minggu ini '+rp(totalMinggu)+' dari '+nTx+' transaksi. Bar oranye = hari ini ('+HARI_NAMA[HARI_INI]+').';}
+    else{note.textContent='Belum ada penjualan tercatat minggu ini. Total penjualan yang diinput lewat Kasir tampil di kartu Penjualan hari ini di atas.';}
+  }
 }
 function renderTx(){
   var q=(document.getElementById('searchTx').value||'').toLowerCase();var f=document.getElementById('filterTx').value;
@@ -642,7 +658,7 @@ document.getElementById('formTx').addEventListener('submit',function(e){
   alertBox.style.display='none';
   needs.forEach(function(n){n.bahan.sisa=Math.round((n.bahan.sisa-n.perlu)*1000)/1000;});
   var now=new Date();var jam=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
-  var t={id:'INV-'+String(state.seqTx++).padStart(4,'0'),pelanggan:nama,menu:menu,qty:qty,jam:jam,total:qty*menuHarga(menu),status:document.getElementById('txStatus').value};
+  var t={id:'INV-'+String(state.seqTx++).padStart(4,'0'),pelanggan:nama,menu:menu,qty:qty,jam:jam,hari:HARI_INI,total:qty*menuHarga(menu),status:document.getElementById('txStatus').value};
   state.transaksi.unshift(t);
   state.kas.unshift({tgl:'4 Nov 2026',ket:'Penjualan #'+t.id+' — '+menu+' × '+qty,kategori:'Penjualan',jenis:'Masuk',jumlah:t.total});
   var p=state.pelanggan.find(function(x){return x.nama.toLowerCase()===nama.toLowerCase();});
