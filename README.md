@@ -1,48 +1,48 @@
-# DapurERP — ERP Warmindo (Warung Senja)
+# DapurERP — Small Food Stall ERP (Sunset Stall)
 
-Sistem ERP sederhana untuk warung makan / Warmindo, dibuat untuk tugas akhir.
-Bahasa Indonesia semua. Live demo: https://oblay-thesis-demo.vercel.app/
+Simple ERP system for a small food stall, built for a final-year thesis project.
+Fully in English. Live demo: https://oblay-thesis-demo.vercel.app/
 
-## Cara jalanin
+## How to run
 
-- **Paling gampang:** buka `index.html` langsung di browser, atau buka link Vercel di atas.
-- **Deploy sendiri ke Vercel:** import repo ini di Vercel, framework pilih "Other", tanpa build command.
-- Tanpa login, tanpa install apa-apa. Satu file HTML mandiri (termasuk CSS + JS di dalamnya).
+- **Easiest:** open `index.html` directly in a browser, or open the Vercel link above.
+- **Deploy it yourself on Vercel:** import this repo in Vercel, framework "Other", no build command.
+- No login, no install. A single self-contained HTML file (CSS + JS inside).
 
-## Halaman (11 halaman terpisah)
+## Pages (11 separate pages)
 
-Ringkasan, Kasir, Menu & bahan, Resep & produksi, Pembelian, Supplier,
-Pelanggan, Karyawan, Kas & biaya, Laporan, Pengaturan.
+Overview, Cashier, Menu & Ingredients, Recipes & Production, Purchasing, Supplier,
+Customers, Employees, Cash & Expenses, Reports, Settings.
 
-## Fitur
+## Features
 
-- **Mode mulai dari nol:** semua angka mulai Rp 0, teman/owner input sendiri dari awal.
-- **Kasir:** tombol "+ Transaksi baru" buka form (nama pelanggan/meja, menu, jumlah, status).
-  Simpan → transaksi tercatat, angka Ringkasan ikut berubah.
-- **Stok otomatis:** penjualan di Kasir memotong stok bahan sesuai resep
-  (misal Kopi Susu → kopi, susu, gula berkurang). Pembelian menambah stok.
-  Stok di bawah minimum muncul di "Bahan perlu dibeli" + tombol Beli.
-  Stok tidak cukup → transaksi diblokir + peringatan bahan yang kurang.
-- **Edit / Hapus:** tiap menu, bahan, dan baris resep bisa diedit (form terisi data lama)
-  dan dihapus (pakai konfirmasi). Hapus menu ikut menghapus resepnya.
-- **Grafik "Penjualan minggu ini":** dihitung dari transaksi yang diinput
-  (Sen–Min, minggu 2–8 Nov 2026), bar hari ini oranye + label nominal.
-- **Laporan:** tombol "Buat Laporan PDF Bulanan" export semua bagian dalam satu PDF.
-- **Tutup Buku:** di halaman Laporan. Wajib export PDF dulu baru tombol aktif.
-  Setelah dikonfirmasi, transaksi/pembelian/kas bulan itu dibersihkan
-  (bulan baru mulai Rp 0), PDF bulan itu tersimpan di "Riwayat Laporan".
-  Menu, resep, bahan + stok saat ini, supplier, pelanggan, karyawan tetap ada.
+- **Start-from-zero mode:** all figures start at Rp 0, the owner inputs everything from scratch.
+- **Cashier:** the "+ New transaction" button opens the form (customer/table name, menu, quantity, status).
+  Save → the transaction is recorded and the Overview figures update.
+- **Automatic stock:** a sale in Cashier deducts ingredient stock per the recipe
+  (e.g. Iced Latte → coffee beans, milk, sugar go down). Purchases add stock.
+  Stock below minimum shows up in "Ingredients to buy" + a Buy button.
+  Not enough stock → the transaction is blocked + a warning names the missing ingredients.
+- **Edit / Delete:** every menu, ingredient, and recipe row can be edited (form pre-filled)
+  and deleted (with confirmation). Deleting a menu also deletes its recipe.
+- **"Sales this week" chart:** calculated from entered transactions
+  (Mon–Sun, week 2–8 Nov 2026), today’s bar is orange + labelled with the amount.
+- **Reports:** the "Generate Monthly PDF Report" button exports every section into one PDF.
+- **Month-End Closing:** on the Reports page. The PDF must be exported first before the button activates.
+  After confirmation, that month’s transactions/purchases/cash notes are cleared
+  (new month starts at Rp 0) and the month’s PDF is stored in "Report History".
+  Menus, recipes, ingredients + current stock, suppliers, customers, and employees stay.
 
-## Catatan data
+## Data notes
 
-- Versi ini (preview statis) menyimpan data selama sesi di browser saja —
-  refresh halaman akan mengembalikan ke mode mulai dari nol.
-- Versi live nanti: colok Supabase (gratis, 500 MB — cukup bertahun-tahun
-  untuk ukuran warkop, ~5 MB/bulan). Tabel: transaksi, menu, bahan, resep,
-  pembelian, supplier, pelanggan, karyawan, kas.
-- Data demo awal: Warung Senja, Admin Senja, Rabu 4 November 2026.
+- This version (static preview) stores data in the browser session only —
+  refreshing the page returns to start-from-zero mode.
+- Live version later: plug in Supabase (free, 500 MB — enough for years
+  at food-stall scale, ~5 MB/month). Tables: transactions, menus, ingredients, recipes,
+  purchases, suppliers, customers, employees, cash.
+- Starting demo data: Sunset Stall, Sunset Admin, Wednesday 4 November 2026.
 
-## Struktur repo
+## Repo structure
 
-- `index.html` — seluruh aplikasi (HTML + CSS + JS) dalam satu file.
-- `README.md` — file ini.
+- `index.html` — the whole app (HTML + CSS + JS) in one file.
+- `README.md` — this file.

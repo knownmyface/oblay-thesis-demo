@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="light"/>
 <link rel="icon" href="data:,"/>
-<title>DapurERP — Warung Senja</title>
+<title>DapurERP — Sunset Stall</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -139,267 +139,267 @@ tr:last-child td{border-bottom:0}
 <body>
 <div class="app">
   <aside class="sidebar">
-    <div class="logo"><div class="logo-mark">🍜</div><div><b>DapurERP</b><span>Sistem Warung Senja</span></div></div>
-    <button class="warung" onclick="goPage('pengaturan')"><span class="dot"></span><span style="flex:1;text-align:left"><b>Warung Senja</b><span>Cabang utama</span></span><i>⌄</i></button>
-    <div class="nav-label">Menu Utama</div>
+    <div class="logo"><div class="logo-mark">🍜</div><div><b>DapurERP</b><span>Sunset Stall System</span></div></div>
+    <button class="warung" onclick="goPage('settings')"><span class="dot"></span><span style="flex:1;text-align:left"><b>Sunset Stall</b><span>Main branch</span></span><i>⌄</i></button>
+    <div class="nav-label">Main Menu</div>
     <nav class="nav" id="mainNav">
-      <button data-page="ringkasan" class="active"><span class="ic">⌂</span>Ringkasan</button>
-      <button data-page="kasir"><span class="ic">▦</span>Kasir</button>
-      <button data-page="menu"><span class="ic">◆</span>Menu &amp; bahan</button>
-      <button data-page="resep"><span class="ic">♨</span>Resep &amp; produksi</button>
-      <button data-page="pembelian"><span class="ic">↓</span>Pembelian</button>
+      <button data-page="overview" class="active"><span class="ic">⌂</span>Overview</button>
+      <button data-page="cashier"><span class="ic">▦</span>Cashier</button>
+      <button data-page="menu"><span class="ic">◆</span>Menu &amp; Ingredients</button>
+      <button data-page="recipe"><span class="ic">♨</span>Recipes &amp; Production</button>
+      <button data-page="purchases"><span class="ic">↓</span>Purchasing</button>
       <button data-page="supplier"><span class="ic">⌂</span>Supplier</button>
-      <button data-page="pelanggan"><span class="ic">△</span>Pelanggan</button>
-      <button data-page="karyawan"><span class="ic">△</span>Karyawan</button>
-      <button data-page="kas"><span class="ic">◉</span>Kas &amp; biaya</button>
-      <button data-page="laporan"><span class="ic">▤</span>Laporan</button>
-      <button data-page="pengaturan"><span class="ic">⚙</span>Pengaturan</button>
+      <button data-page="customer"><span class="ic">△</span>Customers</button>
+      <button data-page="employees"><span class="ic">△</span>Employees</button>
+      <button data-page="kas"><span class="ic">◉</span>Cash &amp; Expenses</button>
+      <button data-page="reports"><span class="ic">▤</span>Report</button>
+      <button data-page="settings"><span class="ic">⚙</span>Settings</button>
     </nav>
-    <div class="side-foot"><div class="admin"><div class="avatar">AS</div><div><b>Admin Senja</b><span>Pengelola warung</span></div><span style="margin-left:auto;color:#9AA0A6">⋮</span></div></div>
+    <div class="side-foot"><div class="admin"><div class="avatar">AS</div><div><b>Sunset Admin</b><span>Stall manager</span></div><span style="margin-left:auto;color:#9AA0A6">⋮</span></div></div>
   </aside>
 
   <main class="main">
     <div class="topbar">
-      <div><div class="date">Rabu, 4 November 2026</div><h1 class="page-title" id="pageTitle">Ringkasan bisnis</h1></div>
-      <div class="top-actions"><button class="icon-btn" onclick="goPage('laporan')" aria-label="Notifikasi">♢</button><div class="avatar">AS</div></div>
+      <div><div class="date">Wednesday, 4 November 2026</div><h1 class="page-title" id="pageTitle">Business overview</h1></div>
+      <div class="top-actions"><button class="icon-btn" onclick="goPage('reports')" aria-label="Notifications">♢</button><div class="avatar">AS</div></div>
     </div>
 
     <!-- RINGKASAN -->
-    <section class="page active" id="page-ringkasan">
-      <div class="hero-row"><div><h2>Selamat pagi, Admin 👋</h2><p>Pantau penjualan, operasional, dan kesehatan bisnis Warung Senja.</p></div><button class="btn btn-orange" id="btnTxBaruRingkasan" onclick="baruTransaksi()">+ Transaksi baru</button></div>
-      <div class="note" style="margin-bottom:16px"><b>Mode mulai dari nol:</b> semua angka masih kosong (Rp 0) dan belum ada data tersimpan. Tambah bahan dulu lewat <b>Menu &amp; bahan</b> atau <b>Pembelian</b>, lalu buat transaksi di <b>Kasir</b> — penjualan, laba, nilai persediaan, dan stok akan berubah otomatis mengikuti input.</div>
+    <section class="page active" id="page-overview">
+      <div class="hero-row"><div><h2>Good morning, Admin 👋</h2><p>Track sales, operations, and business health for Sunset Stall.</p></div><button class="btn btn-orange" id="btnTxBaruOverview" onclick="baruTransaction()">+ New transaction</button></div>
+      <div class="note" style="margin-bottom:16px"><b>Start-from-zero mode:</b> all figures are still empty (Rp 0) and no data is saved yet. Add ingredients first via <b>Menu &amp; Ingredients</b> or <b>Purchasing</b>, then create a transaction in <b>Cashier</b> — sales, profit, inventory value, and stock will update automatically as you input.</div>
       <div class="kpis">
-        <div class="kpi"><div class="kpi-top"><label>Penjualan hari ini</label><span class="k-ic">♧</span></div><div class="val" id="kpiPenjualan">Rp 0</div><div class="sub neutral" id="kpiPenjualanSub">Belum ada transaksi</div></div>
-        <div class="kpi"><div class="kpi-top"><label>Laba kotor</label><span class="k-ic">◐</span></div><div class="val" id="kpiLabaKotor">Rp 0</div><div class="sub neutral" id="kpiLabaSub">Belum ada penjualan</div></div>
-        <div class="kpi"><div class="kpi-top"><label>Nilai persediaan</label><span class="k-ic">◆</span></div><div class="val" id="kpiPersediaan">Rp 0</div><div class="sub neutral" id="kpiBahanAktif">0 bahan aktif</div></div>
-        <div class="kpi"><div class="kpi-top"><label>Stok perlu dibeli</label><span class="k-ic">!</span></div><div class="val" id="kpiStokKurang">0 item</div><div class="sub neutral" id="kpiStokSub">Semua stok aman</div></div>
+        <div class="kpi"><div class="kpi-top"><label>Today's sales</label><span class="k-ic">♧</span></div><div class="val" id="kpiPenjualan">Rp 0</div><div class="sub neutral" id="kpiPenjualanSub">No transactions yet</div></div>
+        <div class="kpi"><div class="kpi-top"><label>Gross profit</label><span class="k-ic">◐</span></div><div class="val" id="kpiLabaKotor">Rp 0</div><div class="sub neutral" id="kpiLabaSub">No sales yet</div></div>
+        <div class="kpi"><div class="kpi-top"><label>Inventory value</label><span class="k-ic">◆</span></div><div class="val" id="kpiPersediaan">Rp 0</div><div class="sub neutral" id="kpiIngredientActive">0 active ingredients</div></div>
+        <div class="kpi"><div class="kpi-top"><label>Stock to buy</label><span class="k-ic">!</span></div><div class="val" id="kpiStokKurang">0 item</div><div class="sub neutral" id="kpiStokSub">All stock is safe</div></div>
       </div>
       <div class="grid2">
-        <div class="card"><div class="card-head"><h3>Penjualan minggu ini</h3><span style="color:var(--muted);font-size:13px;font-weight:600">4–10 Nov 2026 ⌄</span></div>
+        <div class="card"><div class="card-head"><h3>Sales this week</h3><span style="color:var(--muted);font-size:13px;font-weight:600">4–10 Nov 2026 ⌄</span></div>
           <div class="chart" id="weekChart"></div>
-          <p style="margin:12px 0 0;color:var(--muted);font-size:13px" id="chartNote">Belum ada penjualan tercatat minggu ini. Total penjualan yang diinput lewat Kasir tampil di kartu Penjualan hari ini di atas.</p>
+          <p style="margin:12px 0 0;color:var(--muted);font-size:13px" id="chartNote">No sales recorded this week yet. Sales entered via Cashier show in the daily sales card above.</p>
         </div>
-        <div class="card"><div class="card-head"><h3>Bahan perlu dibeli</h3><button class="link" onclick="goPage('menu')">Kelola stok</button></div><div id="lowStockList"></div></div>
+        <div class="card"><div class="card-head"><h3>Ingredients to buy</h3><button class="link" onclick="goPage('menu')">Manage stock</button></div><div id="lowStockList"></div></div>
       </div>
       <div class="grid2">
-        <div class="card"><div class="card-head"><h3>Transaksi terbaru</h3><button class="link" onclick="goPage('kasir')">Lihat semua</button></div><div id="recentTx"></div></div>
-        <div class="card"><div class="card-head"><h3>Kesehatan keuangan</h3><button class="link" onclick="goPage('laporan')">Buka laporan</button></div>
-          <div class="fin-row"><span>Pendapatan bulan ini</span><b data-fin="pendapatan">Rp 0</b></div>
-          <div class="fin-row"><span>HPP bahan baku</span><b class="neg" data-fin="hpp">− Rp 0</b></div>
-          <div class="fin-row"><span>Biaya operasional</span><b class="neg" data-fin="ops">− Rp 0</b></div>
-          <div class="fin-row total"><span>Laba bersih</span><b data-fin="laba">Rp 0</b></div>
-          <p style="color:var(--muted);font-size:13px;margin:12px 0 0">Angka di atas dihitung otomatis dari transaksi, pembelian, dan catatan kas yang diinput. Rinciannya ada di halaman Kas &amp; biaya dan Laporan.</p>
+        <div class="card"><div class="card-head"><h3>Recent transactions</h3><button class="link" onclick="goPage('cashier')">View all</button></div><div id="recentTx"></div></div>
+        <div class="card"><div class="card-head"><h3>Financial health</h3><button class="link" onclick="goPage('reports')">Open reports</button></div>
+          <div class="fin-row"><span>Revenue this month</span><b data-fin="pendapatan">Rp 0</b></div>
+          <div class="fin-row"><span>COGS — raw materials</span><b class="neg" data-fin="cogs">− Rp 0</b></div>
+          <div class="fin-row"><span>Operating expenses</span><b class="neg" data-fin="ops">− Rp 0</b></div>
+          <div class="fin-row total"><span>Net profit</span><b data-fin="profit">Rp 0</b></div>
+          <p style="color:var(--muted);font-size:13px;margin:12px 0 0">Figures above are calculated automatically from transactions, purchases, and cash notes you enter. Details are on the Cash &amp; Expenses and Reports pages.</p>
         </div>
       </div>
     </section>
 
     <!-- KASIR -->
-    <section class="page" id="page-kasir">
-      <div class="hero-row"><div><h2>Kasir</h2><p>Buat transaksi baru dan pantau semua penjualan hari ini.</p></div><button class="btn btn-orange" id="btnTxBaruKasir" onclick="baruTransaksi()">+ Transaksi baru</button></div>
+    <section class="page" id="page-cashier">
+      <div class="hero-row"><div><h2>Cashier</h2><p>Create new transactions and track all of today's sales.</p></div><button class="btn btn-orange" id="btnTxBaruCashier" onclick="baruTransaction()">+ New transaction</button></div>
       <div class="stat-mini">
-        <div class="kpi"><label>Penjualan hari ini</label><div class="val" data-stat="penjualan">Rp 0</div><div class="sub neutral" data-stat="penjualanSub">Belum ada transaksi</div></div>
-        <div class="kpi"><label>Transaksi tercatat</label><div class="val" id="statTxCount">0 transaksi</div><div class="sub neutral">Dari formulir di bawah</div></div>
-        <div class="kpi"><label>Menu paling laku</label><div class="val" style="font-size:21px" id="statMenuLaku">—</div><div class="sub neutral" id="statMenuLakuSub">Belum ada penjualan</div></div>
+        <div class="kpi"><label>Today's sales</label><div class="val" data-stat="sales">Rp 0</div><div class="sub neutral" data-stat="salesSub">No transactions yet</div></div>
+        <div class="kpi"><label>Transactions recorded</label><div class="val" id="statTxCount">0 transactions</div><div class="sub neutral">From the form below</div></div>
+        <div class="kpi"><label>Best-selling menu</label><div class="val" style="font-size:21px" id="statMenuLaku">—</div><div class="sub neutral" id="statMenuLakuSub">No sales yet</div></div>
       </div>
-      <div class="form-card" id="formTxCard"><h3>Buat transaksi baru</h3><p>Isi data di bawah, lalu simpan. Stok bahan otomatis berkurang sesuai resep menu yang dipilih, dan angka di Ringkasan ikut berubah.</p>
+      <div class="form-card" id="formTxCard"><h3>Create new transaction</h3><p>Fill in the details below, then save. Ingredient stock is deducted automatically per the selected menu's recipe, and the Overview figures update too.</p>
         <form id="formTx"><div class="form-grid">
-          <div class="field"><label for="txPelanggan">Nama pelanggan / meja</label><input id="txPelanggan" required placeholder="Contoh: Budi Santoso"></div>
+          <div class="field"><label for="txCustomers">Customer / table name</label><input id="txCustomers" required placeholder="Example: Budi Santoso"></div>
           <div class="field"><label for="txMenu">Menu</label><select id="txMenu"></select></div>
-          <div class="field"><label for="txQty">Jumlah</label><input id="txQty" type="number" min="1" value="1" required></div>
-          <div class="field"><label for="txStatus">Status</label><select id="txStatus"><option>Selesai</option><option>Diproses</option></select></div>
-        </div><div class="form-actions"><button class="btn btn-orange" type="submit">Simpan transaksi</button><span style="align-self:center;color:var(--muted);font-size:13px" id="txPreview"></span></div></form>
+          <div class="field"><label for="txQty">Quantity</label><input id="txQty" type="number" min="1" value="1" required></div>
+          <div class="field"><label for="txStatus">Status</label><select id="txStatus"><option>Completed</option><option>Processing</option></select></div>
+        </div><div class="form-actions"><button class="btn btn-orange" type="submit">Save transaction</button><span style="align-self:center;color:var(--muted);font-size:13px" id="txPreview"></span></div></form>
         <div class="alert-err" id="txAlert" style="display:none"></div>
       </div>
-      <div class="card"><div class="card-head"><h3>Daftar transaksi</h3></div>
-        <div class="toolbar"><input type="search" id="searchTx" placeholder="Cari pelanggan, nomor, atau menu…"><select id="filterTx" style="flex:0 1 190px"><option value="">Semua status</option><option>Selesai</option><option>Diproses</option></select></div>
-        <div class="table-wrap"><table><thead><tr><th>Nomor</th><th>Pelanggan</th><th>Menu</th><th>Jam</th><th>Total</th><th>Status</th></tr></thead><tbody id="tbodyTx"></tbody></table></div>
+      <div class="card"><div class="card-head"><h3>Transaction list</h3></div>
+        <div class="toolbar"><input type="search" id="searchTx" placeholder="Search customer, number, or menu…"><select id="filterTx" style="flex:0 1 190px"><option value="">All statuses</option><option>Completed</option><option>Processing</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>No.</th><th>Customers</th><th>Menu</th><th>Time</th><th>Total</th><th>Status</th></tr></thead><tbody id="tbodyTx"></tbody></table></div>
       </div>
     </section>
 
     <!-- MENU & BAHAN -->
     <section class="page" id="page-menu">
-      <div class="hero-row"><div><h2>Menu &amp; bahan</h2><p>Daftar menu yang dijual beserta harga, dan stok bahan di dapur.</p></div></div>
-      <div class="form-card" id="formMenuCard"><h3 id="formMenuTitle">Tambah menu baru</h3><p>Menu yang disimpan langsung muncul di daftar menu di bawah dan bisa dipilih di Kasir.</p>
+      <div class="hero-row"><div><h2>Menu &amp; Ingredients</h2><p>Menus for sale with prices, and ingredient stock in the kitchen.</p></div></div>
+      <div class="form-card" id="formMenuCard"><h3 id="formMenuTitle">Add new menu</h3><p>Saved menus appear in the menu list below and can be selected in Cashier.</p>
         <form id="formMenu"><div class="form-grid">
-          <div class="field"><label>Nama menu</label><input id="mNama" required placeholder="Contoh: Ayam Geprek"></div>
-          <div class="field"><label>Kategori</label><select id="mKategori"><option>Makanan</option><option>Minuman</option></select></div>
-          <div class="field"><label>Harga jual (Rp)</label><input id="mHarga" type="number" min="0" step="any" value="15000" required></div>
-        </div><div class="form-actions"><button class="btn btn-orange" type="submit" id="btnSimpanMenu">Simpan menu</button><button class="btn btn-ghost" type="button" id="btnBatalMenu" style="display:none">Batal edit</button></div></form>
+          <div class="field"><label>Menu name</label><input id="mName" required placeholder="Example: Crispy Chicken Burger"></div>
+          <div class="field"><label>Category</label><select id="mCategory"><option>Food</option><option>Drinks</option></select></div>
+          <div class="field"><label>Selling price (Rp)</label><input id="mHarga" type="number" min="0" step="any" value="15000" required></div>
+        </div><div class="form-actions"><button class="btn btn-orange" type="submit" id="btnSimpanMenu">Save menu</button><button class="btn btn-ghost" type="button" id="btnCancelMenu" style="display:none">Cancel edit</button></div></form>
       </div>
-      <div class="card" style="margin-bottom:16px"><div class="card-head"><h3>Daftar menu</h3></div>
-        <div class="toolbar"><input type="search" id="searchMenu" placeholder="Cari menu…"><select id="filterMenu" style="flex:0 1 190px"><option value="">Semua kategori</option><option>Makanan</option><option>Minuman</option></select></div>
-        <div class="table-wrap"><table><thead><tr><th>Menu</th><th>Kategori</th><th>Harga jual</th><th>Terjual bulan ini</th><th>Ket.</th><th>Aksi</th></tr></thead><tbody id="tbodyMenu"></tbody></table></div>
+      <div class="card" style="margin-bottom:16px"><div class="card-head"><h3>Menu list</h3></div>
+        <div class="toolbar"><input type="search" id="searchMenu" placeholder="Search menus…"><select id="filterMenu" style="flex:0 1 190px"><option value="">All categories</option><option>Food</option><option>Drinks</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>Menu</th><th>Category</th><th>Selling price</th><th>Sold this month</th><th>Notes</th><th>Actions</th></tr></thead><tbody id="tbodyMenu"></tbody></table></div>
       </div>
-      <div class="form-card"><h3>Tambah bahan baru</h3><p>Bahan yang ditambah langsung muncul di daftar stok di bawah dan ikut dihitung di Ringkasan. Pakai nama yang sama persis dengan bahan di halaman Resep &amp; produksi (misal “Kopi bubuk”, “Susu segar”, “Telur ayam”) supaya stoknya berkurang otomatis saat ada penjualan.</p>
-        <form id="formBahan"><div class="form-grid">
-          <div class="field"><label>Nama bahan</label><input id="bNama" required placeholder="Contoh: Kopi bubuk" list="bahanSaran"><datalist id="bahanSaran"><option value="Beras"></option><option value="Telur ayam"></option><option value="Ayam fillet"></option><option value="Mie telur"></option><option value="Kopi bubuk"></option><option value="Susu segar"></option><option value="Gula aren"></option><option value="Gula pasir"></option><option value="Teh celup"></option></datalist></div>
-          <div class="field"><label>Stok saat ini</label><input id="bSisa" type="number" min="0" step="any" value="10" required></div>
-          <div class="field"><label>Satuan</label><select id="bSatuan"><option>kg</option><option>butir</option><option>liter</option><option>bungkus</option><option>ikat</option></select></div>
-          <div class="field"><label>Stok minimum</label><input id="bMin" type="number" min="0" step="any" value="5" required></div>
-        </div><div class="form-actions"><button class="btn btn-orange" type="submit">Simpan bahan</button></div></form>
+      <div class="form-card"><h3>Add new ingredient</h3><p>Added ingredients appear in the stock list below and count toward the Overview. Use the exact same name as the ingredient on the Recipes &amp; Production page (e.g. “Coffee Beans”, “Fresh Milk”, “Eggs”) so stock drops automatically on every sale.</p>
+        <form id="formIngredient"><div class="form-grid">
+          <div class="field"><label>Ingredient name</label><input id="bName" required placeholder="Example: Coffee Beans" list="ingredientSaran"><datalist id="ingredientSaran"><option value="Beef Patty"></option><option value="Burger Bun"></option><option value="Cheese Slice"></option><option value="Spaghetti"></option><option value="Ground Beef"></option><option value="Tomato Sauce"></option><option value="Parmesan"></option><option value="Coffee Beans"></option><option value="Fresh Milk"></option><option value="Sugar Syrup"></option><option value="Black Tea"></option><option value="Sugar"></option></datalist></div>
+          <div class="field"><label>Current stock</label><input id="bRemaining" type="number" min="0" step="any" value="10" required></div>
+          <div class="field"><label>Satuan</label><select id="bSatuan"><option>kg</option><option>pc</option><option>liter</option><option>pack</option><option>bunch</option></select></div>
+          <div class="field"><label>Minimum stock</label><input id="bMin" type="number" min="0" step="any" value="5" required></div>
+        </div><div class="form-actions"><button class="btn btn-orange" type="submit">Save ingredient</button></div></form>
       </div>
-      <div class="card"><div class="card-head"><h3>Stok bahan</h3><span style="color:var(--muted);font-size:13px">Yang di bawah minimum ditandai merah</span></div>
-        <div class="toolbar"><input type="search" id="searchBahan" placeholder="Cari bahan atau supplier…"><select id="filterBahan" style="flex:0 1 200px"><option value="">Semua stok</option><option value="kurang">Perlu dibeli</option><option value="aman">Stok aman</option></select></div>
-        <div class="table-wrap"><table><thead><tr><th>Bahan</th><th>Sisa</th><th>Minimum</th><th>Harga satuan</th><th>Supplier</th><th>Status</th></tr></thead><tbody id="tbodyBahan"></tbody></table></div>
+      <div class="card"><div class="card-head"><h3>Ingredient stock</h3><span style="color:var(--muted);font-size:13px">Below minimum is marked red</span></div>
+        <div class="toolbar"><input type="search" id="searchIngredient" placeholder="Search ingredients or suppliers…"><select id="filterIngredient" style="flex:0 1 200px"><option value="">All stock</option><option value="low">Needs buying</option><option value="aman">Safe stock</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>Ingredient</th><th>Remaining</th><th>Minimum</th><th>Unit price</th><th>Supplier</th><th>Status</th></tr></thead><tbody id="tbodyIngredient"></tbody></table></div>
       </div>
     </section>
 
     <!-- RESEP -->
-    <section class="page" id="page-resep">
-      <div class="hero-row"><div><h2>Resep &amp; produksi</h2><p>Takaran bahan untuk tiap menu, biar rasa konsisten dan stok gampang dihitung.</p></div></div>
-      <div class="form-card" id="formResepCard"><h3 id="formResepTitle">Tambah resep baru</h3><p>Pilih menu, isi waktu buat, lalu tambahkan bahan-bahannya satu per satu. Bahan berjenis “Potong stok” mengurangi stok otomatis setiap menu itu terjual di Kasir — isi jumlahnya dalam satuan stok bahan itu, atau pakai gram/ml dan sistem mengonversinya ke kg/liter.</p>
-        <form id="formResep">
+    <section class="page" id="page-recipe">
+      <div class="hero-row"><div><h2>Recipes &amp; Production</h2><p>Ingredient amounts for each menu, so taste stays consistent and stock is easy to track.</p></div></div>
+      <div class="form-card" id="formRecipesCard"><h3 id="formRecipesTitle">Add new recipe</h3><p>Pick a menu, fill in the prep time, then add its ingredients one by one. “Deduct stock” ingredients reduce stock automatically every time that menu sells in Cashier — enter the amount in the ingredient's stock unit, or use g/ml and the system converts it to kg/liter.</p>
+        <form id="formRecipes">
           <div class="form-grid">
             <div class="field"><label>Menu</label><select id="rMenu"></select></div>
-            <div class="field"><label>Waktu buat</label><input id="rWaktu" placeholder="Contoh: 10 menit" value="10 menit"></div>
+            <div class="field"><label>Prep time</label><input id="rWaktu" placeholder="Example: 10 minutes" value="10 minutes"></div>
           </div>
-          <div id="resepBahanRows" style="margin-top:14px;display:grid;gap:10px"></div>
-          <div class="form-actions"><button class="btn btn-ghost btn-sm" type="button" id="btnTambahBarisResep">+ Tambah bahan</button></div>
-          <div class="form-actions"><button class="btn btn-orange" type="submit" id="btnSimpanResep">Simpan resep</button><button class="btn btn-ghost" type="button" id="btnBatalResep" style="display:none">Batal edit</button></div>
+          <div id="recipeIngredientRows" style="margin-top:14px;display:grid;gap:10px"></div>
+          <div class="form-actions"><button class="btn btn-ghost btn-sm" type="button" id="btnTambahBarisRecipes">+ Add ingredient</button></div>
+          <div class="form-actions"><button class="btn btn-orange" type="submit" id="btnSimpanRecipes">Save recipe</button><button class="btn btn-ghost" type="button" id="btnCancelRecipes" style="display:none">Cancel edit</button></div>
         </form>
       </div>
       <div class="section-gap" id="recipeList"></div>
-      <div class="note" style="margin-top:16px"><b>Cara pakai:</b> setiap transaksi yang disimpan di Kasir otomatis memotong stok bahan sesuai takaran resep ini — contohnya 1 porsi Kopi Susu memotong Kopi bubuk 15 gram, Susu segar 120 ml, dan Gula aren 20 gram. Bahan bertanda “Pelengkap” tidak dihitung stok. Kalau stok bahan resep tidak cukup, transaksi <b>tidak disimpan</b> dan muncul peringatan — tambah stok dulu lewat Pembelian atau Menu &amp; bahan. Bahan di bawah minimum otomatis muncul di “Bahan perlu dibeli” di Ringkasan.</div>
+      <div class="note" style="margin-top:16px"><b>How it works:</b> every transaction saved in Cashier automatically deducts ingredient stock per this recipe — for example, 1 serving of Iced Latte deducts Coffee Beans 15 g, Fresh Milk 120 ml, and Sugar Syrup 20 ml. “Extra” ingredients don't count toward stock. If a recipe ingredient is out of stock, the transaction <b>is not saved</b> and a warning appears — add stock first via Purchasing or Menu &amp; Ingredients. Ingredients below minimum show up automatically in “Ingredients to buy” on the Overview.</div>
     </section>
 
     <!-- PEMBELIAN -->
-    <section class="page" id="page-pembelian">
-      <div class="hero-row"><div><h2>Pembelian</h2><p>Catat pembelian bahan ke supplier. Stok bahan ikut bertambah otomatis.</p></div></div>
+    <section class="page" id="page-purchases">
+      <div class="hero-row"><div><h2>Purchasing</h2><p>Record ingredient purchases from suppliers. Ingredient stock increases automatically.</p></div></div>
       <div class="stat-mini">
-        <div class="kpi"><label>Total pembelian bulan ini</label><div class="val" id="statBeliTotal">Rp 0</div><div class="sub neutral">November 2026</div></div>
-        <div class="kpi"><label>Jumlah pembelian</label><div class="val" id="statBeliCount">0 kali</div><div class="sub neutral">Dari semua supplier</div></div>
-        <div class="kpi"><label>Perlu dibeli segera</label><div class="val" id="statBeliUrgent">0 item</div><div class="sub neutral">Di bawah stok minimum</div></div>
+        <div class="kpi"><label>Total purchases this month</label><div class="val" id="statBeliTotal">Rp 0</div><div class="sub neutral">November 2026</div></div>
+        <div class="kpi"><label>Number of purchases</label><div class="val" id="statBeliCount">0 kali</div><div class="sub neutral">From all suppliers</div></div>
+        <div class="kpi"><label>Needs buying soon</label><div class="val" id="statBeliUrgent">0 item</div><div class="sub neutral">Below minimum stock</div></div>
       </div>
-      <div class="form-card"><h3>Tambah pembelian</h3><p>Pilih bahan dan supplier, isi jumlah dan harga satuan. Total dihitung otomatis.</p>
+      <div class="form-card"><h3>Add purchase</h3><p>Pick an ingredient and supplier, enter quantity and unit price. The total is calculated automatically.</p>
         <form id="formBeli"><div class="form-grid">
-          <div class="field"><label>Bahan</label><select id="beliBahan"></select></div>
+          <div class="field"><label>Ingredient</label><select id="beliIngredient"></select></div>
           <div class="field"><label>Supplier</label><select id="beliSupplier"></select></div>
-          <div class="field"><label>Jumlah</label><input id="beliQty" type="number" min="0" step="any" value="10" required></div>
-          <div class="field"><label>Harga satuan (Rp)</label><input id="beliHarga" type="number" min="0" value="2500" required></div>
-        </div><div class="form-actions"><button class="btn btn-orange" type="submit">Simpan pembelian</button><span style="align-self:center;color:var(--muted);font-size:13px" id="beliPreview"></span></div></form>
+          <div class="field"><label>Quantity</label><input id="beliQty" type="number" min="0" step="any" value="10" required></div>
+          <div class="field"><label>Unit price (Rp)</label><input id="beliHarga" type="number" min="0" value="2500" required></div>
+        </div><div class="form-actions"><button class="btn btn-orange" type="submit">Save purchase</button><span style="align-self:center;color:var(--muted);font-size:13px" id="beliPreview"></span></div></form>
       </div>
-      <div class="card"><div class="card-head"><h3>Daftar pembelian</h3></div>
-        <div class="toolbar"><input type="search" id="searchBeli" placeholder="Cari bahan, supplier, atau nomor…"><select id="filterBeli" style="flex:0 1 200px"><option value="">Semua status</option><option>Diterima</option><option>Dalam pengiriman</option></select></div>
-        <div class="table-wrap"><table><thead><tr><th>Nomor</th><th>Tanggal</th><th>Bahan</th><th>Supplier</th><th>Jumlah</th><th>Total</th><th>Status</th></tr></thead><tbody id="tbodyBeli"></tbody></table></div>
+      <div class="card"><div class="card-head"><h3>Purchase list</h3></div>
+        <div class="toolbar"><input type="search" id="searchBeli" placeholder="Search ingredient, supplier, or number…"><select id="filterBeli" style="flex:0 1 200px"><option value="">All statuses</option><option>Received</option><option>In transit</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>No.</th><th>Date</th><th>Ingredient</th><th>Supplier</th><th>Quantity</th><th>Total</th><th>Status</th></tr></thead><tbody id="tbodyBeli"></tbody></table></div>
       </div>
     </section>
 
     <!-- SUPPLIER -->
     <section class="page" id="page-supplier">
-      <div class="hero-row"><div><h2>Supplier</h2><p>Daftar pemasok bahan Warung Senja beserta kontak dan total belanjanya.</p></div></div>
-      <div class="card"><div class="toolbar"><input type="search" id="searchSupplier" placeholder="Cari supplier atau kota…"></div>
-        <div class="table-wrap"><table><thead><tr><th>Supplier</th><th>Kontak</th><th>Kota</th><th>Bahan utama</th><th>Total belanja bulan ini</th></tr></thead><tbody id="tbodySupplier"></tbody></table></div>
+      <div class="hero-row"><div><h2>Supplier</h2><p>List of ingredient suppliers for Sunset Stall, with contact details and total spending.</p></div></div>
+      <div class="card"><div class="toolbar"><input type="search" id="searchSupplier" placeholder="Search suppliers or cities…"></div>
+        <div class="table-wrap"><table><thead><tr><th>Supplier</th><th>Contact</th><th>City</th><th>Main ingredient</th><th>Total spending this month</th></tr></thead><tbody id="tbodySupplier"></tbody></table></div>
       </div>
     </section>
 
     <!-- PELANGGAN -->
-    <section class="page" id="page-pelanggan">
-      <div class="hero-row"><div><h2>Pelanggan</h2><p>Pelanggan dan meja yang paling sering belanja di Warung Senja.</p></div></div>
-      <div class="card"><div class="toolbar"><input type="search" id="searchPelanggan" placeholder="Cari pelanggan…"><select id="filterPelanggan" style="flex:0 1 200px"><option value="">Semua jenis</option><option>Pelanggan tetap</option><option>Meja</option></select></div>
-        <div class="table-wrap"><table><thead><tr><th>Nama</th><th>Jenis</th><th>Kunjungan</th><th>Menu favorit</th><th>Total belanja</th><th>Terakhir datang</th></tr></thead><tbody id="tbodyPelanggan"></tbody></table></div>
+    <section class="page" id="page-customer">
+      <div class="hero-row"><div><h2>Customers</h2><p>Customers and tables that shop most often at Sunset Stall.</p></div></div>
+      <div class="card"><div class="toolbar"><input type="search" id="searchCustomers" placeholder="Search customers…"><select id="filterCustomers" style="flex:0 1 200px"><option value="">All types</option><option>Regular customer</option><option>Table</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>Name</th><th>Type</th><th>Visits</th><th>Favorite menu</th><th>Total spending</th><th>Last visit</th></tr></thead><tbody id="tbodyCustomers"></tbody></table></div>
       </div>
     </section>
 
     <!-- KARYAWAN -->
-    <section class="page" id="page-karyawan">
-      <div class="hero-row"><div><h2>Karyawan</h2><p>Daftar karyawan Warung Senja, jadwal sif, dan gaji bulanannya.</p></div></div>
+    <section class="page" id="page-employees">
+      <div class="hero-row"><div><h2>Employees</h2><p>Sunset Stall employee list, shift schedules, and monthly salaries.</p></div></div>
       <div class="stat-mini">
-        <div class="kpi"><label>Total karyawan</label><div class="val">4 orang</div><div class="sub neutral">Semua aktif</div></div>
-        <div class="kpi"><label>Total gaji per bulan</label><div class="val">Rp 7.400.000</div><div class="sub neutral">Masuk biaya operasional</div></div>
-        <div class="kpi"><label>Sif hari ini</label><div class="val" style="font-size:21px">Pagi &amp; Malam</div><div class="sub neutral">2 sif berjalan</div></div>
+        <div class="kpi"><label>Total employees</label><div class="val">4 people</div><div class="sub neutral">All active</div></div>
+        <div class="kpi"><label>Total salary per month</label><div class="val">Rp 7.400.000</div><div class="sub neutral">Counted in operating expenses</div></div>
+        <div class="kpi"><label>Shifts today</label><div class="val" style="font-size:21px">Morning &amp; Evening</div><div class="sub neutral">2 shifts running</div></div>
       </div>
-      <div class="card"><div class="toolbar"><input type="search" id="searchKaryawan" placeholder="Cari nama atau jabatan…"><select id="filterKaryawan" style="flex:0 1 190px"><option value="">Semua sif</option><option>Pagi</option><option>Malam</option></select></div>
-        <div class="table-wrap"><table><thead><tr><th>Nama</th><th>Jabatan</th><th>Sif</th><th>Jam kerja</th><th>Gaji per bulan</th><th>Status</th></tr></thead><tbody id="tbodyKaryawan"></tbody></table></div>
+      <div class="card"><div class="toolbar"><input type="search" id="searchEmployees" placeholder="Search name or role…"><select id="filterEmployees" style="flex:0 1 190px"><option value="">All shifts</option><option>Morning</option><option>Evening</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>Name</th><th>Role</th><th>Shift</th><th>Working hours</th><th>Salary per month</th><th>Status</th></tr></thead><tbody id="tbodyEmployees"></tbody></table></div>
       </div>
     </section>
 
     <!-- KAS & BIAYA -->
     <section class="page" id="page-kas">
-      <div class="hero-row"><div><h2>Kas &amp; biaya</h2><p>Arus uang masuk dan keluar Warung Senja bulan November 2026.</p></div></div>
+      <div class="hero-row"><div><h2>Cash &amp; Expenses</h2><p>Cash in and out at Sunset Stall for November 2026.</p></div></div>
       <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
-        <div class="kpi"><label>Total pemasukan</label><div class="val" style="color:var(--green)" data-kas="masuk">Rp 0</div><div class="sub neutral">Penjualan bulan ini</div></div>
-        <div class="kpi"><label>Total pengeluaran</label><div class="val" style="color:var(--red)" data-kas="keluar">Rp 0</div><div class="sub neutral">HPP + operasional</div></div>
-        <div class="kpi"><label>Laba bersih</label><div class="val" data-kas="laba">Rp 0</div><div class="sub neutral" id="kasMarginSub">Belum ada pemasukan</div></div>
+        <div class="kpi"><label>Total income</label><div class="val" style="color:var(--green)" data-cash="in">Rp 0</div><div class="sub neutral">Sales this month</div></div>
+        <div class="kpi"><label>Total expenses</label><div class="val" style="color:var(--red)" data-cash="out">Rp 0</div><div class="sub neutral">COGS + operations</div></div>
+        <div class="kpi"><label>Net profit</label><div class="val" data-cash="profit">Rp 0</div><div class="sub neutral" id="cashMarginSub">No income yet</div></div>
       </div>
-      <div class="card" style="margin-bottom:16px"><div class="card-head"><h3>Rincian kesehatan keuangan</h3></div>
-        <div class="fin-row"><span>Pendapatan bulan ini</span><b data-fin="pendapatan">Rp 0</b></div>
-        <div class="fin-row"><span>HPP bahan baku</span><b class="neg" data-fin="hpp">− Rp 0</b></div>
-        <div class="fin-row"><span>Biaya operasional</span><b class="neg" data-fin="ops">− Rp 0</b></div>
-        <div class="fin-row total"><span>Laba bersih</span><b data-fin="laba">Rp 0</b></div>
+      <div class="card" style="margin-bottom:16px"><div class="card-head"><h3>Financial health breakdown</h3></div>
+        <div class="fin-row"><span>Revenue this month</span><b data-fin="pendapatan">Rp 0</b></div>
+        <div class="fin-row"><span>COGS — raw materials</span><b class="neg" data-fin="cogs">− Rp 0</b></div>
+        <div class="fin-row"><span>Operating expenses</span><b class="neg" data-fin="ops">− Rp 0</b></div>
+        <div class="fin-row total"><span>Net profit</span><b data-fin="profit">Rp 0</b></div>
       </div>
-      <div class="card"><div class="card-head"><h3>Catatan kas</h3></div>
-        <div class="toolbar"><input type="search" id="searchKas" placeholder="Cari keterangan…"><select id="filterKas" style="flex:0 1 190px"><option value="">Semua jenis</option><option>Masuk</option><option>Keluar</option></select></div>
-        <div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Keterangan</th><th>Kategori</th><th>Jenis</th><th>Jumlah</th></tr></thead><tbody id="tbodyKas"></tbody></table></div>
+      <div class="card"><div class="card-head"><h3>Cash notes</h3></div>
+        <div class="toolbar"><input type="search" id="searchKas" placeholder="Search descriptions…"><select id="filterKas" style="flex:0 1 190px"><option value="">All types</option><option>In</option><option>Out</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>Date</th><th>Description</th><th>Category</th><th>Type</th><th>Quantity</th></tr></thead><tbody id="tbodyKas"></tbody></table></div>
       </div>
     </section>
 
     <!-- LAPORAN -->
-    <section class="page" id="page-laporan">
-      <div class="hero-row"><div><h2>Laporan</h2><p>Unduh laporan bulanan lengkap — semua bagian masuk dalam satu berkas PDF.</p></div><button class="btn btn-orange" id="btnExportPDF" onclick="generatePDF()">⬇ Buat Laporan PDF Bulanan</button></div>
-      <div class="note" style="margin-bottom:16px"><b>Isi laporan PDF:</b> Ringkasan bisnis, semua transaksi Kasir, Menu &amp; bahan + stok, Resep &amp; produksi, Pembelian, Supplier, Pelanggan, Karyawan, dan Kas &amp; biaya — periode November 2026, Warung Senja Cabang utama. Data yang baru ditambah lewat formulir ikut masuk.</div>
+    <section class="page" id="page-reports">
+      <div class="hero-row"><div><h2>Report</h2><p>Download the full monthly report — every section in a single PDF file.</p></div><button class="btn btn-orange" id="btnExportPDF" onclick="generatePDF()">⬇ Generate Monthly PDF Report</button></div>
+      <div class="note" style="margin-bottom:16px"><b>What's in the PDF:</b> Business overview, all Cashier transactions, Menu &amp; Ingredients + stock, Recipes &amp; Production, Purchasing, Suppliers, Customers, Employees, and Cash &amp; Expenses — November 2026 period, Sunset Stall Main branch. Newly added form data is included.</div>
       <div class="card" id="tutupBukuCard" style="margin-bottom:16px">
-        <div class="card-head"><h3>🔒 Tutup Buku — November 2026</h3><span class="pill pill-red" id="exportStatusPill">Belum di-export</span></div>
-        <p style="color:var(--muted);font-size:14px;line-height:1.65;margin:0 0 12px">Tutup buku mengakhiri periode November 2026: history bulan ini dibersihkan supaya bulan baru mulai lagi dari <b>Rp 0</b>, dan laporan PDF-nya disimpan di <b>Riwayat Laporan</b> di bawah supaya tetap bisa dibuka dan diunduh lagi kapan saja.</p>
-        <div class="alert-err" id="tutupBukuWarn" style="margin:0 0 14px"><b>⚠ Laporan bulan ini belum di-export.</b> Export PDF dulu lewat tombol <b>“Buat Laporan PDF Bulanan”</b> di atas — setelah itu tombol Tutup Buku baru bisa dipakai. Kalau ada transaksi atau pembelian baru setelah export terakhir, export perlu diulang supaya arsipnya lengkap.</div>
-        <div class="note" id="tutupBukuReady" style="display:none;margin:0 0 14px;background:#F0FDF4;border-color:#BBF7D0;color:#166534"><b>✓ Laporan November 2026 sudah di-export.</b> Tombol Tutup Buku sudah bisa diklik. PDF bulan ini akan tersimpan di Riwayat Laporan setelah buku ditutup.</div>
+        <div class="card-head"><h3>🔒 Month-End Closing — November 2026</h3><span class="pill pill-red" id="exportStatusPill">Not exported yet</span></div>
+        <p style="color:var(--muted);font-size:14px;line-height:1.65;margin:0 0 12px">Month-end closing ends the November 2026 period: this month's history is cleared so the new month starts again from <b>Rp 0</b>, and its PDF report is saved in <b>Report History</b> below so it can be opened and downloaded again anytime.</p>
+        <div class="alert-err" id="tutupBukuWarn" style="margin:0 0 14px"><b>⚠ This month's report hasn't been exported yet.</b> Export the PDF first via the <b>“Generate Monthly PDF Report”</b> button above — only then can the Month-End Closing button be used. If there are new transactions or purchases after the last export, export again so the archive is complete.</div>
+        <div class="note" id="tutupBukuReady" style="display:none;margin:0 0 14px;background:#F0FDF4;border-color:#BBF7D0;color:#166534"><b>✓ The November 2026 report has been exported.</b> The Month-End Closing button can now be clicked. This month's PDF will be saved in Report History after closing.</div>
         <div style="display:grid;gap:6px;font-size:13.5px;color:var(--muted);margin-bottom:14px">
-          <div><b style="color:var(--red)">Dibersihkan:</b> transaksi penjualan, pembelian, dan catatan kas bulan ini.</div>
-          <div><b style="color:var(--green)">Tetap ada:</b> menu, resep, bahan beserta stok saat ini, supplier, pelanggan, dan karyawan.</div>
+          <div><b style="color:var(--red)">Cleared:</b> sales transactions, purchases, and cash notes for this month.</div>
+          <div><b style="color:var(--green)">Kept:</b> menus, recipes, ingredients with current stock, suppliers, customers, and employees.</div>
         </div>
         <div class="form-actions" style="margin-top:0">
-          <button class="btn btn-danger" id="btnTutupBuku" onclick="klikTutupBuku()" style="opacity:.55">🔒 Tutup Buku</button>
+          <button class="btn btn-danger" id="btnTutupBuku" onclick="klikTutupBuku()" style="opacity:.55">🔒 Month-End Closing</button>
           <button class="btn btn-ghost" onclick="generatePDF()">⬇ Export PDF</button>
         </div>
       </div>
       <div class="card" style="margin-bottom:16px">
-        <div class="card-head"><h3>Riwayat Laporan</h3><span style="color:var(--muted);font-size:13px;font-weight:600" id="riwayatCount">Belum ada arsip</span></div>
-        <div id="riwayatList"><div class="empty">Belum ada laporan yang ditutup. Setelah Tutup Buku, laporan PDF tiap bulan tersimpan di sini dan bisa diunduh lagi.</div></div>
+        <div class="card-head"><h3>Report History</h3><span style="color:var(--muted);font-size:13px;font-weight:600" id="riwayatCount">No archives yet</span></div>
+        <div id="riwayatList"><div class="empty">No closed reports yet. After Month-End Closing, each month's PDF report is saved here and can be downloaded again.</div></div>
       </div>
       <div class="section-gap" id="reportList"></div>
     </section>
 
     <!-- PENGATURAN -->
-    <section class="page" id="page-pengaturan">
-      <div class="hero-row"><div><h2>Pengaturan</h2><p>Profil warung dan pilihan tampilan DapurERP.</p></div></div>
-      <div class="form-card"><h3>Profil warung</h3><p>Perubahan di sini langsung dipakai di seluruh halaman selama sesi ini.</p>
+    <section class="page" id="page-settings">
+      <div class="hero-row"><div><h2>Settings</h2><p>Stall profile and DapurERP display options.</p></div></div>
+      <div class="form-card"><h3>Stall profile</h3><p>Changes here apply across all pages for this session.</p>
         <form id="formSet"><div class="form-grid" style="grid-template-columns:repeat(2,1fr)">
-          <div class="field"><label>Nama warung</label><input id="setWarung" value="Warung Senja"></div>
-          <div class="field"><label>Cabang</label><input id="setCabang" value="Cabang utama"></div>
-          <div class="field"><label>Nama pengelola</label><input id="setAdmin" value="Admin Senja"></div>
-          <div class="field"><label>Nomor telepon</label><input id="setTelp" value="0812-3456-7890"></div>
-          <div class="field" style="grid-column:1/-1"><label>Alamat</label><input id="setAlamat" value="Jl. Senja Raya No. 12, Jakarta"></div>
-        </div><div class="form-actions"><button class="btn btn-orange" type="submit">Simpan pengaturan</button></div></form>
+          <div class="field"><label>Stall name</label><input id="setWarung" value="Sunset Stall"></div>
+          <div class="field"><label>Branch</label><input id="setBranch" value="Main branch"></div>
+          <div class="field"><label>Manager name</label><input id="setAdmin" value="Sunset Admin"></div>
+          <div class="field"><label>Phone number</label><input id="setTelp" value="0812-3456-7890"></div>
+          <div class="field" style="grid-column:1/-1"><label>Address</label><input id="setAddress" value="12 Sunset Raya Street, Jakarta"></div>
+        </div><div class="form-actions"><button class="btn btn-orange" type="submit">Save settings</button></div></form>
       </div>
       <div class="two-col">
-        <div class="card"><div class="card-head"><h3>Tampilan &amp; bahasa</h3></div>
-          <div class="fin-row"><span>Bahasa tampilan</span><b>Bahasa Indonesia</b></div>
-          <div class="fin-row"><span>Mata uang</span><b>Rupiah (Rp)</b></div>
-          <div class="fin-row"><span>Format tanggal</span><b>Hari, Tanggal Bulan Tahun</b></div>
-          <div class="fin-row"><span>Periode laporan</span><b>Bulanan</b></div>
+        <div class="card"><div class="card-head"><h3>Display &amp; language</h3></div>
+          <div class="fin-row"><span>Display language</span><b>English</b></div>
+          <div class="fin-row"><span>Currency</span><b>Rupiah (Rp)</b></div>
+          <div class="fin-row"><span>Date format</span><b>Day, Date Month Year</b></div>
+          <div class="fin-row"><span>Report period</span><b>Monthly</b></div>
         </div>
-        <div class="card"><div class="card-head"><h3>Tentang versi ini</h3></div>
-          <p style="color:var(--muted);font-size:14px;line-height:1.65;margin:0">Ini versi contoh (pratinjau) DapurERP untuk Warung Senja. Data yang ditambah lewat formulir tersimpan selama sesi ini dan ikut masuk ke laporan PDF. Untuk pemakaian harian, data perlu disambungkan ke penyimpanan tetap.</p>
+        <div class="card"><div class="card-head"><h3>About this version</h3></div>
+          <p style="color:var(--muted);font-size:14px;line-height:1.65;margin:0">This is a sample (preview) version of DapurERP for Sunset Stall. Data added via forms is stored for this session only and included in the PDF report. For daily use, data needs to be connected to permanent storage.</p>
         </div>
       </div>
     </section>
 
-    <p class="footer-note">DapurERP • Warung Senja — Cabang utama • Rabu, 4 November 2026</p>
+    <p class="footer-note">DapurERP • Sunset Stall — Main branch • Wednesday, 4 November 2026</p>
   </main>
 </div>
 <div class="modal-overlay" id="confirmModal" style="display:none">
   <div class="modal-card">
-    <h3 id="confirmTitle">Hapus data ini?</h3>
+    <h3 id="confirmTitle">Delete this data?</h3>
     <p id="confirmText"></p>
     <div class="form-actions" style="justify-content:flex-end">
-      <button class="btn btn-ghost" type="button" id="confirmCancel">Batal</button>
-      <button class="btn btn-danger" type="button" id="confirmYes">Ya, hapus</button>
+      <button class="btn btn-ghost" type="button" id="confirmCancel">Cancel</button>
+      <button class="btn btn-danger" type="button" id="confirmYes">Yes, delete</button>
     </div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
 
 <script>
-var TITLES={ringkasan:'Ringkasan bisnis',kasir:'Kasir',menu:'Menu & bahan',resep:'Resep & produksi',pembelian:'Pembelian',supplier:'Supplier',pelanggan:'Pelanggan',karyawan:'Karyawan',kas:'Kas & biaya',laporan:'Laporan',pengaturan:'Pengaturan'};
+var TITLES={overview:'Business overview',cashier:'Cashier',menu:'Menu &amp; Ingredients',recipe:'Recipes &amp; Production',purchases:'Purchasing',supplier:'Supplier',customer:'Customers',employees:'Employees',kas:'Cash &amp; Expenses',reports:'Report',settings:'Settings'};
 function rp(n){return 'Rp '+Number(n).toLocaleString('id-ID');}
 function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2600);}
 function goPage(id){
@@ -410,20 +410,20 @@ function goPage(id){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 document.querySelectorAll('#mainNav button').forEach(function(b){b.addEventListener('click',function(){goPage(b.dataset.page);});});
-function baruTransaksi(){
-  goPage('kasir');
-  var card=document.getElementById('formTxCard');var inp=document.getElementById('txPelanggan');
+function baruTransaction(){
+  goPage('cashier');
+  var card=document.getElementById('formTxCard');var inp=document.getElementById('txCustomers');
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   setTimeout(function(){
     if(card){card.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});card.classList.add('flash');setTimeout(function(){card.classList.remove('flash');},2400);}
     if(inp){try{inp.focus({preventScroll:true});}catch(e){inp.focus();}}
   },90);
 }
-['btnTxBaruRingkasan','btnTxBaruKasir'].forEach(function(id){var b=document.getElementById(id);if(b)b.addEventListener('click',baruTransaksi);});
+['btnTxBaruOverview','btnTxBaruCashier'].forEach(function(id){var b=document.getElementById(id);if(b)b.addEventListener('click',baruTransaction);});
 var confirmCb=null;
 function askConfirm(text,cb){
-  document.getElementById('confirmTitle').textContent='Hapus data ini?';
-  document.getElementById('confirmYes').textContent='Ya, hapus';
+  document.getElementById('confirmTitle').textContent='Delete this data?';
+  document.getElementById('confirmYes').textContent='Yes, delete';
   document.getElementById('confirmText').textContent=text;confirmCb=cb;
   document.getElementById('confirmModal').style.display='grid';
 }
@@ -439,117 +439,117 @@ function flashCard(cardId,focusId){
   if(focusId){var inp=document.getElementById(focusId);if(inp)setTimeout(function(){try{inp.focus({preventScroll:true});}catch(e){inp.focus();}},350);}
 }
 function fmtN(n){return (Math.round(Number(n)*1000)/1000).toLocaleString('id-ID');}
-function findBahan(nama){var key=String(nama||'').trim().toLowerCase();return state.bahan.find(function(b){return b.nama.trim().toLowerCase()===key;});}
-function penjualanTotal(){return state.transaksi.reduce(function(a,t){return a+t.total;},0);}
-function nilaiPersediaan(){return state.bahan.reduce(function(a,b){return a+(Number(b.sisa)||0)*(Number(b.harga)||0);},0);}
-function keuangan(){var masuk=0,hpp=0,ops=0;state.kas.forEach(function(k){if(k.jenis==='Masuk')masuk+=k.jumlah;else if(k.kategori==='Bahan baku')hpp+=k.jumlah;else ops+=k.jumlah;});return {masuk:masuk,hpp:hpp,ops:ops,keluar:hpp+ops,laba:masuk-hpp-ops};}
-function kebutuhanStok(menu,qty){var r=state.resep.find(function(x){return x.menu===menu;});if(!r)return [];return r.bahan.filter(function(i){return i.nama;}).map(function(i){var b=findBahan(i.nama);var j=i.jumlah;if(b){if(i.satuan==='gram'&&b.satuan==='kg')j=j/1000;else if(i.satuan==='ml'&&b.satuan==='liter')j=j/1000;}return {ing:i,perlu:Math.round(j*qty*1000)/1000,bahan:b,satuan:b?b.satuan:i.satuan};});}
+function findIngredient(name){var key=String(name||'').trim().toLowerCase();return state.ingredient.find(function(b){return b.name.trim().toLowerCase()===key;});}
+function salesTotal(){return state.transactions.reduce(function(a,t){return a+t.total;},0);}
+function nilaiPersediaan(){return state.ingredient.reduce(function(a,b){return a+(Number(b.remaining)||0)*(Number(b.price)||0);},0);}
+function keuangan(){var income=0,cogs=0,ops=0;state.cash.forEach(function(k){if(k.type==='In')income+=k.quantity;else if(k.category==='Raw materials')cogs+=k.quantity;else ops+=k.quantity;});return {income:income,cogs:cogs,ops:ops,out:cogs+ops,profit:income-cogs-ops};}
+function kebutuhanStok(menu,qty){var r=state.recipe.find(function(x){return x.menu===menu;});if(!r)return [];return r.ingredient.filter(function(i){return i.name;}).map(function(i){var b=findIngredient(i.name);var j=i.quantity;if(b){if(i.unit==='g'&&b.unit==='kg')j=j/1000;else if(i.unit==='ml'&&b.unit==='liter')j=j/1000;}return {ing:i,perlu:Math.round(j*qty*1000)/1000,ingredient:b,unit:b?b.unit:i.unit};});}
 function renderStats(){
-  var jual=penjualanTotal();var fin=keuangan();var labaKotor=fin.masuk-fin.hpp;
+  var jual=salesTotal();var fin=keuangan();var profitKotor=fin.income-fin.cogs;
   function set(sel,txt){document.querySelectorAll(sel).forEach(function(el){el.textContent=txt;});}
   function pct(a,b){return (a/b*100).toLocaleString('id-ID',{maximumFractionDigits:1})+'%';}
-  set('#kpiPenjualan',rp(jual));set('[data-stat="penjualan"]',rp(jual));
-  var subTx=state.transaksi.length?(state.transaksi.length+' transaksi tercatat'):'Belum ada transaksi';
-  set('#kpiPenjualanSub',subTx);set('[data-stat="penjualanSub"]',subTx);
-  set('#kpiLabaKotor',rp(labaKotor));
-  set('#kpiLabaSub',fin.masuk>0?('Margin '+pct(labaKotor,fin.masuk)+' dari pendapatan'):'Belum ada penjualan');
+  set('#kpiPenjualan',rp(jual));set('[data-stat="sales"]',rp(jual));
+  var subTx=state.transactions.length?(state.transactions.length===1?'1 transaction recorded':state.transactions.length+' transactions recorded'):'No transactions yet';
+  set('#kpiPenjualanSub',subTx);set('[data-stat="salesSub"]',subTx);
+  set('#kpiLabaKotor',rp(profitKotor));
+  set('#kpiLabaSub',fin.income>0?('Margin '+pct(profitKotor,fin.income)+' of revenue'):'No sales yet');
   set('#kpiPersediaan',rp(nilaiPersediaan()));
-  set('#kpiBahanAktif',state.bahan.length+' bahan aktif');
-  set('[data-fin="pendapatan"]',rp(fin.masuk));
-  set('[data-fin="hpp"]','− '+rp(fin.hpp));
+  set('#kpiIngredientActive',state.ingredient.length+' active ingredients');
+  set('[data-fin="pendapatan"]',rp(fin.income));
+  set('[data-fin="cogs"]','− '+rp(fin.cogs));
   set('[data-fin="ops"]','− '+rp(fin.ops));
-  set('[data-fin="laba"]',rp(fin.laba));
-  set('[data-kas="masuk"]',rp(fin.masuk));set('[data-kas="keluar"]',rp(fin.keluar));set('[data-kas="laba"]',rp(fin.laba));
-  set('#kasMarginSub',fin.masuk>0?('Margin bersih '+pct(fin.laba,fin.masuk)):'Belum ada pemasukan');
-  var best=null;state.menus.forEach(function(m){if(m.terjual>0&&(!best||m.terjual>best.terjual))best=m;});
-  set('#statMenuLaku',best?best.nama:'—');set('#statMenuLakuSub',best?(best.terjual+' porsi terjual dari transaksi yang diinput'):'Belum ada penjualan');
+  set('[data-fin="profit"]',rp(fin.profit));
+  set('[data-cash="in"]',rp(fin.income));set('[data-cash="out"]',rp(fin.out));set('[data-cash="profit"]',rp(fin.profit));
+  set('#cashMarginSub',fin.income>0?('Net margin '+pct(fin.profit,fin.income)):'No income yet');
+  var best=null;state.menus.forEach(function(m){if(m.sold>0&&(!best||m.sold>best.sold))best=m;});
+  set('#statMenuLaku',best?best.name:'—');set('#statMenuLakuSub',best?(best.sold+' servings sold from entered transactions'):'No sales yet');
   renderChart();
 }
 
 /* ===== DATA ===== */
 var state={
  seqTx:1, seqBeli:1,
- sudahExport:false, riwayat:[],
- transaksi:[],
+ alreadyExported:false, riwayat:[],
+ transactions:[],
  menus:[
-  {nama:'Nasi Goreng',kategori:'Makanan',harga:18000,terjual:0},
-  {nama:'Mie Goreng',kategori:'Makanan',harga:16000,terjual:0},
-  {nama:'Kopi Susu',kategori:'Minuman',harga:12000,terjual:0},
-  {nama:'Es Teh Manis',kategori:'Minuman',harga:6000,terjual:0}
+  {name:'Beef Burger',category:'Food',price:18000,sold:0},
+  {name:'Spaghetti Bolognese',category:'Food',price:16000,sold:0},
+  {name:'Iced Latte',category:'Drinks',price:12000,sold:0},
+  {name:'Lemon Iced Tea',category:'Drinks',price:6000,sold:0}
  ],
- bahan:[],
- resep:[
-  {menu:'Nasi Goreng',harga:18000,waktu:'12 menit',bahan:[
-   {nama:'Beras',jumlah:0.2,satuan:'kg',tampil:'200 gram'},
-   {nama:'Telur ayam',jumlah:1,satuan:'butir',tampil:'1 butir'},
-   {nama:'Ayam fillet',jumlah:0.05,satuan:'kg',tampil:'50 gram'},
-   {label:'Bumbu & kecap',tampil:'1 porsi'}
+ ingredient:[],
+ recipe:[
+  {menu:'Beef Burger',price:18000,time:'12 minutes',ingredient:[
+   {name:'Beef Patty',quantity:1,unit:'pc',display:'1 pc'},
+   {name:'Burger Bun',quantity:1,unit:'pc',display:'1 pc'},
+   {name:'Cheese Slice',quantity:1,unit:'pc',display:'1 pc'},
+   {label:'Lettuce & sauce',display:'1 serving'}
   ]},
-  {menu:'Mie Goreng',harga:16000,waktu:'10 menit',bahan:[
-   {nama:'Mie telur',jumlah:0.12,satuan:'kg',tampil:'120 gram'},
-   {nama:'Telur ayam',jumlah:1,satuan:'butir',tampil:'1 butir'},
-   {label:'Sayur sawi',tampil:'30 gram'},
-   {label:'Bumbu & kecap',tampil:'1 porsi'}
+  {menu:'Spaghetti Bolognese',price:16000,time:'10 minutes',ingredient:[
+   {name:'Spaghetti',quantity:0.12,unit:'kg',display:'120 grams'},
+   {name:'Ground Beef',quantity:0.1,unit:'kg',display:'100 grams'},
+   {name:'Tomato Sauce',quantity:0.08,unit:'liter',display:'80 ml'},
+   {name:'Parmesan',quantity:0.02,unit:'kg',display:'20 grams'}
   ]},
-  {menu:'Kopi Susu',harga:12000,waktu:'5 menit',bahan:[
-   {nama:'Kopi bubuk',jumlah:0.015,satuan:'kg',tampil:'15 gram'},
-   {nama:'Susu segar',jumlah:0.12,satuan:'liter',tampil:'120 ml'},
-   {nama:'Gula aren',jumlah:0.02,satuan:'kg',tampil:'20 gram'}
+  {menu:'Iced Latte',price:12000,time:'5 minutes',ingredient:[
+   {name:'Coffee Beans',quantity:0.015,unit:'kg',display:'15 grams'},
+   {name:'Fresh Milk',quantity:0.12,unit:'liter',display:'120 ml'},
+   {name:'Sugar Syrup',quantity:0.02,unit:'liter',display:'20 ml'}
   ]},
-  {menu:'Es Teh Manis',harga:6000,waktu:'3 menit',bahan:[
-   {nama:'Teh celup',jumlah:1,satuan:'bungkus',tampil:'1 kantong'},
-   {nama:'Gula pasir',jumlah:0.025,satuan:'kg',tampil:'25 gram'},
-   {label:'Es batu',tampil:'1 gelas'}
+  {menu:'Lemon Iced Tea',price:6000,time:'3 minutes',ingredient:[
+   {name:'Black Tea',quantity:1,unit:'pack',display:'1 bag'},
+   {name:'Sugar',quantity:0.025,unit:'kg',display:'25 grams'},
+   {label:'Ice cubes',display:'1 glass'}
   ]}
  ],
- pembelian:[],
+ purchases:[],
  supplier:[
-  {nama:'Sumber Telur Jaya',kontak:'0813-2200-1145',kota:'Jakarta',utama:'Telur ayam',total:0},
-  {nama:'Daging Segar Abadi',kontak:'0821-7788-9032',kota:'Jakarta',utama:'Ayam fillet & daging',total:0},
-  {nama:'Beras Makmur',kontak:'0857-4412-6670',kota:'Bekasi',utama:'Beras & mie telur',total:0},
-  {nama:'Kopi Nusantara',kontak:'0819-3305-2218',kota:'Depok',utama:'Kopi bubuk',total:0},
-  {nama:'Susu Segar Lestari',kontak:'0878-9901-3345',kota:'Bogor',utama:'Susu segar',total:0}
+  {name:'Golden Egg Farms',contact:'0813-2200-1145',city:'Jakarta',main:'Eggs',total:0},
+  {name:'Prime Meat Co.',contact:'0821-7788-9032',city:'Jakarta',main:'Beef patty & meat',total:0},
+  {name:'Pasta & Grain Supply',contact:'0857-4412-6670',city:'Bekasi',main:'Spaghetti & pasta',total:0},
+  {name:'Roast Bean Co.',contact:'0819-3305-2218',city:'Depok',main:'Coffee beans',total:0},
+  {name:'Fresh Dairy Farms',contact:'0878-9901-3345',city:'Bogor',main:'Fresh milk',total:0}
  ],
- pelanggan:[],
- karyawan:[
-  {nama:'Sari Wulandari',jabatan:'Koki utama',sif:'Pagi',jam:'07.00 – 15.00',gaji:2400000,status:'Aktif'},
-  {nama:'Andi Pratama',jabatan:'Kasir',sif:'Pagi',jam:'07.00 – 15.00',gaji:1900000,status:'Aktif'},
-  {nama:'Dewi Lestari',jabatan:'Pelayan',sif:'Malam',jam:'15.00 – 22.00',gaji:1600000,status:'Aktif'},
-  {nama:'Rudi Hartono',jabatan:'Koki & persiapan bahan',sif:'Malam',jam:'15.00 – 22.00',gaji:1500000,status:'Aktif'}
+ customer:[],
+ employees:[
+  {name:'Sari Wulandari',role:'Head Chef',shift:'Morning',time:'07.00 – 15.00',salary:2400000,status:'Active'},
+  {name:'Andi Pratama',role:'Cashier',shift:'Morning',time:'07.00 – 15.00',salary:1900000,status:'Active'},
+  {name:'Dewi Lestari',role:'Waiter',shift:'Evening',time:'15.00 – 22.00',salary:1600000,status:'Active'},
+  {name:'Rudi Hartono',role:'Cook & Ingredient Prep',shift:'Evening',time:'15.00 – 22.00',salary:1500000,status:'Active'}
  ],
- kas:[]
+ cash:[]
 };
 
 /* ===== RENDER ===== */
-function pillStatus(s){if(s==='Selesai'||s==='Diterima'||s==='Aktif')return '<span class="pill pill-green">'+s+'</span>';if(s==='Diproses'||s==='Dalam pengiriman')return '<span class="pill pill-amber">'+s+'</span>';return '<span class="pill pill-grey">'+s+'</span>';}
-function lowStock(){return state.bahan.filter(function(b){return b.sisa<b.min;});}
+function pillStatus(s){if(s==='Completed'||s==='Received'||s==='Active')return '<span class="pill pill-green">'+s+'</span>';if(s==='Processing'||s==='In transit')return '<span class="pill pill-amber">'+s+'</span>';return '<span class="pill pill-grey">'+s+'</span>';}
+function lowStock(){return state.ingredient.filter(function(b){return b.remaining<b.min;});}
 
 function renderLowStock(){
   var el=document.getElementById('lowStockList');
   var low=lowStock();
   document.getElementById('kpiStokKurang').textContent=low.length+' item';
   document.getElementById('statBeliUrgent').textContent=low.length+' item';
-  var sub=document.getElementById('kpiStokSub');if(sub){sub.textContent=low.length?'Perlu segera dibeli':'Semua stok aman';sub.className='sub '+(low.length?'warn-t':'neutral');}
-  if(!state.bahan.length){el.innerHTML='<div class="empty">Belum ada bahan tercatat. Tambah bahan lewat halaman Menu &amp; bahan.</div>';return;}
-  if(!low.length){el.innerHTML='<div class="empty">Semua stok aman, tidak ada yang perlu dibeli.</div>';return;}
-  el.innerHTML=low.map(function(b){return '<div class="list-item"><div class="thumb">📦</div><div><b>'+b.nama+'</b><span>Sisa '+fmtN(b.sisa)+' '+b.satuan+' · minimum '+fmtN(b.min)+'</span></div><div class="right"><button class="btn btn-soft" onclick="beliCepat(\''+b.nama+'\')">Beli</button></div></div>';}).join('');
+  var sub=document.getElementById('kpiStokSub');if(sub){sub.textContent=low.length?'Perlu segera dibeli':'All stock is safe';sub.className='sub '+(low.length?'warn-t':'neutral');}
+  if(!state.ingredient.length){el.innerHTML='<div class="empty">No ingredients recorded yet. Add ingredients via the Menu &amp; Ingredients page.</div>';return;}
+  if(!low.length){el.innerHTML='<div class="empty">All stock is safe, nothing to buy.</div>';return;}
+  el.innerHTML=low.map(function(b){return '<div class="list-item"><div class="thumb">📦</div><div><b>'+b.name+'</b><span>Remaining '+fmtN(b.remaining)+' '+b.unit+' · minimum '+fmtN(b.min)+'</span></div><div class="right"><button class="btn btn-soft" onclick="beliCepat(\''+b.name+'\')">Buy</button></div></div>';}).join('');
 }
-function beliCepat(nama){goPage('pembelian');var sel=document.getElementById('beliBahan');sel.value=nama;syncBeliHarga();toast('Formulir pembelian dibuka untuk '+nama);}
+function beliCepat(name){goPage('purchases');var sel=document.getElementById('beliIngredient');sel.value=name;syncBeliHarga();toast('Purchase form opened for '+name);}
 function renderRecent(){
   var el=document.getElementById('recentTx');
-  if(!state.transaksi.length){el.innerHTML='<div class="empty">Belum ada transaksi. Klik “+ Transaksi baru” di atas untuk membuat transaksi pertama.</div>';return;}
-  el.innerHTML=state.transaksi.slice(0,3).map(function(t){
-    return '<div class="list-item"><div class="thumb">🧾</div><div><b>#'+t.id+' · '+t.pelanggan+'</b><span>'+t.menu+' × '+t.qty+' · '+t.jam+'</span></div><div class="right"><b>'+rp(t.total)+'</b><br>'+pillStatus(t.status)+'</div></div>';
+  if(!state.transactions.length){el.innerHTML='<div class="empty">No transactions yet. Click “+ New transaction” above to create your first transaction.</div>';return;}
+  el.innerHTML=state.transactions.slice(0,3).map(function(t){
+    return '<div class="list-item"><div class="thumb">🧾</div><div><b>#'+t.id+' · '+t.customer+'</b><span>'+t.menu+' × '+t.qty+' · '+t.time+'</span></div><div class="right"><b>'+rp(t.total)+'</b><br>'+pillStatus(t.status)+'</div></div>';
   }).join('');
 }
-/* ===== GRAFIK PENJUALAN MINGGU INI (4–10 Nov 2026) ===== */
-var HARI_LABEL=['Sen','Sel','Rab','Kam','Jum','Sab','Min'];
-var HARI_NAMA=['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu'];
-var HARI_INI=2; /* Hari ini: Rabu, 4 November 2026 */
+/* ===== SALES CHART THIS WEEK (4–10 Nov 2026) ===== */
+var HARI_LABEL=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+var HARI_NAMA=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+var HARI_INI=2; /* Today: Wednesday, 4 November 2026 */
 function renderChart(){
   var el=document.getElementById('weekChart');if(!el)return;
   var totals=[0,0,0,0,0,0,0];var counts=[0,0,0,0,0,0,0];
-  state.transaksi.forEach(function(t){var h=(typeof t.hari==='number')?t.hari:HARI_INI;if(h<0||h>6)h=HARI_INI;totals[h]+=t.total;counts[h]++;});
+  state.transactions.forEach(function(t){var h=(typeof t.day==='number')?t.day:HARI_INI;if(h<0||h>6)h=HARI_INI;totals[h]+=t.total;counts[h]++;});
   var totalMinggu=totals.reduce(function(a,b){return a+b;},0);
   var maks=Math.max.apply(null,totals);
   el.innerHTML=HARI_LABEL.map(function(lb,i){
@@ -560,101 +560,101 @@ function renderChart(){
   }).join('');
   var note=document.getElementById('chartNote');
   if(note){
-    if(totalMinggu>0){var nTx=counts.reduce(function(a,b){return a+b;},0);note.textContent='Total penjualan minggu ini '+rp(totalMinggu)+' dari '+nTx+' transaksi. Bar oranye = hari ini ('+HARI_NAMA[HARI_INI]+').';}
-    else{note.textContent='Belum ada penjualan tercatat minggu ini. Total penjualan yang diinput lewat Kasir tampil di kartu Penjualan hari ini di atas.';}
+    if(totalMinggu>0){var nTx=counts.reduce(function(a,b){return a+b;},0);note.textContent='Total sales this week '+rp(totalMinggu)+' from '+nTx+' transaction'+(nTx===1?'':'s')+'. Orange bar = today ('+HARI_NAMA[HARI_INI]+').';}
+    else{note.textContent='No sales recorded this week yet. Sales entered via Cashier show in the daily sales card above.';}
   }
 }
 function renderTx(){
   var q=(document.getElementById('searchTx').value||'').toLowerCase();var f=document.getElementById('filterTx').value;
-  var rows=state.transaksi.filter(function(t){return (!f||t.status===f)&&(!q||(t.id+t.pelanggan+t.menu).toLowerCase().indexOf(q)>-1);});
-  document.getElementById('tbodyTx').innerHTML=rows.length?rows.map(function(t){return '<tr><td><b>#'+t.id+'</b></td><td>'+t.pelanggan+'</td><td>'+t.menu+' × '+t.qty+'</td><td>'+t.jam+'</td><td><b>'+rp(t.total)+'</b></td><td>'+pillStatus(t.status)+'</td></tr>';}).join(''):'<tr><td colspan="6"><div class="empty">'+(state.transaksi.length?'Tidak ada transaksi yang cocok dengan pencarian.':'Belum ada transaksi. Buat lewat formulir “Buat transaksi baru” di atas.')+'</div></td></tr>';
-  document.getElementById('statTxCount').textContent=state.transaksi.length+' transaksi';
+  var rows=state.transactions.filter(function(t){return (!f||t.status===f)&&(!q||(t.id+t.customer+t.menu).toLowerCase().indexOf(q)>-1);});
+  document.getElementById('tbodyTx').innerHTML=rows.length?rows.map(function(t){return '<tr><td><b>#'+t.id+'</b></td><td>'+t.customer+'</td><td>'+t.menu+' × '+t.qty+'</td><td>'+t.time+'</td><td><b>'+rp(t.total)+'</b></td><td>'+pillStatus(t.status)+'</td></tr>';}).join(''):'<tr><td colspan="6"><div class="empty">'+(state.transactions.length?'No transactions match your search.':'No transactions yet. Create one via the “Create new transaction” form above.')+'</div></td></tr>';
+  document.getElementById('statTxCount').textContent=state.transactions.length===1?'1 transaction':state.transactions.length+' transactions';
   renderRecent();renderStats();
 }
-function renderResepMenuSelect(){
+function renderRecipesMenuSelect(){
   var sel=document.getElementById('rMenu');if(!sel)return;var cur=sel.value;
-  sel.innerHTML=state.menus.map(function(m){return '<option value="'+m.nama+'">'+m.nama+'</option>';}).join('');
-  if(cur&&state.menus.some(function(m){return m.nama===cur;}))sel.value=cur;
+  sel.innerHTML=state.menus.map(function(m){return '<option value="'+m.name+'">'+m.name+'</option>';}).join('');
+  if(cur&&state.menus.some(function(m){return m.name===cur;}))sel.value=cur;
 }
 function renderMenu(){
   var q=(document.getElementById('searchMenu').value||'').toLowerCase();var f=document.getElementById('filterMenu').value;
-  var rows=state.menus.filter(function(m){return (!f||m.kategori===f)&&(!q||m.nama.toLowerCase().indexOf(q)>-1);});
-  document.getElementById('tbodyMenu').innerHTML=rows.length?rows.map(function(m){var idx=state.menus.indexOf(m);return '<tr><td><b>'+m.nama+'</b></td><td>'+m.kategori+'</td><td><b>'+rp(m.harga)+'</b></td><td>'+m.terjual+' porsi</td><td><span class="pill pill-green">Tersedia</span></td><td><span style="display:inline-flex;gap:6px"><button class="btn btn-soft" onclick="editMenuIdx('+idx+')">Edit</button><button class="btn btn-soft btn-del" onclick="hapusMenuIdx('+idx+')">Hapus</button></span></td></tr>';}).join(''):'<tr><td colspan="6"><div class="empty">Menu tidak ditemukan.</div></td></tr>';
+  var rows=state.menus.filter(function(m){return (!f||m.category===f)&&(!q||m.name.toLowerCase().indexOf(q)>-1);});
+  document.getElementById('tbodyMenu').innerHTML=rows.length?rows.map(function(m){var idx=state.menus.indexOf(m);return '<tr><td><b>'+m.name+'</b></td><td>'+m.category+'</td><td><b>'+rp(m.price)+'</b></td><td>'+m.sold+' servings</td><td><span class="pill pill-green">Available</span></td><td><span style="display:inline-flex;gap:6px"><button class="btn btn-soft" onclick="editMenuIdx('+idx+')">Edit</button><button class="btn btn-soft btn-del" onclick="hapusMenuIdx('+idx+')">Delete</button></span></td></tr>';}).join(''):'<tr><td colspan="6"><div class="empty">No menu found.</div></td></tr>';
   var sel=document.getElementById('txMenu');var cur=sel.value;
-  sel.innerHTML=state.menus.map(function(m){return '<option value="'+m.nama+'" data-harga="'+m.harga+'">'+m.nama+' — '+rp(m.harga)+'</option>';}).join('');
-  if(cur)sel.value=cur; syncTxPreview(); renderResepMenuSelect();
+  sel.innerHTML=state.menus.map(function(m){return '<option value="'+m.name+'" data-price="'+m.price+'">'+m.name+' — '+rp(m.price)+'</option>';}).join('');
+  if(cur)sel.value=cur; syncTxPreview(); renderRecipesMenuSelect();
 }
-function renderBahan(){
-  var q=(document.getElementById('searchBahan').value||'').toLowerCase();var f=document.getElementById('filterBahan').value;
-  var rows=state.bahan.filter(function(b){var kurang=b.sisa<b.min;return (!f||(f==='kurang'?kurang:!kurang))&&(!q||(b.nama+b.supplier).toLowerCase().indexOf(q)>-1);});
-  document.getElementById('tbodyBahan').innerHTML=rows.length?rows.map(function(b){var kurang=b.sisa<b.min;return '<tr><td><b>'+b.nama+'</b></td><td>'+fmtN(b.sisa)+' '+b.satuan+'</td><td>'+fmtN(b.min)+' '+b.satuan+'</td><td>'+rp(b.harga)+'</td><td>'+b.supplier+'</td><td>'+(kurang?'<span class="pill pill-red">Perlu dibeli</span>':'<span class="pill pill-green">Aman</span>')+'</td></tr>';}).join(''):'<tr><td colspan="6"><div class="empty">'+(state.bahan.length?'Bahan tidak ditemukan.':'Belum ada bahan. Tambah lewat formulir “Tambah bahan baru” di atas.')+'</div></td></tr>';
-  var sel=document.getElementById('beliBahan');var cur=sel.value;
-  sel.innerHTML=state.bahan.map(function(b){return '<option value="'+b.nama+'">'+b.nama+'</option>';}).join('');
-  if(cur&&state.bahan.some(function(b){return b.nama===cur;}))sel.value=cur;
+function renderIngredient(){
+  var q=(document.getElementById('searchIngredient').value||'').toLowerCase();var f=document.getElementById('filterIngredient').value;
+  var rows=state.ingredient.filter(function(b){var low=b.remaining<b.min;return (!f||(f==='low'?low:!low))&&(!q||(b.name+b.supplier).toLowerCase().indexOf(q)>-1);});
+  document.getElementById('tbodyIngredient').innerHTML=rows.length?rows.map(function(b){var low=b.remaining<b.min;return '<tr><td><b>'+b.name+'</b></td><td>'+fmtN(b.remaining)+' '+b.unit+'</td><td>'+fmtN(b.min)+' '+b.unit+'</td><td>'+rp(b.price)+'</td><td>'+b.supplier+'</td><td>'+(low?'<span class="pill pill-red">Needs buying</span>':'<span class="pill pill-green">Safe</span>')+'</td></tr>';}).join(''):'<tr><td colspan="6"><div class="empty">'+(state.ingredient.length?'No ingredient found.':'No ingredients yet. Add via the “Add new ingredient” form above.')+'</div></td></tr>';
+  var sel=document.getElementById('beliIngredient');var cur=sel.value;
+  sel.innerHTML=state.ingredient.map(function(b){return '<option value="'+b.name+'">'+b.name+'</option>';}).join('');
+  if(cur&&state.ingredient.some(function(b){return b.name===cur;}))sel.value=cur;
   renderLowStock();renderStats();
 }
-function renderResep(){
-  document.getElementById('recipeList').innerHTML=state.resep.length?state.resep.map(function(r,idx){
-    var pct=Math.min(100,Math.round(r.harga/18000*100));
-    return '<div class="card"><div class="recipe-head"><div class="thumb">🍳</div><div><b style="font-size:16px">'+r.menu+'</b><div style="color:var(--muted);font-size:13px">Harga jual '+rp(r.harga)+' · Waktu buat ± '+r.waktu+' · 1 porsi</div></div><div style="margin-left:auto;display:flex;gap:8px;flex:none"><button class="btn btn-soft" onclick="editResepIdx('+idx+')">Edit</button><button class="btn btn-soft btn-del" onclick="hapusResepIdx('+idx+')">Hapus</button></div></div><div class="progress" style="margin-bottom:12px"><i style="width:'+pct+'%"></i></div>'+r.bahan.map(function(b){var nama=b.nama||b.label;var tag=b.nama?'<span class="pill pill-amber" style="margin-left:6px">Potong stok</span>':'<span class="pill pill-grey" style="margin-left:6px">Pelengkap</span>';return '<div class="fin-row"><span>'+nama+tag+'</span><b>'+b.tampil+'</b></div>';}).join('')+'</div>';
-  }).join(''):'<div class="empty">Belum ada resep. Tambah lewat formulir “Tambah resep baru” di atas.</div>';
+function renderRecipes(){
+  document.getElementById('recipeList').innerHTML=state.recipe.length?state.recipe.map(function(r,idx){
+    var pct=Math.min(100,Math.round(r.price/18000*100));
+    return '<div class="card"><div class="recipe-head"><div class="thumb">🍳</div><div><b style="font-size:16px">'+r.menu+'</b><div style="color:var(--muted);font-size:13px">Selling price '+rp(r.price)+' · Prep time ± '+r.time+' · 1 serving</div></div><div style="margin-left:auto;display:flex;gap:8px;flex:none"><button class="btn btn-soft" onclick="editRecipesIdx('+idx+')">Edit</button><button class="btn btn-soft btn-del" onclick="hapusRecipesIdx('+idx+')">Delete</button></div></div><div class="progress" style="margin-bottom:12px"><i style="width:'+pct+'%"></i></div>'+r.ingredient.map(function(b){var name=b.name||b.label;var tag=b.name?'<span class="pill pill-amber" style="margin-left:6px">Deduct stock</span>':'<span class="pill pill-grey" style="margin-left:6px">Extra</span>';return '<div class="fin-row"><span>'+name+tag+'</span><b>'+b.display+'</b></div>';}).join('')+'</div>';
+  }).join(''):'<div class="empty">No recipes yet. Add via the “Add new recipe” form above.</div>';
 }
 function renderBeli(){
   var q=(document.getElementById('searchBeli').value||'').toLowerCase();var f=document.getElementById('filterBeli').value;
-  var rows=state.pembelian.filter(function(p){return (!f||p.status===f)&&(!q||(p.id+p.bahan+p.supplier).toLowerCase().indexOf(q)>-1);});
-  document.getElementById('tbodyBeli').innerHTML=rows.length?rows.map(function(p){return '<tr><td><b>#'+p.id+'</b></td><td>'+p.tgl+'</td><td>'+p.bahan+'</td><td>'+p.supplier+'</td><td>'+fmtN(p.qty)+' '+p.satuan+'</td><td><b>'+rp(p.total)+'</b></td><td>'+pillStatus(p.status)+'</td></tr>';}).join(''):'<tr><td colspan="7"><div class="empty">'+(state.pembelian.length?'Pembelian tidak ditemukan.':'Belum ada pembelian. Catat lewat formulir “Tambah pembelian” di atas.')+'</div></td></tr>';
-  var tot=state.pembelian.reduce(function(a,p){return a+p.total;},0);
+  var rows=state.purchases.filter(function(p){return (!f||p.status===f)&&(!q||(p.id+p.ingredient+p.supplier).toLowerCase().indexOf(q)>-1);});
+  document.getElementById('tbodyBeli').innerHTML=rows.length?rows.map(function(p){return '<tr><td><b>#'+p.id+'</b></td><td>'+p.date+'</td><td>'+p.ingredient+'</td><td>'+p.supplier+'</td><td>'+fmtN(p.qty)+' '+p.unit+'</td><td><b>'+rp(p.total)+'</b></td><td>'+pillStatus(p.status)+'</td></tr>';}).join(''):'<tr><td colspan="7"><div class="empty">'+(state.purchases.length?'No purchase found.':'No purchases yet. Record one via the “Add purchase” form above.')+'</div></td></tr>';
+  var tot=state.purchases.reduce(function(a,p){return a+p.total;},0);
   document.getElementById('statBeliTotal').textContent=rp(tot);
-  document.getElementById('statBeliCount').textContent=state.pembelian.length+' kali';
+  document.getElementById('statBeliCount').textContent=state.purchases.length+' times';
   renderStats();
 }
 function renderSupplier(){
   var q=(document.getElementById('searchSupplier').value||'').toLowerCase();
-  var rows=state.supplier.filter(function(s){return !q||(s.nama+s.kota+s.utama).toLowerCase().indexOf(q)>-1;});
-  document.getElementById('tbodySupplier').innerHTML=rows.length?rows.map(function(s){return '<tr><td><b>'+s.nama+'</b></td><td>'+s.kontak+'</td><td>'+s.kota+'</td><td>'+s.utama+'</td><td><b>'+rp(s.total)+'</b></td></tr>';}).join(''):'<tr><td colspan="5"><div class="empty">Supplier tidak ditemukan.</div></td></tr>';
+  var rows=state.supplier.filter(function(s){return !q||(s.name+s.city+s.main).toLowerCase().indexOf(q)>-1;});
+  document.getElementById('tbodySupplier').innerHTML=rows.length?rows.map(function(s){return '<tr><td><b>'+s.name+'</b></td><td>'+s.contact+'</td><td>'+s.city+'</td><td>'+s.main+'</td><td><b>'+rp(s.total)+'</b></td></tr>';}).join(''):'<tr><td colspan="5"><div class="empty">No supplier found.</div></td></tr>';
   var sel=document.getElementById('beliSupplier');
-  sel.innerHTML=state.supplier.map(function(s){return '<option>'+s.nama+'</option>';}).join('');
+  sel.innerHTML=state.supplier.map(function(s){return '<option>'+s.name+'</option>';}).join('');
 }
-function renderPelanggan(){
-  var q=(document.getElementById('searchPelanggan').value||'').toLowerCase();var f=document.getElementById('filterPelanggan').value;
-  var rows=state.pelanggan.filter(function(p){return (!f||p.jenis===f)&&(!q||p.nama.toLowerCase().indexOf(q)>-1);});
-  document.getElementById('tbodyPelanggan').innerHTML=rows.length?rows.map(function(p){return '<tr><td><b>'+p.nama+'</b></td><td>'+p.jenis+'</td><td>'+p.kunjungan+' kali</td><td>'+p.favorit+'</td><td><b>'+rp(p.total)+'</b></td><td>'+p.terakhir+'</td></tr>';}).join(''):'<tr><td colspan="6"><div class="empty">'+(state.pelanggan.length?'Pelanggan tidak ditemukan.':'Belum ada pelanggan. Pelanggan otomatis tercatat dari transaksi di Kasir.')+'</div></td></tr>';
+function renderCustomers(){
+  var q=(document.getElementById('searchCustomers').value||'').toLowerCase();var f=document.getElementById('filterCustomers').value;
+  var rows=state.customer.filter(function(p){return (!f||p.type===f)&&(!q||p.name.toLowerCase().indexOf(q)>-1);});
+  document.getElementById('tbodyCustomers').innerHTML=rows.length?rows.map(function(p){return '<tr><td><b>'+p.name+'</b></td><td>'+p.type+'</td><td>'+p.visits+' kali</td><td>'+p.favorite+'</td><td><b>'+rp(p.total)+'</b></td><td>'+p.last+'</td></tr>';}).join(''):'<tr><td colspan="6"><div class="empty">'+(state.customer.length?'No customer found.':'No customers yet. Customers are recorded automatically from Cashier transactions.')+'</div></td></tr>';
 }
-function renderKaryawan(){
-  var q=(document.getElementById('searchKaryawan').value||'').toLowerCase();var f=document.getElementById('filterKaryawan').value;
-  var rows=state.karyawan.filter(function(k){return (!f||k.sif===f)&&(!q||(k.nama+k.jabatan).toLowerCase().indexOf(q)>-1);});
-  document.getElementById('tbodyKaryawan').innerHTML=rows.length?rows.map(function(k){return '<tr><td><b>'+k.nama+'</b></td><td>'+k.jabatan+'</td><td>Sif '+k.sif+'</td><td>'+k.jam+'</td><td><b>'+rp(k.gaji)+'</b></td><td>'+pillStatus(k.status)+'</td></tr>';}).join(''):'<tr><td colspan="6"><div class="empty">Karyawan tidak ditemukan.</div></td></tr>';
+function renderEmployees(){
+  var q=(document.getElementById('searchEmployees').value||'').toLowerCase();var f=document.getElementById('filterEmployees').value;
+  var rows=state.employees.filter(function(k){return (!f||k.shift===f)&&(!q||(k.name+k.role).toLowerCase().indexOf(q)>-1);});
+  document.getElementById('tbodyEmployees').innerHTML=rows.length?rows.map(function(k){return '<tr><td><b>'+k.name+'</b></td><td>'+k.role+'</td><td>Shift '+k.shift+'</td><td>'+k.time+'</td><td><b>'+rp(k.salary)+'</b></td><td>'+pillStatus(k.status)+'</td></tr>';}).join(''):'<tr><td colspan="6"><div class="empty">No employee found.</div></td></tr>';
 }
 function renderKas(){
   var q=(document.getElementById('searchKas').value||'').toLowerCase();var f=document.getElementById('filterKas').value;
-  var rows=state.kas.filter(function(k){return (!f||k.jenis===f)&&(!q||(k.ket+k.kategori).toLowerCase().indexOf(q)>-1);});
-  document.getElementById('tbodyKas').innerHTML=rows.length?rows.map(function(k){return '<tr><td>'+k.tgl+'</td><td><b>'+k.ket+'</b></td><td>'+k.kategori+'</td><td>'+(k.jenis==='Masuk'?'<span class="pill pill-green">Masuk</span>':'<span class="pill pill-red">Keluar</span>')+'</td><td><b style="color:'+(k.jenis==='Masuk'?'var(--green)':'var(--red)')+'">'+(k.jenis==='Masuk'?'+ ':'− ')+rp(k.jumlah)+'</b></td></tr>';}).join(''):'<tr><td colspan="5"><div class="empty">'+(state.kas.length?'Catatan kas tidak ditemukan.':'Belum ada catatan kas. Penjualan dari Kasir dan pembelian bahan tercatat otomatis di sini.')+'</div></td></tr>';
+  var rows=state.cash.filter(function(k){return (!f||k.type===f)&&(!q||(k.description+k.category).toLowerCase().indexOf(q)>-1);});
+  document.getElementById('tbodyKas').innerHTML=rows.length?rows.map(function(k){return '<tr><td>'+k.date+'</td><td><b>'+k.description+'</b></td><td>'+k.category+'</td><td>'+(k.type==='In'?'<span class="pill pill-green">In</span>':'<span class="pill pill-red">Out</span>')+'</td><td><b style="color:'+(k.type==='In'?'var(--green)':'var(--red)')+'">'+(k.type==='In'?'+ ':'− ')+rp(k.quantity)+'</b></td></tr>';}).join(''):'<tr><td colspan="5"><div class="empty">'+(state.cash.length?'No cash note found.':'No cash notes yet. Sales from Cashier and ingredient purchases are recorded here automatically.')+'</div></td></tr>';
   renderStats();
 }
-function renderLaporan(){
+function renderReport(){
   var items=[
-   ['Laporan Penjualan Bulanan','Semua transaksi Kasir bulan November 2026','Kasir'],
-   ['Laporan Menu & Stok Bahan','Daftar menu, harga, dan sisa stok bahan','Menu & bahan'],
-   ['Laporan Resep & Produksi','Takaran bahan untuk semua menu','Resep & produksi'],
-   ['Laporan Pembelian & Supplier','Semua pembelian bahan dan daftar supplier','Pembelian'],
-   ['Laporan Pelanggan & Karyawan','Total belanja pelanggan dan gaji karyawan','Pelanggan'],
-   ['Laporan Kas & Biaya','Pemasukan, pengeluaran, dan laba bersih','Kas & biaya']
+   ['Monthly Sales Report','All Cashier transactions for November 2026','Cashier'],
+   ['Menu & Ingredient Stock Report','Menu list, prices, and remaining ingredient stock','Menu &amp; Ingredients'],
+   ['Recipes & Production Report','Ingredient amounts for all menus','Recipes &amp; Production'],
+   ['Purchasing & Supplier Report','All ingredient purchases and supplier list','Purchasing'],
+   ['Customers & Employees Report','Total customer spending and employee salaries','Customers'],
+   ['Cash & Expenses Report','Income, expenses, and net profit','Cash &amp; Expenses']
   ];
   document.getElementById('reportList').innerHTML=items.map(function(it){
-    return '<div class="card" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap"><div class="thumb">▤</div><div style="flex:1;min-width:200px"><b>'+it[0]+'</b><div style="color:var(--muted);font-size:13px">'+it[1]+' · Periode November 2026</div></div><span class="pill pill-grey">'+it[2]+'</span><button class="btn btn-ghost btn-sm" onclick="generatePDF()">⬇ Unduh PDF</button></div>';
+    return '<div class="card" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap"><div class="thumb">▤</div><div style="flex:1;min-width:200px"><b>'+it[0]+'</b><div style="color:var(--muted);font-size:13px">'+it[1]+' · Periode November 2026</div></div><span class="pill pill-grey">'+it[2]+'</span><button class="btn btn-ghost btn-sm" onclick="generatePDF()">⬇ Download PDF</button></div>';
   }).join('');
 }
-function renderAll(){renderMenu();renderBahan();renderTx();renderResep();renderSupplier();renderBeli();renderPelanggan();renderKaryawan();renderKas();renderLaporan();renderTutupBuku();renderRiwayat();renderStats();}
+function renderAll(){renderMenu();renderIngredient();renderTx();renderRecipes();renderSupplier();renderBeli();renderCustomers();renderEmployees();renderKas();renderReport();renderTutupBuku();renderRiwayat();renderStats();}
 
 /* ===== FORMULIR ===== */
-function menuHarga(nama){var m=state.menus.find(function(x){return x.nama===nama;});return m?m.harga:0;}
+function menuHarga(name){var m=state.menus.find(function(x){return x.name===name;});return m?m.price:0;}
 function syncTxPreview(){
   var q=Number(document.getElementById('txQty').value||0);var menu=document.getElementById('txMenu').value;var h=menuHarga(menu);
   var txt='';
   if(q>0){
     txt='Total: '+rp(q*h);
     var needs=kebutuhanStok(menu,q);
-    if(needs.length)txt+=' · Memotong stok: '+needs.map(function(n){return n.ing.nama+' −'+fmtN(n.perlu)+' '+n.satuan;}).join(', ');
+    if(needs.length)txt+=' · Deducting stock: '+needs.map(function(n){return n.ing.name+' −'+fmtN(n.perlu)+' '+n.unit;}).join(', ');
   }
   document.getElementById('txPreview').textContent=txt;
   var ab=document.getElementById('txAlert');if(ab)ab.style.display='none';
@@ -663,205 +663,205 @@ document.getElementById('txQty').addEventListener('input',syncTxPreview);
 document.getElementById('txMenu').addEventListener('change',syncTxPreview);
 document.getElementById('formTx').addEventListener('submit',function(e){
   e.preventDefault();
-  var nama=document.getElementById('txPelanggan').value.trim();if(!nama)return;
+  var name=document.getElementById('txCustomers').value.trim();if(!name)return;
   var menu=document.getElementById('txMenu').value;var qty=Math.max(1,Number(document.getElementById('txQty').value||1));
   var alertBox=document.getElementById('txAlert');
   var needs=kebutuhanStok(menu,qty);
-  var kurang=needs.filter(function(n){return !n.bahan||n.bahan.sisa<n.perlu-0.0000001;});
-  if(kurang.length){
-    var daftar=kurang.map(function(n){return '<b>'+n.ing.nama+'</b> — perlu '+fmtN(n.perlu)+' '+n.satuan+', '+(n.bahan?('sisa stok '+fmtN(n.bahan.sisa)+' '+n.bahan.satuan):'belum ada di daftar stok');}).join('<br>');
-    alertBox.innerHTML='<b>⚠ Transaksi belum disimpan — stok bahan tidak cukup:</b><br>'+daftar+'<br>Tambah stok dulu lewat <b>Pembelian</b> atau <b>Menu &amp; bahan</b>, lalu klik Simpan transaksi lagi.';
+  var low=needs.filter(function(n){return !n.ingredient||n.ingredient.remaining<n.perlu-0.0000001;});
+  if(low.length){
+    var daftar=low.map(function(n){return '<b>'+n.ing.name+'</b> — perlu '+fmtN(n.perlu)+' '+n.unit+', '+(n.ingredient?('remaining stock '+fmtN(n.ingredient.remaining)+' '+n.ingredient.unit):'not in the stock list');}).join('<br>');
+    alertBox.innerHTML='<b>⚠ Transaction not saved — not enough ingredient stock:</b><br>'+daftar+'<br>Add stock first via <b>Purchasing</b> or <b>Menu &amp; Ingredients</b>, then click Save transaction again.';
     alertBox.style.display='block';
     alertBox.scrollIntoView({behavior:'smooth',block:'center'});
-    toast('Stok tidak cukup — transaksi belum disimpan.');
+    toast('Not enough stock — transaction not saved.');
     return;
   }
   alertBox.style.display='none';
-  needs.forEach(function(n){n.bahan.sisa=Math.round((n.bahan.sisa-n.perlu)*1000)/1000;});
-  var now=new Date();var jam=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
-  var t={id:'INV-'+String(state.seqTx++).padStart(4,'0'),pelanggan:nama,menu:menu,qty:qty,jam:jam,hari:HARI_INI,total:qty*menuHarga(menu),status:document.getElementById('txStatus').value};
-  state.transaksi.unshift(t);
-  state.sudahExport=false;
-  state.kas.unshift({tgl:'4 Nov 2026',ket:'Penjualan #'+t.id+' — '+menu+' × '+qty,kategori:'Penjualan',jenis:'Masuk',jumlah:t.total});
-  var p=state.pelanggan.find(function(x){return x.nama.toLowerCase()===nama.toLowerCase();});
-  if(p){p.kunjungan++;p.total+=t.total;p.terakhir='Hari ini, '+jam;p.favorit=menu;}else{state.pelanggan.unshift({nama:nama,jenis:/meja/i.test(nama)?'Meja':'Pelanggan tetap',kunjungan:1,favorit:menu,total:t.total,terakhir:'Hari ini, '+jam});}
-  var mn=state.menus.find(function(x){return x.nama===menu;});if(mn)mn.terjual+=qty;
-  renderTx();renderPelanggan();renderMenu();renderBahan();renderKas();renderTutupBuku();e.target.reset();document.getElementById('txQty').value=1;syncTxPreview();
-  var potong=needs.length?(' Stok berkurang: '+needs.map(function(n){return n.ing.nama+' −'+fmtN(n.perlu)+' '+n.satuan;}).join(', ')+'.'):'';
-  toast('Transaksi #'+t.id+' tersimpan — '+rp(t.total)+'.'+potong);
+  needs.forEach(function(n){n.ingredient.remaining=Math.round((n.ingredient.remaining-n.perlu)*1000)/1000;});
+  var now=new Date();var time=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  var t={id:'INV-'+String(state.seqTx++).padStart(4,'0'),customer:name,menu:menu,qty:qty,time:time,day:HARI_INI,total:qty*menuHarga(menu),status:document.getElementById('txStatus').value};
+  state.transactions.unshift(t);
+  state.alreadyExported=false;
+  state.cash.unshift({date:'4 Nov 2026',description:'Sale #'+t.id+' — '+menu+' × '+qty,category:'Sales',type:'In',quantity:t.total});
+  var p=state.customer.find(function(x){return x.name.toLowerCase()===name.toLowerCase();});
+  if(p){p.visits++;p.total+=t.total;p.last='Today, '+time;p.favorite=menu;}else{state.customer.unshift({name:name,type:/table/i.test(name)?'Table':'Regular customer',visits:1,favorite:menu,total:t.total,last:'Today, '+time});}
+  var mn=state.menus.find(function(x){return x.name===menu;});if(mn)mn.sold+=qty;
+  renderTx();renderCustomers();renderMenu();renderIngredient();renderKas();renderTutupBuku();e.target.reset();document.getElementById('txQty').value=1;syncTxPreview();
+  var potong=needs.length?(' Stock deducted: '+needs.map(function(n){return n.ing.name+' −'+fmtN(n.perlu)+' '+n.unit;}).join(', ')+'.'):'';
+  toast('Transaction #'+t.id+' saved — '+rp(t.total)+'.'+potong);
 });
-document.getElementById('formBahan').addEventListener('submit',function(e){
+document.getElementById('formIngredient').addEventListener('submit',function(e){
   e.preventDefault();
-  var namaB=document.getElementById('bNama').value.trim();if(!namaB)return;
-  var sisaB=Number(document.getElementById('bSisa').value||0);var minB=Number(document.getElementById('bMin').value||0);var satB=document.getElementById('bSatuan').value;
-  var ada=findBahan(namaB);
-  if(ada){ada.sisa=Math.round((ada.sisa+sisaB)*1000)/1000;ada.min=minB;ada.satuan=satB;renderBahan();e.target.reset();toast('Stok “'+ada.nama+'” ditambah — sisa sekarang '+fmtN(ada.sisa)+' '+ada.satuan+'.');return;}
-  state.bahan.push({nama:namaB,sisa:sisaB,satuan:satB,min:minB,harga:0,supplier:'—'});
-  renderBahan(); e.target.reset();
-  toast('Bahan “'+namaB+'” ditambahkan ke stok.');
+  var nameB=document.getElementById('bName').value.trim();if(!nameB)return;
+  var remainingB=Number(document.getElementById('bRemaining').value||0);var minB=Number(document.getElementById('bMin').value||0);var satB=document.getElementById('bSatuan').value;
+  var ada=findIngredient(nameB);
+  if(ada){ada.remaining=Math.round((ada.remaining+remainingB)*1000)/1000;ada.min=minB;ada.unit=satB;renderIngredient();e.target.reset();toast('Stock “'+ada.name+'” ditambah — now remaining '+fmtN(ada.remaining)+' '+ada.unit+'.');return;}
+  state.ingredient.push({name:nameB,remaining:remainingB,unit:satB,min:minB,price:0,supplier:'—'});
+  renderIngredient(); e.target.reset();
+  toast('Ingredient “'+nameB+'” added to stock.');
 });
 function syncBeliHarga(){
-  var nama=document.getElementById('beliBahan').value;var b=state.bahan.find(function(x){return x.nama===nama;});
-  if(b){document.getElementById('beliHarga').value=b.harga||0;var sel=document.getElementById('beliSupplier');if(b.supplier&&b.supplier!=='—')sel.value=b.supplier;}
+  var name=document.getElementById('beliIngredient').value;var b=state.ingredient.find(function(x){return x.name===name;});
+  if(b){document.getElementById('beliHarga').value=b.price||0;var sel=document.getElementById('beliSupplier');if(b.supplier&&b.supplier!=='—')sel.value=b.supplier;}
   syncBeliPreview();
 }
 function syncBeliPreview(){var q=Number(document.getElementById('beliQty').value||0);var h=Number(document.getElementById('beliHarga').value||0);document.getElementById('beliPreview').textContent=q>0?('Total: '+rp(q*h)):'';}
-document.getElementById('beliBahan').addEventListener('change',syncBeliHarga);
+document.getElementById('beliIngredient').addEventListener('change',syncBeliHarga);
 document.getElementById('beliQty').addEventListener('input',syncBeliPreview);
 document.getElementById('beliHarga').addEventListener('input',syncBeliPreview);
 document.getElementById('formBeli').addEventListener('submit',function(e){
   e.preventDefault();
-  var nama=document.getElementById('beliBahan').value;var sup=document.getElementById('beliSupplier').value;
-  if(!nama){toast('Belum ada bahan — tambah bahan dulu di halaman Menu & bahan.');return;}
-  var qty=Number(document.getElementById('beliQty').value||0);if(!(qty>0)){toast('Jumlah pembelian harus lebih dari 0.');return;}
-  var harga=Number(document.getElementById('beliHarga').value||0);
-  var b=state.bahan.find(function(x){return x.nama===nama;});var satuan=b?b.satuan:'kg';
-  var p={id:'PB-'+String(state.seqBeli++).padStart(4,'0'),tgl:'4 Nov 2026',bahan:nama,supplier:sup,qty:qty,satuan:satuan,total:Math.round(qty*harga),status:'Diterima'};
-  state.pembelian.unshift(p);
-  state.sudahExport=false;
-  if(b){b.sisa=Math.round((b.sisa+qty)*1000)/1000;if(harga>0)b.harga=harga;if(sup)b.supplier=sup;}
-  var s=state.supplier.find(function(x){return x.nama===sup;});if(s)s.total+=p.total;
-  state.kas.unshift({tgl:'4 Nov 2026',ket:'Beli '+nama+' '+fmtN(qty)+' '+satuan+' — '+sup,kategori:'Bahan baku',jenis:'Keluar',jumlah:p.total});
-  renderBeli();renderBahan();renderSupplier();renderKas();renderTutupBuku(); toast('Pembelian #'+p.id+' tersimpan — stok '+nama+' bertambah '+fmtN(qty)+' '+satuan+'.');
+  var name=document.getElementById('beliIngredient').value;var sup=document.getElementById('beliSupplier').value;
+  if(!name){toast('No ingredients yet — add ingredients first on the Menu & Ingredients page.');return;}
+  var qty=Number(document.getElementById('beliQty').value||0);if(!(qty>0)){toast('Purchase quantity must be more than 0.');return;}
+  var price=Number(document.getElementById('beliHarga').value||0);
+  var b=state.ingredient.find(function(x){return x.name===name;});var unit=b?b.unit:'kg';
+  var p={id:'PB-'+String(state.seqBeli++).padStart(4,'0'),date:'4 Nov 2026',ingredient:name,supplier:sup,qty:qty,unit:unit,total:Math.round(qty*price),status:'Received'};
+  state.purchases.unshift(p);
+  state.alreadyExported=false;
+  if(b){b.remaining=Math.round((b.remaining+qty)*1000)/1000;if(price>0)b.price=price;if(sup)b.supplier=sup;}
+  var s=state.supplier.find(function(x){return x.name===sup;});if(s)s.total+=p.total;
+  state.cash.unshift({date:'4 Nov 2026',description:'Bought '+name+' '+fmtN(qty)+' '+unit+' — '+sup,category:'Raw materials',type:'Out',quantity:p.total});
+  renderBeli();renderIngredient();renderSupplier();renderKas();renderTutupBuku(); toast('Purchase #'+p.id+' saved — stock '+name+' increased by '+fmtN(qty)+' '+unit+'.');
 });
-document.getElementById('formSet').addEventListener('submit',function(e){e.preventDefault();toast('Pengaturan tersimpan untuk sesi ini.');});
+document.getElementById('formSet').addEventListener('submit',function(e){e.preventDefault();toast('Settings saved for this session.');});
 
 /* ===== EDIT & HAPUS MENU ===== */
 var editingMenu=null;
 function resetFormMenu(){
   editingMenu=null;document.getElementById('formMenu').reset();document.getElementById('mHarga').value=15000;
-  document.getElementById('formMenuTitle').textContent='Tambah menu baru';
-  document.getElementById('btnSimpanMenu').textContent='Simpan menu';
-  document.getElementById('btnBatalMenu').style.display='none';
+  document.getElementById('formMenuTitle').textContent='Add new menu';
+  document.getElementById('btnSimpanMenu').textContent='Save menu';
+  document.getElementById('btnCancelMenu').style.display='none';
 }
 function editMenuIdx(idx){
-  var m=state.menus[idx];if(!m)return;editingMenu=m.nama;
-  document.getElementById('mNama').value=m.nama;document.getElementById('mKategori').value=m.kategori;document.getElementById('mHarga').value=m.harga;
-  document.getElementById('formMenuTitle').textContent='Edit menu — '+m.nama;
-  document.getElementById('btnSimpanMenu').textContent='Simpan perubahan';
-  document.getElementById('btnBatalMenu').style.display='';
-  flashCard('formMenuCard','mNama');
+  var m=state.menus[idx];if(!m)return;editingMenu=m.name;
+  document.getElementById('mName').value=m.name;document.getElementById('mCategory').value=m.category;document.getElementById('mHarga').value=m.price;
+  document.getElementById('formMenuTitle').textContent='Edit menu — '+m.name;
+  document.getElementById('btnSimpanMenu').textContent='Save changes';
+  document.getElementById('btnCancelMenu').style.display='';
+  flashCard('formMenuCard','mName');
 }
 function hapusMenuIdx(idx){
   var m=state.menus[idx];if(!m)return;
-  var adaResep=state.resep.some(function(r){return r.menu===m.nama;});
-  askConfirm('Menu “'+m.nama+'” akan dihapus dari daftar menu dan dari pilihan di Kasir.'+(adaResep?' Resep untuk menu ini juga ikut terhapus.':''),function(){
+  var adaRecipes=state.recipe.some(function(r){return r.menu===m.name;});
+  askConfirm('Menu “'+m.name+'” will be deleted from the menu list and from Cashier options.'+(adaRecipes?' Its recipe will be deleted too.':''),function(){
     state.menus.splice(idx,1);
-    state.resep=state.resep.filter(function(r){return r.menu!==m.nama;});
-    if(editingMenu===m.nama)resetFormMenu();
-    renderMenu();renderResep();
-    toast('Menu “'+m.nama+'” dihapus.');
+    state.recipe=state.recipe.filter(function(r){return r.menu!==m.name;});
+    if(editingMenu===m.name)resetFormMenu();
+    renderMenu();renderRecipes();
+    toast('Menu “'+m.name+'” deleted.');
   });
 }
-document.getElementById('btnBatalMenu').addEventListener('click',resetFormMenu);
+document.getElementById('btnCancelMenu').addEventListener('click',resetFormMenu);
 document.getElementById('formMenu').addEventListener('submit',function(e){
   e.preventDefault();
-  var nama=document.getElementById('mNama').value.trim();if(!nama)return;
-  var kategori=document.getElementById('mKategori').value;var harga=Number(document.getElementById('mHarga').value||0);
-  var duplikat=state.menus.find(function(x){return x.nama.toLowerCase()===nama.toLowerCase()&&x.nama!==editingMenu;});
-  if(duplikat){toast('Nama menu “'+nama+'” sudah ada — pakai nama lain atau edit menu yang ada.');return;}
+  var name=document.getElementById('mName').value.trim();if(!name)return;
+  var category=document.getElementById('mCategory').value;var price=Number(document.getElementById('mHarga').value||0);
+  var duplbunch=state.menus.find(function(x){return x.name.toLowerCase()===name.toLowerCase()&&x.name!==editingMenu;});
+  if(duplbunch){toast('Menu name “'+name+'” already exists — use another name or edit the existing menu.');return;}
   if(editingMenu){
-    var m=state.menus.find(function(x){return x.nama===editingMenu;});if(!m){resetFormMenu();return;}
-    var namaLama=m.nama;m.nama=nama;m.kategori=kategori;m.harga=harga;
-    var r=state.resep.find(function(x){return x.menu===namaLama;});if(r){r.menu=nama;r.harga=harga;}
-    renderMenu();renderResep();resetFormMenu();
-    toast('Menu “'+nama+'” diperbarui — perubahan langsung berlaku di Kasir.');
+    var m=state.menus.find(function(x){return x.name===editingMenu;});if(!m){resetFormMenu();return;}
+    var nameLama=m.name;m.name=name;m.category=category;m.price=price;
+    var r=state.recipe.find(function(x){return x.menu===nameLama;});if(r){r.menu=name;r.price=price;}
+    renderMenu();renderRecipes();resetFormMenu();
+    toast('Menu “'+name+'” updated — changes apply immediately in Cashier.');
   }else{
-    state.menus.push({nama:nama,kategori:kategori,harga:harga,terjual:0});
+    state.menus.push({name:name,category:category,price:price,sold:0});
     renderMenu();resetFormMenu();
-    toast('Menu “'+nama+'” ditambahkan dan sudah bisa dipilih di Kasir.');
+    toast('Menu “'+name+'” added and can now be selected in Cashier.');
   }
 });
 
 /* ===== EDIT & HAPUS RESEP ===== */
-var editingResep=null;
-function tambahBarisResep(ing){
-  var wrap=document.getElementById('resepBahanRows');
+var editingRecipes=null;
+function tambahBarisRecipes(ing){
+  var wrap=document.getElementById('recipeIngredientRows');
   var row=document.createElement('div');row.className='rr-row';
-  var satuanOpts=['kg','gram','butir','liter','ml','bungkus','ikat'];
-  row.innerHTML='<div class="field grow"><label>Nama bahan</label><input class="rr-nama" list="bahanSaran" placeholder="Contoh: Kopi bubuk"></div>'
-    +'<div class="field"><label>Jenis</label><select class="rr-jenis"><option>Potong stok</option><option>Pelengkap</option></select></div>'
-    +'<div class="field"><label>Jumlah</label><input class="rr-jumlah" type="number" min="0" step="any" placeholder="15"></div>'
-    +'<div class="field"><label>Satuan</label><select class="rr-satuan">'+satuanOpts.map(function(s){return '<option>'+s+'</option>';}).join('')+'</select></div>'
-    +'<div class="field grow"><label>Takaran tampil</label><input class="rr-tampil" placeholder="Contoh: 15 gram"></div>'
+  var unitOpts=['kg','g','pc','liter','ml','pack','bunch'];
+  row.innerHTML='<div class="field grow"><label>Ingredient name</label><input class="rr-name" list="ingredientSaran" placeholder="Example: Coffee Beans"></div>'
+    +'<div class="field"><label>Type</label><select class="rr-type"><option>Deduct stock</option><option>Extra</option></select></div>'
+    +'<div class="field"><label>Quantity</label><input class="rr-quantity" type="number" min="0" step="any" placeholder="15"></div>'
+    +'<div class="field"><label>Satuan</label><select class="rr-unit">'+unitOpts.map(function(s){return '<option>'+s+'</option>';}).join('')+'</select></div>'
+    +'<div class="field grow"><label>Display amount</label><input class="rr-display" placeholder="Example: 15 g"></div>'
     +'<button class="btn btn-soft btn-del" type="button">✕</button>';
   if(ing){
-    row.querySelector('.rr-nama').value=ing.nama||ing.label||'';
-    row.querySelector('.rr-jenis').value=ing.nama?'Potong stok':'Pelengkap';
-    if(ing.nama){row.querySelector('.rr-jumlah').value=ing.jumlah;row.querySelector('.rr-satuan').value=ing.satuan||'kg';}
-    row.querySelector('.rr-tampil').value=ing.tampil||'';
+    row.querySelector('.rr-name').value=ing.name||ing.label||'';
+    row.querySelector('.rr-type').value=ing.name?'Deduct stock':'Extra';
+    if(ing.name){row.querySelector('.rr-quantity').value=ing.quantity;row.querySelector('.rr-unit').value=ing.unit||'kg';}
+    row.querySelector('.rr-display').value=ing.display||'';
   }
   row.querySelector('button').addEventListener('click',function(){row.remove();});
   wrap.appendChild(row);
 }
-document.getElementById('btnTambahBarisResep').addEventListener('click',function(){tambahBarisResep();});
-function resetFormResep(){
-  editingResep=null;document.getElementById('formResep').reset();document.getElementById('rWaktu').value='10 menit';
-  document.getElementById('resepBahanRows').innerHTML='';tambahBarisResep();
-  document.getElementById('formResepTitle').textContent='Tambah resep baru';
-  document.getElementById('btnSimpanResep').textContent='Simpan resep';
-  document.getElementById('btnBatalResep').style.display='none';
+document.getElementById('btnTambahBarisRecipes').addEventListener('click',function(){tambahBarisRecipes();});
+function resetFormRecipes(){
+  editingRecipes=null;document.getElementById('formRecipes').reset();document.getElementById('rWaktu').value='10 minutes';
+  document.getElementById('recipeIngredientRows').innerHTML='';tambahBarisRecipes();
+  document.getElementById('formRecipesTitle').textContent='Add new recipe';
+  document.getElementById('btnSimpanRecipes').textContent='Save recipe';
+  document.getElementById('btnCancelRecipes').style.display='none';
 }
-function editResepIdx(idx){
-  var r=state.resep[idx];if(!r)return;editingResep=r.menu;
-  renderResepMenuSelect();document.getElementById('rMenu').value=r.menu;
-  document.getElementById('rWaktu').value=r.waktu;
-  document.getElementById('resepBahanRows').innerHTML='';
-  r.bahan.forEach(function(ing){tambahBarisResep(ing);});
-  document.getElementById('formResepTitle').textContent='Edit resep — '+r.menu;
-  document.getElementById('btnSimpanResep').textContent='Simpan perubahan';
-  document.getElementById('btnBatalResep').style.display='';
-  flashCard('formResepCard','rWaktu');
+function editRecipesIdx(idx){
+  var r=state.recipe[idx];if(!r)return;editingRecipes=r.menu;
+  renderRecipesMenuSelect();document.getElementById('rMenu').value=r.menu;
+  document.getElementById('rWaktu').value=r.time;
+  document.getElementById('recipeIngredientRows').innerHTML='';
+  r.ingredient.forEach(function(ing){tambahBarisRecipes(ing);});
+  document.getElementById('formRecipesTitle').textContent='Edit recipe — '+r.menu;
+  document.getElementById('btnSimpanRecipes').textContent='Save changes';
+  document.getElementById('btnCancelRecipes').style.display='';
+  flashCard('formRecipesCard','rWaktu');
 }
-function hapusResepIdx(idx){
-  var r=state.resep[idx];if(!r)return;
-  askConfirm('Resep “'+r.menu+'” akan dihapus. Menu tetap bisa dijual di Kasir, tapi stok bahan tidak lagi berkurang otomatis untuk menu ini.',function(){
-    state.resep.splice(idx,1);
-    if(editingResep===r.menu)resetFormResep();
-    renderResep();
-    toast('Resep “'+r.menu+'” dihapus.');
+function hapusRecipesIdx(idx){
+  var r=state.recipe[idx];if(!r)return;
+  askConfirm('Recipes “'+r.menu+'” will be deleted. The menu can still be sold in Cashier, but ingredient stock will no longer drop automatically for it.',function(){
+    state.recipe.splice(idx,1);
+    if(editingRecipes===r.menu)resetFormRecipes();
+    renderRecipes();
+    toast('Recipes “'+r.menu+'” deleted.');
   });
 }
-document.getElementById('btnBatalResep').addEventListener('click',resetFormResep);
-document.getElementById('formResep').addEventListener('submit',function(e){
+document.getElementById('btnCancelRecipes').addEventListener('click',resetFormRecipes);
+document.getElementById('formRecipes').addEventListener('submit',function(e){
   e.preventDefault();
   var menu=document.getElementById('rMenu').value;
-  if(!menu){toast('Belum ada menu — tambah menu dulu di halaman Menu & bahan.');return;}
-  var waktu=document.getElementById('rWaktu').value.trim()||'10 menit';
-  var bahan=[];var gagal='';
-  document.querySelectorAll('#resepBahanRows .rr-row').forEach(function(row){
-    var nama=row.querySelector('.rr-nama').value.trim();if(!nama)return;
-    var jenis=row.querySelector('.rr-jenis').value;var tampil=row.querySelector('.rr-tampil').value.trim();
-    if(jenis==='Potong stok'){
-      var jumlah=Number(row.querySelector('.rr-jumlah').value||0);var satuan=row.querySelector('.rr-satuan').value;
-      if(!(jumlah>0)){gagal=nama;return;}
-      bahan.push({nama:nama,jumlah:jumlah,satuan:satuan,tampil:tampil||(fmtN(jumlah)+' '+satuan)});
+  if(!menu){toast('No menu yet — add a menu first on the Menu & Ingredients page.');return;}
+  var time=document.getElementById('rWaktu').value.trim()||'10 minutes';
+  var ingredient=[];var gagal='';
+  document.querySelectorAll('#recipeIngredientRows .rr-row').forEach(function(row){
+    var name=row.querySelector('.rr-name').value.trim();if(!name)return;
+    var type=row.querySelector('.rr-type').value;var display=row.querySelector('.rr-display').value.trim();
+    if(type==='Deduct stock'){
+      var quantity=Number(row.querySelector('.rr-quantity').value||0);var unit=row.querySelector('.rr-unit').value;
+      if(!(quantity>0)){gagal=name;return;}
+      ingredient.push({name:name,quantity:quantity,unit:unit,display:display||(fmtN(quantity)+' '+unit)});
     }else{
-      bahan.push({label:nama,tampil:tampil||'1 porsi'});
+      ingredient.push({label:name,display:display||'1 serving'});
     }
   });
-  if(gagal){toast('Jumlah bahan “'+gagal+'” harus lebih dari 0 untuk jenis Potong stok.');return;}
-  if(!bahan.length){toast('Isi minimal satu bahan untuk resep ini.');return;}
-  if(editingResep){
-    var idx=state.resep.findIndex(function(x){return x.menu===editingResep;});if(idx<0){resetFormResep();return;}
-    if(menu!==editingResep&&state.resep.some(function(x){return x.menu===menu;})){toast('Menu “'+menu+'” sudah punya resep lain — resep tidak disimpan.');return;}
-    state.resep[idx]={menu:menu,harga:menuHarga(menu),waktu:waktu,bahan:bahan};
-    renderResep();resetFormResep();
-    toast('Resep “'+menu+'” diperbarui — potongan stok di Kasir langsung mengikuti resep baru.');
+  if(gagal){toast('Amount for ingredient “'+gagal+'” must be more than 0 for Deduct stock type.');return;}
+  if(!ingredient.length){toast('Add at least one ingredient to this recipe.');return;}
+  if(editingRecipes){
+    var idx=state.recipe.findIndex(function(x){return x.menu===editingRecipes;});if(idx<0){resetFormRecipes();return;}
+    if(menu!==editingRecipes&&state.recipe.some(function(x){return x.menu===menu;})){toast('Menu “'+menu+'” already has another recipe — recipe not saved.');return;}
+    state.recipe[idx]={menu:menu,price:menuHarga(menu),time:time,ingredient:ingredient};
+    renderRecipes();resetFormRecipes();
+    toast('Recipes “'+menu+'” updated — stock deductions in Cashier now follow the new recipe.');
   }else{
-    if(state.resep.some(function(x){return x.menu===menu;})){toast('Menu “'+menu+'” sudah punya resep — pakai tombol Edit pada resepnya.');return;}
-    state.resep.push({menu:menu,harga:menuHarga(menu),waktu:waktu,bahan:bahan});
-    renderResep();resetFormResep();
-    toast('Resep “'+menu+'” ditambahkan.');
+    if(state.recipe.some(function(x){return x.menu===menu;})){toast('Menu “'+menu+'” already has a recipe — use the Edit button on its recipe.');return;}
+    state.recipe.push({menu:menu,price:menuHarga(menu),time:time,ingredient:ingredient});
+    renderRecipes();resetFormRecipes();
+    toast('Recipes “'+menu+'” added.');
   }
 });
 ['searchTx','filterTx'].forEach(function(id){document.getElementById(id).addEventListener('input',renderTx);});
 ['searchMenu','filterMenu'].forEach(function(id){document.getElementById(id).addEventListener('input',renderMenu);});
-['searchBahan','filterBahan'].forEach(function(id){document.getElementById(id).addEventListener('input',renderBahan);});
+['searchIngredient','filterIngredient'].forEach(function(id){document.getElementById(id).addEventListener('input',renderIngredient);});
 ['searchBeli','filterBeli'].forEach(function(id){document.getElementById(id).addEventListener('input',renderBeli);});
 document.getElementById('searchSupplier').addEventListener('input',renderSupplier);
-['searchPelanggan','filterPelanggan'].forEach(function(id){document.getElementById(id).addEventListener('input',renderPelanggan);});
-['searchKaryawan','filterKaryawan'].forEach(function(id){document.getElementById(id).addEventListener('input',renderKaryawan);});
+['searchCustomers','filterCustomers'].forEach(function(id){document.getElementById(id).addEventListener('input',renderCustomers);});
+['searchEmployees','filterEmployees'].forEach(function(id){document.getElementById(id).addEventListener('input',renderEmployees);});
 ['searchKas','filterKas'].forEach(function(id){document.getElementById(id).addEventListener('input',renderKas);});
 
 /* ===== PDF ===== */
@@ -871,8 +871,8 @@ function buildPDFDoc(){
   var W=doc.internal.pageSize.getWidth();
   function head(title,sub){
     doc.setFillColor(234,88,12);doc.rect(0,0,W,64,'F');
-    doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(17);doc.text('DapurERP — Warung Senja',40,28);
-    doc.setFont('helvetica','normal');doc.setFontSize(10);doc.text('Cabang utama  •  Laporan Bulanan  •  November 2026',40,46);
+    doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(17);doc.text('DapurERP — Sunset Stall',40,28);
+    doc.setFont('helvetica','normal');doc.setFontSize(10);doc.text('Main branch  •  Monthly Report  •  November 2026',40,46);
     doc.setTextColor(26,29,33);doc.setFont('helvetica','bold');doc.setFontSize(15);doc.text(title,40,92);
     doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(107,114,128);doc.text(sub,40,108);
   }
@@ -880,90 +880,90 @@ function buildPDFDoc(){
     doc.autoTable({startY:startY,head:[headers],body:rows,styles:{fontSize:8.5,cellPadding:5},headStyles:{fillColor:[234,88,12]},alternateRowStyles:{fillColor:[255,247,237]},margin:{left:40,right:40}});
     return doc.lastAutoTable.finalY+22;
   }
-  function rowsOr(rows,cols){if(rows.length)return rows;var r=['Belum ada data'];while(r.length<cols)r.push('—');return [r];}
-  head('Laporan Bulanan — November 2026','Ringkasan bisnis, penjualan, dan kesehatan keuangan Warung Senja.');
+  function rowsOr(rows,cols){if(rows.length)return rows;var r=['No data yet'];while(r.length<cols)r.push('—');return [r];}
+  head('Monthly Report — November 2026','Business overview, sales, and financial health of Sunset Stall.');
   var y=126;
-  doc.setTextColor(26,29,33);doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text('Ringkasan Bisnis',40,y);y+=8;
+  doc.setTextColor(26,29,33);doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text('Business Overview',40,y);y+=8;
   var fin=keuangan();
-  y=table(y+6,['Keterangan','Nilai'],[
-    ['Penjualan tercatat (dari Kasir)',rp(penjualanTotal())+' — '+state.transaksi.length+' transaksi'],
-    ['Laba kotor',rp(fin.masuk-fin.hpp)],
-    ['Nilai persediaan',rp(nilaiPersediaan())+' — '+state.bahan.length+' bahan aktif'],
-    ['Stok perlu dibeli',lowStock().length+' item'],
-    ['Pendapatan bulan ini',rp(fin.masuk)],
-    ['HPP bahan baku','- '+rp(fin.hpp)],
-    ['Biaya operasional','- '+rp(fin.ops)],
-    ['Laba bersih',rp(fin.laba)]
+  y=table(y+6,['Description','Value'],[
+    ['Sales recorded (from Cashier)',rp(salesTotal())+' — '+state.transactions.length+' transactions'],
+    ['Gross profit',rp(fin.income-fin.cogs)],
+    ['Inventory value',rp(nilaiPersediaan())+' — '+state.ingredient.length+' active ingredients'],
+    ['Stock to buy',lowStock().length+' item'],
+    ['Revenue this month',rp(fin.income)],
+    ['COGS — raw materials','- '+rp(fin.cogs)],
+    ['Operating expenses','- '+rp(fin.ops)],
+    ['Net profit',rp(fin.profit)]
   ]);
 
-  doc.addPage();head('Kasir — Semua Transaksi','Daftar transaksi penjualan yang tercatat.');y=126;
-  y=table(y,['Nomor','Pelanggan','Menu','Jam','Total','Status'],rowsOr(state.transaksi.map(function(t){return ['#'+t.id,t.pelanggan,t.menu+' x '+t.qty,t.jam,rp(t.total),t.status];}),6));
-  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(26,29,33);doc.text('Menu & Bahan',40,y);y+=6;
-  y=table(y+6,['Menu','Kategori','Harga','Terjual'],rowsOr(state.menus.map(function(m){return [m.nama,m.kategori,rp(m.harga),m.terjual+' porsi'];}),4));
-  y=table(y,['Bahan','Sisa','Minimum','Harga Satuan','Supplier','Status'],rowsOr(state.bahan.map(function(b){return [b.nama,fmtN(b.sisa)+' '+b.satuan,fmtN(b.min)+' '+b.satuan,rp(b.harga),b.supplier,b.sisa<b.min?'Perlu dibeli':'Aman'];}),6));
+  doc.addPage();head('Cashier — All Transactions','List of recorded sales transactions.');y=126;
+  y=table(y,['No.','Customers','Menu','Time','Total','Status'],rowsOr(state.transactions.map(function(t){return ['#'+t.id,t.customer,t.menu+' x '+t.qty,t.time,rp(t.total),t.status];}),6));
+  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(26,29,33);doc.text('Menu & Ingredients',40,y);y+=6;
+  y=table(y+6,['Menu','Category','Price','Sold'],rowsOr(state.menus.map(function(m){return [m.name,m.category,rp(m.price),m.sold+' servings'];}),4));
+  y=table(y,['Ingredient','Remaining','Minimum','Unit Price','Supplier','Status'],rowsOr(state.ingredient.map(function(b){return [b.name,fmtN(b.remaining)+' '+b.unit,fmtN(b.min)+' '+b.unit,rp(b.price),b.supplier,b.remaining<b.min?'Needs buying':'Aman'];}),6));
 
-  doc.addPage();head('Resep, Pembelian & Supplier','Takaran produksi, pembelian bahan, dan daftar pemasok.');y=126;
-  state.resep.forEach(function(r){doc.setFont('helvetica','bold');doc.setFontSize(10.5);doc.setTextColor(26,29,33);doc.text(r.menu+' — '+rp(r.harga)+' / porsi (± '+r.waktu+')',40,y);y+=4;y=table(y+4,['Bahan','Takaran per Porsi'],r.bahan.map(function(b){return [b.nama||b.label,b.tampil];}));});
-  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text('Pembelian Bahan',40,y);y+=6;
-  y=table(y+6,['Nomor','Tanggal','Bahan','Supplier','Jumlah','Total','Status'],rowsOr(state.pembelian.map(function(p){return ['#'+p.id,p.tgl,p.bahan,p.supplier,fmtN(p.qty)+' '+p.satuan,rp(p.total),p.status];}),7));
-  if(y>640){doc.addPage();head('Supplier (lanjutan)','Daftar pemasok Warung Senja.');y=126;}
+  doc.addPage();head('Recipes, Purchasing & Suppliers','Production amounts, ingredient purchases, and supplier list.');y=126;
+  state.recipe.forEach(function(r){doc.setFont('helvetica','bold');doc.setFontSize(10.5);doc.setTextColor(26,29,33);doc.text(r.menu+' — '+rp(r.price)+' / servings (± '+r.time+')',40,y);y+=4;y=table(y+4,['Ingredient','Amount per Serving'],r.ingredient.map(function(b){return [b.name||b.label,b.display];}));});
+  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text('Ingredient Purchases',40,y);y+=6;
+  y=table(y+6,['No.','Date','Ingredient','Supplier','Quantity','Total','Status'],rowsOr(state.purchases.map(function(p){return ['#'+p.id,p.date,p.ingredient,p.supplier,fmtN(p.qty)+' '+p.unit,rp(p.total),p.status];}),7));
+  if(y>640){doc.addPage();head('Suppliers (continued)','Sunset Stall supplier list.');y=126;}
   doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(26,29,33);doc.text('Supplier',40,y);y+=6;
-  y=table(y+6,['Supplier','Kontak','Kota','Bahan Utama','Total Belanja'],state.supplier.map(function(s){return [s.nama,s.kontak,s.kota,s.utama,rp(s.total)];}));
+  y=table(y+6,['Supplier','Contact','City','Ingredient Utama','Total Spending'],state.supplier.map(function(s){return [s.name,s.contact,s.city,s.main,rp(s.total)];}));
 
-  doc.addPage();head('Pelanggan, Karyawan & Kas','Total belanja pelanggan, gaji karyawan, dan arus kas November 2026.');y=126;
-  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(26,29,33);doc.text('Pelanggan',40,y);y+=6;
-  y=table(y+6,['Nama','Jenis','Kunjungan','Menu Favorit','Total Belanja','Terakhir Datang'],rowsOr(state.pelanggan.map(function(p){return [p.nama,p.jenis,p.kunjungan+' kali',p.favorit,rp(p.total),p.terakhir];}),6));
-  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text('Karyawan',40,y);y+=6;
-  y=table(y+6,['Nama','Jabatan','Sif','Jam Kerja','Gaji / Bulan','Status'],state.karyawan.map(function(k){return [k.nama,k.jabatan,k.sif,k.jam,rp(k.gaji),k.status];}));
-  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text('Kas & Biaya',40,y);y+=6;
-  y=table(y+6,['Tanggal','Keterangan','Kategori','Jenis','Jumlah'],rowsOr(state.kas.map(function(k){return [k.tgl,k.ket,k.kategori,k.jenis,(k.jenis==='Masuk'?'+ ':'- ')+rp(k.jumlah)];}),5));
+  doc.addPage();head('Customers, Employees & Cash','Total customer spending, employee salaries, and November 2026 cash flow.');y=126;
+  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(26,29,33);doc.text('Customers',40,y);y+=6;
+  y=table(y+6,['Name','Type','Visits','Favorite Menu','Total Spending','Last Visit'],rowsOr(state.customer.map(function(p){return [p.name,p.type,p.visits+' times',p.favorite,rp(p.total),p.last];}),6));
+  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text('Employees',40,y);y+=6;
+  y=table(y+6,['Name','Role','Shift','Working Hours','Salary / Month','Status'],state.employees.map(function(k){return [k.name,k.role,k.shift,k.time,rp(k.salary),k.status];}));
+  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text('Cash & Expenses',40,y);y+=6;
+  y=table(y+6,['Date','Description','Category','Type','Quantity'],rowsOr(state.cash.map(function(k){return [k.date,k.description,k.category,k.type,(k.type==='In'?'+ ':'- ')+rp(k.quantity)];}),5));
   doc.setFontSize(9);doc.setTextColor(107,114,128);doc.setFont('helvetica','normal');
-  doc.text('Laba bersih November 2026: '+rp(keuangan().laba)+'  •  Dibuat dari DapurERP — Warung Senja, Cabang utama  •  Rabu, 4 November 2026',40,y+6,{maxWidth:W-80});
+  doc.text('Net profit for November 2026: '+rp(keuangan().profit)+'  •  Made with DapurERP — Sunset Stall, Main branch  •  Wednesday, 4 November 2026',40,y+6,{maxWidth:W-80});
   return doc;
 }
 function generatePDF(){
   var doc=buildPDFDoc();
-  if(!doc){toast('Pustaka PDF belum termuat, coba lagi sebentar.');return;}
-  doc.save('Laporan-DapurERP-Warung-Senja-November-2026.pdf');
-  state.sudahExport=true;
+  if(!doc){toast('PDF library has not loaded yet, try again in a moment.');return;}
+  doc.save('DapurERP-Sunset-Stall-Report-November-2026.pdf');
+  state.alreadyExported=true;
   renderTutupBuku();
-  toast('Laporan PDF bulanan berhasil dibuat dan diunduh. Tombol Tutup Buku sekarang sudah bisa diklik.');
+  toast('Monthly PDF report created and downloaded. The Month-End Closing button can now be clicked.');
 }
 function buildPDFDocDariSnapshot(snap){
-  var cur={transaksi:state.transaksi,pembelian:state.pembelian,kas:state.kas,menus:state.menus,bahan:state.bahan,resep:state.resep,supplier:state.supplier,pelanggan:state.pelanggan,karyawan:state.karyawan};
-  state.transaksi=snap.transaksi;state.pembelian=snap.pembelian;state.kas=snap.kas;state.menus=snap.menus;state.bahan=snap.bahan;state.resep=snap.resep;state.supplier=snap.supplier;state.pelanggan=snap.pelanggan;state.karyawan=snap.karyawan;
+  var cur={transactions:state.transactions,purchases:state.purchases,cash:state.cash,menus:state.menus,ingredient:state.ingredient,recipe:state.recipe,supplier:state.supplier,customer:state.customer,employees:state.employees};
+  state.transactions=snap.transactions;state.purchases=snap.purchases;state.cash=snap.cash;state.menus=snap.menus;state.ingredient=snap.ingredient;state.recipe=snap.recipe;state.supplier=snap.supplier;state.customer=snap.customer;state.employees=snap.employees;
   try{return buildPDFDoc();}
-  finally{state.transaksi=cur.transaksi;state.pembelian=cur.pembelian;state.kas=cur.kas;state.menus=cur.menus;state.bahan=cur.bahan;state.resep=cur.resep;state.supplier=cur.supplier;state.pelanggan=cur.pelanggan;state.karyawan=cur.karyawan;}
+  finally{state.transactions=cur.transactions;state.purchases=cur.purchases;state.cash=cur.cash;state.menus=cur.menus;state.ingredient=cur.ingredient;state.recipe=cur.recipe;state.supplier=cur.supplier;state.customer=cur.customer;state.employees=cur.employees;}
 }
 
-/* ===== TUTUP BUKU ===== */
+/* ===== MONTH-END CLOSING ===== */
 function renderTutupBuku(){
   var pill=document.getElementById('exportStatusPill');if(!pill)return;
   var warn=document.getElementById('tutupBukuWarn');var ready=document.getElementById('tutupBukuReady');var btn=document.getElementById('btnTutupBuku');
-  if(state.sudahExport){
-    pill.textContent='Sudah di-export — siap tutup buku';pill.className='pill pill-green';
+  if(state.alreadyExported){
+    pill.textContent='Exported — ready for month-end closing';pill.className='pill pill-green';
     if(warn)warn.style.display='none';if(ready)ready.style.display='block';
     if(btn)btn.style.opacity='1';
   }else{
-    pill.textContent='Belum di-export';pill.className='pill pill-red';
+    pill.textContent='Not exported yet';pill.className='pill pill-red';
     if(warn)warn.style.display='block';if(ready)ready.style.display='none';
     if(btn)btn.style.opacity='.55';
   }
 }
 function klikTutupBuku(){
-  if(!state.sudahExport){
+  if(!state.alreadyExported){
     var btnExp=document.getElementById('btnExportPDF');
     if(btnExp){btnExp.scrollIntoView({behavior:'smooth',block:'center'});try{btnExp.focus({preventScroll:true});}catch(e){}}
-    toast('Belum bisa tutup buku — export laporan PDF bulan ini dulu lewat tombol “Buat Laporan PDF Bulanan”.');
+    toast('Cannot close the books yet — export this month PDF report first via the “Generate Monthly PDF Report” button.');
     return;
   }
   var fin=keuangan();
-  document.getElementById('confirmTitle').textContent='Tutup Buku — November 2026?';
-  document.getElementById('confirmYes').textContent='Ya, Tutup Buku';
-  document.getElementById('confirmText').innerHTML='Periode <b>November 2026</b> akan ditutup.<br><br>'
-    +'<b>Yang dibersihkan</b> supaya bulan baru mulai dari Rp 0: <b>'+state.transaksi.length+' transaksi penjualan</b> ('+rp(penjualanTotal())+'), <b>'+state.pembelian.length+' pembelian</b>, dan <b>'+state.kas.length+' catatan kas</b> bulan ini. Angka Ringkasan, grafik penjualan minggu ini, dan kesehatan keuangan kembali ke 0.<br><br>'
-    +'<b>Yang tetap ada:</b> menu, resep, bahan beserta stok saat ini, supplier, pelanggan, dan karyawan — tidak ikut terhapus.<br><br>'
-    +'Laporan PDF bulan ini (laba bersih '+rp(fin.laba)+') tersimpan di <b>Riwayat Laporan</b> di halaman ini dan bisa diunduh lagi kapan saja. Aksi ini tidak bisa dibatalkan.';
+  document.getElementById('confirmTitle').textContent='Close the Books — November 2026?';
+  document.getElementById('confirmYes').textContent='Yes, Close Books';
+  document.getElementById('confirmText').innerHTML='The <b>November 2026</b> period will be closed.<br><br>'
+    +'<b>What gets cleared</b> so the new month starts from Rp 0: <b>'+state.transactions.length+' sales transactions</b> ('+rp(salesTotal())+'), <b>'+state.purchases.length+' purchases</b>, and <b>'+state.cash.length+' cash notes</b> this month. Overview figures, the sales chart for this week, and financial health return to 0.<br><br>'
+    +'<b>What stays:</b> menus, recipes, ingredients with current stock, suppliers, customers, and employees — nothing is deleted.<br><br>'
+    +'This month PDF report (net profit '+rp(fin.profit)+') is saved in <b>Report History</b> on this page and can be downloaded again anytime. This action cannot be undone.';
   confirmCb=function(){doTutupBuku();};
   document.getElementById('confirmModal').style.display='grid';
 }
@@ -971,51 +971,51 @@ function doTutupBuku(){
   var fin=keuangan();
   var doc=buildPDFDoc();var blob=null;
   if(doc){try{blob=doc.output('blob');}catch(e){blob=null;}}
-  var snapshot=JSON.parse(JSON.stringify({transaksi:state.transaksi,pembelian:state.pembelian,kas:state.kas,menus:state.menus,bahan:state.bahan,resep:state.resep,supplier:state.supplier,pelanggan:state.pelanggan,karyawan:state.karyawan}));
-  var now=new Date();var jam=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  var snapshot=JSON.parse(JSON.stringify({transactions:state.transactions,purchases:state.purchases,cash:state.cash,menus:state.menus,ingredient:state.ingredient,recipe:state.recipe,supplier:state.supplier,customer:state.customer,employees:state.employees}));
+  var now=new Date();var time=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
   state.riwayat.unshift({
-    periode:'November 2026',
-    ditutupPada:'4 Nov 2026, '+jam,
-    penjualan:penjualanTotal(),laba:fin.laba,
-    jumlahTx:state.transaksi.length,jumlahBeli:state.pembelian.length,jumlahKas:state.kas.length,
+    period:'November 2026',
+    closedAt:'4 Nov 2026, '+time,
+    sales:salesTotal(),profit:fin.profit,
+    quantityTx:state.transactions.length,quantityBeli:state.purchases.length,quantityKas:state.cash.length,
     blob:blob,snapshot:snapshot,
-    namaFile:'Laporan-DapurERP-Warung-Senja-November-2026.pdf'
+    nameFile:'DapurERP-Sunset-Stall-Report-November-2026.pdf'
   });
-  state.transaksi=[];state.pembelian=[];state.kas=[];
-  state.menus.forEach(function(m){m.terjual=0;});
+  state.transactions=[];state.purchases=[];state.cash=[];
+  state.menus.forEach(function(m){m.sold=0;});
   state.supplier.forEach(function(s){s.total=0;});
   state.seqTx=1;state.seqBeli=1;
-  state.sudahExport=false;
+  state.alreadyExported=false;
   renderAll();
-  toast('Tutup Buku selesai — November 2026 diarsipkan ke Riwayat Laporan. Bulan baru mulai dari Rp 0; menu, resep, stok, supplier, pelanggan, dan karyawan tetap ada.');
+  toast('Month-end closing done — November 2026 archived to Report History. The new month starts from Rp 0; menus, recipes, stock, suppliers, customers, and employees stay.');
   var rl=document.getElementById('riwayatList');if(rl)rl.scrollIntoView({behavior:'smooth',block:'center'});
 }
 function renderRiwayat(){
   var el=document.getElementById('riwayatList');if(!el)return;
   var cnt=document.getElementById('riwayatCount');
-  if(cnt)cnt.textContent=state.riwayat.length?(state.riwayat.length+' laporan tersimpan'):'Belum ada arsip';
-  if(!state.riwayat.length){el.innerHTML='<div class="empty">Belum ada laporan yang ditutup. Setelah Tutup Buku, laporan PDF tiap bulan tersimpan di sini dan bisa diunduh lagi.</div>';return;}
+  if(cnt)cnt.textContent=state.riwayat.length?(state.riwayat.length+' reports tersimpan'):'No archives yet';
+  if(!state.riwayat.length){el.innerHTML='<div class="empty">No closed reports yet. After Month-End Closing, each monthly PDF report is saved here and can be downloaded again.</div>';return;}
   el.innerHTML=state.riwayat.map(function(r,idx){
-    return '<div class="list-item"><div class="thumb">▤</div><div><b>Laporan Bulanan — '+r.periode+'</b><span>Ditutup '+r.ditutupPada+' · '+r.jumlahTx+' transaksi · '+r.jumlahBeli+' pembelian · '+r.jumlahKas+' catatan kas</span><br><span>Penjualan '+rp(r.penjualan)+' · Laba bersih '+rp(r.laba)+'</span></div><div class="right"><button class="btn btn-ghost btn-sm" onclick="unduhArsip('+idx+')">⬇ Unduh PDF</button></div></div>';
+    return '<div class="list-item"><div class="thumb">▤</div><div><b>Monthly Report — '+r.period+'</b><span>Closed '+r.closedAt+' · '+r.quantityTx+' transactions · '+r.quantityBeli+' purchases · '+r.quantityKas+' cash notes</span><br><span>Sales '+rp(r.sales)+' · Net profit '+rp(r.profit)+'</span></div><div class="right"><button class="btn btn-ghost btn-sm" onclick="unduhArsip('+idx+')">⬇ Download PDF</button></div></div>';
   }).join('');
 }
 function unduhArsip(idx){
   var r=state.riwayat[idx];if(!r)return;
   if(r.blob){
     var url=URL.createObjectURL(r.blob);var a=document.createElement('a');
-    a.href=url;a.download=r.namaFile;document.body.appendChild(a);a.click();a.remove();
+    a.href=url;a.download=r.nameFile;document.body.appendChild(a);a.click();a.remove();
     setTimeout(function(){URL.revokeObjectURL(url);},4000);
-    toast('Laporan '+r.periode+' diunduh lagi dari Riwayat Laporan.');
+    toast('Report '+r.period+' downloaded again from Report History.');
     return;
   }
   if(r.snapshot){
     var doc=buildPDFDocDariSnapshot(r.snapshot);
-    if(doc){doc.save(r.namaFile);toast('Laporan '+r.periode+' diunduh lagi dari Riwayat Laporan.');return;}
+    if(doc){doc.save(r.nameFile);toast('Report '+r.period+' downloaded again from Report History.');return;}
   }
-  toast('Berkas PDF arsip belum bisa dibuat — pustaka PDF belum termuat, coba lagi sebentar.');
+  toast('The archived PDF file could not be created — the PDF library has not loaded yet, try again in a moment.');
 }
 
-renderAll();syncBeliHarga();tambahBarisResep();
+renderAll();syncBeliHarga();tambahBarisRecipes();
 </script>
 </body>
 </html>
