@@ -16,7 +16,7 @@ Customers, Employees, Cash & Expenses, Reports, Settings.
 
 ## Features
 
-- **Start-from-zero mode:** all figures start at Rp 0, the owner inputs everything from scratch.
+- **Start-from-zero mode:** all figures start at $0.00, the owner inputs everything from scratch.
 - **Cashier:** the "+ New transaction" button opens the form (customer/table name, menu, quantity, status).
   Save → the transaction is recorded and the Overview figures update.
 - **Automatic stock:** a sale in Cashier deducts ingredient stock per the recipe
@@ -30,7 +30,7 @@ Customers, Employees, Cash & Expenses, Reports, Settings.
 - **Reports:** the "Generate Monthly PDF Report" button exports every section into one PDF.
 - **Month-End Closing:** on the Reports page. The PDF must be exported first before the button activates.
   After confirmation, that month’s transactions/purchases/cash notes are cleared
-  (new month starts at Rp 0) and the month’s PDF is stored in "Report History".
+  (new month starts at $0.00) and the month’s PDF is stored in "Report History".
   Menus, recipes, ingredients + current stock, suppliers, customers, and employees stay.
 
 ## Data notes
