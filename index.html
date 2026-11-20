@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="light"/>
 <link rel="icon" href="data:,"/>
-<title>DapurERP — Sunset Stall</title>
+<title>KitchenERP — Sunset Stall</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -139,7 +139,7 @@ tr:last-child td{border-bottom:0}
 <body>
 <div class="app">
   <aside class="sidebar">
-    <div class="logo"><div class="logo-mark">🍜</div><div><b>DapurERP</b><span>Sunset Stall System</span></div></div>
+    <div class="logo"><div class="logo-mark">🍜</div><div><b>KitchenERP</b><span>Sunset Stall System</span></div></div>
     <button class="warung" onclick="goPage('settings')"><span class="dot"></span><span style="flex:1;text-align:left"><b>Sunset Stall</b><span>Main branch</span></span><i>⌄</i></button>
     <div class="nav-label">Main Menu</div>
     <nav class="nav" id="mainNav">
@@ -360,7 +360,7 @@ tr:last-child td{border-bottom:0}
 
     <!-- PENGATURAN -->
     <section class="page" id="page-settings">
-      <div class="hero-row"><div><h2>Settings</h2><p>Stall profile and DapurERP display options.</p></div></div>
+      <div class="hero-row"><div><h2>Settings</h2><p>Stall profile and KitchenERP display options.</p></div></div>
       <div class="form-card"><h3>Stall profile</h3><p>Changes here apply across all pages for this session.</p>
         <form id="formSet"><div class="form-grid" style="grid-template-columns:repeat(2,1fr)">
           <div class="field"><label>Stall name</label><input id="setWarung" value="Sunset Stall"></div>
@@ -378,12 +378,12 @@ tr:last-child td{border-bottom:0}
           <div class="fin-row"><span>Report period</span><b>Monthly</b></div>
         </div>
         <div class="card"><div class="card-head"><h3>About this version</h3></div>
-          <p style="color:var(--muted);font-size:14px;line-height:1.65;margin:0">This is a sample (preview) version of DapurERP for Sunset Stall. Data added via forms is stored for this session only and included in the PDF report. For daily use, data needs to be connected to permanent storage.</p>
+          <p style="color:var(--muted);font-size:14px;line-height:1.65;margin:0">This is a sample (preview) version of KitchenERP for Sunset Stall. Data added via forms is stored for this session only and included in the PDF report. For daily use, data needs to be connected to permanent storage.</p>
         </div>
       </div>
     </section>
 
-    <p class="footer-note">DapurERP • Sunset Stall — Main branch • Wednesday, 4 November 2026</p>
+    <p class="footer-note">KitchenERP • Sunset Stall — Main branch • Wednesday, 4 November 2026</p>
   </main>
 </div>
 <div class="modal-overlay" id="confirmModal" style="display:none">
@@ -871,7 +871,7 @@ function buildPDFDoc(){
   var W=doc.internal.pageSize.getWidth();
   function head(title,sub){
     doc.setFillColor(234,88,12);doc.rect(0,0,W,64,'F');
-    doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(17);doc.text('DapurERP — Sunset Stall',40,28);
+    doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(17);doc.text('KitchenERP — Sunset Stall',40,28);
     doc.setFont('helvetica','normal');doc.setFontSize(10);doc.text('Main branch  •  Monthly Report  •  November 2026',40,46);
     doc.setTextColor(26,29,33);doc.setFont('helvetica','bold');doc.setFontSize(15);doc.text(title,40,92);
     doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(107,114,128);doc.text(sub,40,108);
@@ -918,13 +918,13 @@ function buildPDFDoc(){
   doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text('Cash & Expenses',40,y);y+=6;
   y=table(y+6,['Date','Description','Category','Type','Quantity'],rowsOr(state.cash.map(function(k){return [k.date,k.description,k.category,k.type,(k.type==='In'?'+ ':'- ')+rp(k.quantity)];}),5));
   doc.setFontSize(9);doc.setTextColor(107,114,128);doc.setFont('helvetica','normal');
-  doc.text('Net profit for November 2026: '+rp(keuangan().profit)+'  •  Made with DapurERP — Sunset Stall, Main branch  •  Wednesday, 4 November 2026',40,y+6,{maxWidth:W-80});
+  doc.text('Net profit for November 2026: '+rp(keuangan().profit)+'  •  Made with KitchenERP — Sunset Stall, Main branch  •  Wednesday, 4 November 2026',40,y+6,{maxWidth:W-80});
   return doc;
 }
 function generatePDF(){
   var doc=buildPDFDoc();
   if(!doc){toast('PDF library has not loaded yet, try again in a moment.');return;}
-  doc.save('DapurERP-Sunset-Stall-Report-November-2026.pdf');
+  doc.save('KitchenERP-Sunset-Stall-Report-November-2026.pdf');
   state.alreadyExported=true;
   renderTutupBuku();
   toast('Monthly PDF report created and downloaded. The Month-End Closing button can now be clicked.');
@@ -979,7 +979,7 @@ function doTutupBuku(){
     sales:salesTotal(),profit:fin.profit,
     quantityTx:state.transactions.length,quantityBeli:state.purchases.length,quantityKas:state.cash.length,
     blob:blob,snapshot:snapshot,
-    nameFile:'DapurERP-Sunset-Stall-Report-November-2026.pdf'
+    nameFile:'KitchenERP-Sunset-Stall-Report-November-2026.pdf'
   });
   state.transactions=[];state.purchases=[];state.cash=[];
   state.menus.forEach(function(m){m.sold=0;});

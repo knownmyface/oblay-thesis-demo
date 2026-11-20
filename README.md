@@ -1,4 +1,4 @@
-# DapurERP — Small Food Stall ERP (Sunset Stall)
+# KitchenERP — Small Food Stall ERP (Sunset Stall)
 
 Simple ERP system for a small food stall, built for a final-year thesis project.
 Fully in English. Live demo: https://oblay-thesis-demo.vercel.app/
